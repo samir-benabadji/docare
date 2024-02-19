@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDU9cJH_NGxPkuW08Ccqt7Zn7wXpL6S_WI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>663439758754</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.docare.pfe</string>
+	<key>PROJECT_ID</key>
+	<string>docare-pfe</string>
+	<key>STORAGE_BUCKET</key>
+	<string>docare-pfe.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:663439758754:ios:fdf0a09b6e0dac542e0efb</string>
+</dict>
+</plist>

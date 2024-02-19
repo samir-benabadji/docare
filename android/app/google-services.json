@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "663439758754",
+    "project_id": "docare-pfe",
+    "storage_bucket": "docare-pfe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:663439758754:android:880d6e3d5fe34e7e2e0efb",
+        "android_client_info": {
+          "package_name": "com.docare.pfe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBjmcM6UuJI29vBPG56g_vkcZt6JwH0ws"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
