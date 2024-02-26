@@ -43,6 +43,8 @@ dependencies:
   fluttertoast: ^8.2.4
   rename: ^3.0.1
   cloud_firestore: ^4.14.0
+  shimmer: ^3.0.0
+  cached_network_image: ^3.2.3
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +60,18 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
+# to install fluttergen
+# $ dart pub global activate flutter_gen
+# for mac users you need to run this
+# $ export PATH="$PATH":"$HOME/.pub-cache/bin"
+# use this command to execute
+# $ fluttergen
+flutter_gen:
+  output: lib/core/ # Optional (default: lib/gen/)
+  line_length: 120 # Optional (default: 80)
+  integrations:
+    flutter_svg: true
+
 # The following section is specific to Flutter packages.
 flutter:
 
@@ -69,7 +83,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/images/symptoms/
     - assets/icons/
+    - assets/icons/auth/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

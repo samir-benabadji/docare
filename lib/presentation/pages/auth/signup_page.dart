@@ -68,7 +68,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ],
               ),
-             
               ElevatedButton(
                 onPressed: () => Get.off(() => SignInPage()),
                 child: Text("Go to Sign in"),

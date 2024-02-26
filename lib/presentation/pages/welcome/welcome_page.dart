@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../core/assets.gen.dart';
 import '../auth/signin_page.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -19,7 +20,7 @@ class WelcomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SvgPicture.asset(
-              "assets/icons/DOCARE_logo_text.svg",
+              Assets.icons.dOCARELogoText.path,
             ),
             SizedBox(height: 48),
             Text(
@@ -39,7 +40,7 @@ class WelcomePage extends StatelessWidget {
               child: Stack(
                 children: [
                   SvgPicture.asset(
-                    "assets/images/docareButtonLayout.svg",
+                    Assets.images.docareButtonLayout.path,
                   ),
                   Container(
                     width: 166,
