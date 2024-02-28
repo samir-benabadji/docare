@@ -1,11 +1,12 @@
 import 'dart:async';
 
-import 'package:docare/presentation/pages/auth/home/home_page.dart';
 import 'package:get/get.dart';
 
 import '../../../business_logic/models/user_model.dart';
 import '../../../business_logic/services/firebase_auth_service.dart';
+import '../../../business_logic/services/firebase_firestore_service.dart';
 import '../../../initial_binding.dart';
+import 'package:docare/presentation/widgets/utils.dart';
 import '../welcome/welcome_page.dart';
 
 class SplashController extends GetxController {
@@ -15,33 +16,9 @@ class SplashController extends GetxController {
       final firebaseAuthService = Get.find<FirebaseAuthService>();
       if (firebaseAuthService.user != null) {
         final firebaseAuthService = Get.find<FirebaseAuthService>();
-        UserModel user = await firebaseAuthService.getUserData(firebaseAuthService.user!.uid);
-        switch (user.status) {
-          case 'INCOMPLETE':
-            //  Get.off(() => NamePage()); 
-            break;
-          case 'PENDING':
-            //  Get.off(() => PendingPage()); 
-            break;
-          case 'APPROVED':
-            Get.off(() => HomePage()); 
-            break;
-          case 'REJECTED':
-            // Get.off(() => RejectedPage()); 
-            break;
-          case 'BANNED':
-            Get.off(() => WelcomePage()); 
-            break;
-          case 'DISABLED':
-            Get.off(() => WelcomePage());
-            break;
-          case 'DELETED':
-            Get.off(() => WelcomePage()); 
-            break;
-          default:
-            Get.off(() => WelcomePage());
-            break;
-        }
+        final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
+        UserModel user = await _firebaseFirestoreService.getUserData(firebaseAuthService.user!.uid);
+        navigatingTheUserDependingOnHisStatus(user);
       } else {
         Get.off(() => WelcomePage());
       }

@@ -1,6 +1,12 @@
 // Helper method to show toast messages
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+
+import '../../business_logic/models/user_model.dart';
+import '../pages/auth/home/home_page.dart';
+import '../pages/onboarding/onboarding_symptoms_page.dart';
+import '../pages/welcome/welcome_page.dart';
 
 void showToast(String message) {
   Fluttertoast.showToast(
@@ -12,4 +18,29 @@ void showToast(String message) {
     textColor: Colors.white,
     fontSize: 16.0,
   );
+}
+
+void navigatingTheUserDependingOnHisStatus(UserModel user) {
+  switch (user.status) {
+    case 'INCOMPLETE':
+      Get.off(() => OnboardingSymptomsPage());
+      break;
+    case 'PENDING':
+      //  Get.off(() => PendingPage());
+      break;
+    case 'COMPLETED':
+      Get.off(() => HomePage());
+      break;
+    case 'REJECTED':
+      //   Get.off(() => RejectedPage());
+      break;
+    case 'BANNED':
+    case 'DISABLED':
+    case 'DELETED':
+      Get.off(() => WelcomePage());
+      break;
+    default:
+      Get.off(() => WelcomePage());
+      break;
+  }
 }

@@ -25,15 +25,21 @@ class $AssetsIconsGen {
 
   $AssetsIconsAuthGen get auth => const $AssetsIconsAuthGen();
 
+  /// File path: assets/icons/check_green.png
+  AssetGenImage get checkGreen => const AssetGenImage('assets/icons/check_green.png');
+
   /// File path: assets/icons/new_user.svg
   SvgGenImage get newUser => const SvgGenImage('assets/icons/new_user.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [dOCARELogo, dOCARELogoText, dOCAREText, newUser];
+  List<dynamic> get values => [dOCARELogo, dOCARELogoText, dOCAREText, checkGreen, newUser];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
+
+  /// File path: assets/images/Creative_panel_planner.png
+  AssetGenImage get creativePanelPlanner => const AssetGenImage('assets/images/Creative_panel_planner.png');
 
   /// File path: assets/images/docareButtonLayout.svg
   SvgGenImage get docareButtonLayout => const SvgGenImage('assets/images/docareButtonLayout.svg');
@@ -41,7 +47,7 @@ class $AssetsImagesGen {
   $AssetsImagesSymptomsGen get symptoms => const $AssetsImagesSymptomsGen();
 
   /// List of all assets
-  List<SvgGenImage> get values => [docareButtonLayout];
+  List<dynamic> get values => [creativePanelPlanner, docareButtonLayout];
 }
 
 class $AssetsIconsAuthGen {
@@ -50,11 +56,14 @@ class $AssetsIconsAuthGen {
   /// File path: assets/icons/auth/address.svg
   SvgGenImage get address => const SvgGenImage('assets/icons/auth/address.svg');
 
+  /// File path: assets/icons/auth/lock-check.svg
+  SvgGenImage get lockCheck => const SvgGenImage('assets/icons/auth/lock-check.svg');
+
   /// File path: assets/icons/auth/lock.svg
   SvgGenImage get lock => const SvgGenImage('assets/icons/auth/lock.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [address, lock];
+  List<SvgGenImage> get values => [address, lockCheck, lock];
 }
 
 class $AssetsImagesSymptomsGen {

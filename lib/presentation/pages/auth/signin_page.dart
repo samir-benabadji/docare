@@ -15,7 +15,6 @@ class SignInPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: GetBuilder<AuthController>(
-            init: AuthController(), // Initialize AuthController
             builder: (authController) => Column(
               children: [
                 _topBarComponent(),
@@ -32,9 +31,18 @@ class SignInPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 16),
-                      _emailComponent(authController),
-                      SizedBox(height: authController.invalidEmail ? 8 : 16),
-                      _passwordComponent(authController),
+                      Form(
+                        key: authController.loginFormKey,
+                        child: Column(
+                          children: [
+                            _emailComponent(authController),
+                            SizedBox(height: authController.invalidEmail ? 8 : 16),
+                            _passwordComponent(authController),
+                            SizedBox(height: 16),
+                          ],
+                        ),
+                      ),
+
                       /* if (controller.invalidEmail)
             _warningMessage(
               message: 'Please enter a valid email address.',
@@ -44,7 +52,7 @@ class SignInPage extends StatelessWidget {
               message:
                   'Oops! This email address is already linked to a Vegpal account. Please use a different email address to link it to your existing account.',
             ),*/
-                      SizedBox(height: 16),
+
                       Text(
                         'I agree with the Terms of Service & Privacy Policy',
                         style: GoogleFonts.rubik(
@@ -108,7 +116,14 @@ class SignInPage extends StatelessWidget {
 
   Widget _loginButtonComponent(AuthController authController) {
     return GestureDetector(
-      onTap: () => authController.signIn(authController.emailController.text, authController.passwordController.text),
+      onTap: () {
+        if (authController.validateLoginForm()) {
+          authController.signIn(
+            authController.loginEmailController.text,
+            authController.loginPasswordController.text,
+          );
+        }
+      },
       child: Container(
         width: 185,
         height: 46,
@@ -165,7 +180,7 @@ class SignInPage extends StatelessWidget {
         ),
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.done,
-        controller: authController.emailController,
+        controller: authController.loginEmailController,
         validator: (value) {
           if (value!.isEmpty) {
             return 'Please enter an E-mail.';
@@ -252,16 +267,12 @@ class SignInPage extends StatelessWidget {
         ),
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.done,
-        controller: authController.passwordController,
+        controller: authController.loginPasswordController,
         validator: (value) {
           if (value!.isEmpty) {
-            return 'Please enter an E-mail.';
+            return 'Please enter a password.';
           }
 
-          if (!GetUtils.isEmail(value)) {
-            return 'Enter a valid E-mail';
-          }
-          //TODO: Verifiy if email already exists
           return null;
         },
         onSaved: (value) {

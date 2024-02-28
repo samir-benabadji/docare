@@ -1,54 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/user_model.dart';
+
 class FirebaseFirestoreService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
-  // Method to add or update user data
-  Future<void> addUser(String uid, String email, int userType) async {
+  Future<void> addOrUpdateUser(String uid, Map<String, dynamic> userData) async {
     try {
-      await _firestore.collection('users').doc(uid).set(
-        {
-          'email': email,
-          'userType': userType,
-        },
-        SetOptions(merge: true),
-      ); // Merging true to update data if exists
+      await _firebaseFirestore.collection('users').doc(uid).set(
+            userData,
+            SetOptions(merge: true),
+          );
     } catch (e) {
-      print('Error adding user to Firestore: $e');
+      print('Error adding or updating user in Firestore: $e');
       // Handle exceptions
     }
   }
 
-  // Method to fetch user data by uid
-  Future<Map<String, dynamic>?> getUser(String uid) async {
+  Future<UserModel> getUserData(String uid) async {
     try {
-      DocumentSnapshot docSnapshot = await _firestore.collection('users').doc(uid).get();
-      if (docSnapshot.exists) {
-        return docSnapshot.data() as Map<String, dynamic>;
-      }
+      final DocumentSnapshot docSnapshot = await _firebaseFirestore.collection('users').doc(uid).get();
+      return UserModel.fromFirestore(docSnapshot);
     } catch (e) {
-      print('Error fetching user from Firestore: $e');
-      // Handle exceptions
-    }
-    return null;
-  }
-
-  // method to update user data - can be extended for other fields
-  Future<void> updateUserType(String uid, int userType) async {
-    try {
-      await _firestore.collection('users').doc(uid).update({
-        'userType': userType,
-      });
-    } catch (e) {
-      print('Error updating user in Firestore: $e');
-      // Handle exceptions
+      print("Error fetching user data from Firestore: $e");
+      rethrow;
     }
   }
 
   // method to delete user
   Future<void> deleteUser(String uid) async {
     try {
-      await _firestore.collection('users').doc(uid).delete();
+      await _firebaseFirestore.collection('users').doc(uid).delete();
     } catch (e) {
       print('Error deleting user from Firestore: $e');
       // Handle exceptions

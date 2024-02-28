@@ -1,43 +1,45 @@
+import 'package:docare/presentation/widgets/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 
-import '../../presentation/widgets/utils.dart';
 import '../models/user_model.dart';
+import 'firebase_firestore_service.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Stream<User?> get firebaseUserStream => _firebaseAuth.authStateChanges();
   User? get user => _firebaseAuth.currentUser;
 
-  Future<UserModel> getUserData(String uid) async {
-    final snapshot = await FirebaseFirestore.instance.collection('users').doc(uid).get();
-    return UserModel.fromFirestore(snapshot);
-  }
-
   // Sign Up with email and password
-  Future<User?> signUpWithEmailPassword(String email, String password, int userType) async {
+  Future<bool> signUpWithEmailPassword(String email, String password, int userType) async {
     try {
       final UserCredential userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = userCredential.user;
       if (user != null) {
-        // Creating a new document for the user with userType and status INCOMPLETE
-        await _firestore.collection('users').doc(user.uid).set({
+        Map<String, dynamic> userData = {
           'email': email,
           'userType': userType,
           'status': 'INCOMPLETE',
-        });
+          'name': '',
+          'symptoms': '',
+          'profileImageUrl': '',
+          'workingHours': (userType == 1) ? {} : null, // Setting working hours to null if not a doctor
+        };
+        final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
+
+        await _firebaseFirestoreService.addOrUpdateUser(user.uid, userData);
+        return true;
       }
-      return user;
+      return false;
     } catch (e) {
       if (e is FirebaseAuthException) {
         showToast(_handleFirebaseAuthException(e));
       } else {
         showToast("An unknown error occurred.");
       }
-      return null;
+      return false;
     }
   }
 
@@ -73,6 +75,19 @@ class FirebaseAuthService {
         return "Email is already in use by another account.";
       default:
         return "An error occurred, please try again later.";
+    }
+  }
+
+  Future<void> refreshUserData() async {
+    try {
+      var currentUser = user;
+      if (currentUser != null) {
+        final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
+        UserModel user = await _firebaseFirestoreService.getUserData(currentUser.uid);
+        // print("User data refreshed: ${user.username}");
+      }
+    } catch (e) {
+      print("Error refreshing user data: $e");
     }
   }
 
