@@ -84,6 +84,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/symptoms/
+    - assets/images/specialities/
     - assets/icons/
     - assets/icons/auth/
 

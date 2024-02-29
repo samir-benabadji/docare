@@ -51,7 +51,11 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
                 body: Center(
-                  child: Text(greeting),
+                  child: Column(
+                    children: [
+                      Text(greeting),
+                    ],
+                  ),
                 ),
               );
             }

@@ -12,7 +12,7 @@ class FirebaseAuthService {
   User? get user => _firebaseAuth.currentUser;
 
   // Sign Up with email and password
-  Future<bool> signUpWithEmailPassword(String email, String password, int userType) async {
+  Future<String?> signUpWithEmailPassword(String email, String password, int userType) async {
     try {
       final UserCredential userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
@@ -30,16 +30,16 @@ class FirebaseAuthService {
         final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
 
         await _firebaseFirestoreService.addOrUpdateUser(user.uid, userData);
-        return true;
+        return user.uid;
       }
-      return false;
+      return null;
     } catch (e) {
       if (e is FirebaseAuthException) {
         showToast(_handleFirebaseAuthException(e));
       } else {
         showToast("An unknown error occurred.");
       }
-      return false;
+      return null;
     }
   }
 

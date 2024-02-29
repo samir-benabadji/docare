@@ -44,6 +44,7 @@ class $AssetsImagesGen {
   /// File path: assets/images/docareButtonLayout.svg
   SvgGenImage get docareButtonLayout => const SvgGenImage('assets/images/docareButtonLayout.svg');
 
+  $AssetsImagesSpecialitiesGen get specialities => const $AssetsImagesSpecialitiesGen();
   $AssetsImagesSymptomsGen get symptoms => const $AssetsImagesSymptomsGen();
 
   /// List of all assets
@@ -64,6 +65,38 @@ class $AssetsIconsAuthGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [address, lockCheck, lock];
+}
+
+class $AssetsImagesSpecialitiesGen {
+  const $AssetsImagesSpecialitiesGen();
+
+  /// File path: assets/images/specialities/Cardiology.png
+  AssetGenImage get cardiology => const AssetGenImage('assets/images/specialities/Cardiology.png');
+
+  /// File path: assets/images/specialities/Dermatology.png
+  AssetGenImage get dermatology => const AssetGenImage('assets/images/specialities/Dermatology.png');
+
+  /// File path: assets/images/specialities/Gastroenterology.png
+  AssetGenImage get gastroenterology => const AssetGenImage('assets/images/specialities/Gastroenterology.png');
+
+  /// File path: assets/images/specialities/Neurology.png
+  AssetGenImage get neurology => const AssetGenImage('assets/images/specialities/Neurology.png');
+
+  /// File path: assets/images/specialities/Obstetrics.png
+  AssetGenImage get obstetrics => const AssetGenImage('assets/images/specialities/Obstetrics.png');
+
+  /// File path: assets/images/specialities/Orthopedics.png
+  AssetGenImage get orthopedics => const AssetGenImage('assets/images/specialities/Orthopedics.png');
+
+  /// File path: assets/images/specialities/Pediatrics.png
+  AssetGenImage get pediatrics => const AssetGenImage('assets/images/specialities/Pediatrics.png');
+
+  /// File path: assets/images/specialities/Psychiatry.png
+  AssetGenImage get psychiatry => const AssetGenImage('assets/images/specialities/Psychiatry.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values =>
+      [cardiology, dermatology, gastroenterology, neurology, obstetrics, orthopedics, pediatrics, psychiatry];
 }
 
 class $AssetsImagesSymptomsGen {

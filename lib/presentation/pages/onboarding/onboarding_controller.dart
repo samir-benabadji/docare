@@ -1,16 +1,35 @@
+import 'package:docare/business_logic/models/speciality_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../business_logic/models/pain_model.dart';
+import '../../../business_logic/models/user_model.dart';
 import '../../../business_logic/services/firebase_auth_service.dart';
 import '../../../business_logic/services/firebase_firestore_service.dart';
 
 class OnboardingController extends GetxController {
   RxList<PainType> selectedPainTypes = <PainType>[].obs;
+  Rx<SpecialityType> selectedSpecialityType = SpecialityType("", "").obs;
   final TextEditingController nameController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  UserModel? userModel;
 
-  void toggleSelection(PainType painType) {
+  @override
+  void onInit() {
+    getUserDataModel();
+    super.onInit();
+  }
+
+  void getUserDataModel() async {
+    final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
+    final FirebaseAuthService _firebaseAuthService = Get.find<FirebaseAuthService>();
+
+    if (_firebaseAuthService.user != null)
+      userModel = await _firebaseFirestoreService.getUserData(_firebaseAuthService.user!.uid);
+    update();
+  }
+
+  void togglePainTypeSelection(PainType painType) {
     if (selectedPainTypes.contains(painType)) {
       selectedPainTypes.remove(painType);
     } else {
@@ -19,8 +38,9 @@ class OnboardingController extends GetxController {
     update();
   }
 
-  bool isItemSelected(PainType painType) {
-    return selectedPainTypes.contains(painType);
+  void setMedicalSpeciality(SpecialityType specialityType) {
+    selectedSpecialityType.value = specialityType;
+    update();
   }
 
   Future<bool> updateUserInfo() async {

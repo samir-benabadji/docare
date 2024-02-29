@@ -1,4 +1,3 @@
-import 'package:docare/presentation/pages/onboarding/onboarding_name_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,10 +49,12 @@ class AuthController extends GetxController {
   }
 
   Future<void> signUp(String email, String password, int userType) async {
-    bool signUpSuccessful = await _firebaseAuthService.signUpWithEmailPassword(email, password, userType);
-    if (signUpSuccessful) {
+    String? uid = await _firebaseAuthService.signUpWithEmailPassword(email, password, userType);
+    if (uid != null) {
       showToast("Signed up successfully");
-      _navigateToOnboardingPage();
+      final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
+      UserModel userModel = await _firebaseFirestoreService.getUserData(uid);
+      navigatingTheUserDependingOnHisStatus(userModel);
     } else {
       showToast("Sign up failed");
     }
@@ -77,10 +78,6 @@ class AuthController extends GetxController {
 
   void _navigateToWelcomePage() {
     Get.offAll(() => WelcomePage()); // Navigate to the welcome screen
-  }
-
-  void _navigateToOnboardingPage() {
-    Get.offAll(() => OnboardingNamePage());
   }
 
   bool validateLoginForm() {

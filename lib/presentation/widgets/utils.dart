@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../business_logic/models/user_model.dart';
 import '../pages/auth/home/home_page.dart';
+import '../pages/onboarding/onboarding_medical_speciality.dart';
 import '../pages/onboarding/onboarding_symptoms_page.dart';
 import '../pages/welcome/welcome_page.dart';
 
@@ -23,7 +24,9 @@ void showToast(String message) {
 void navigatingTheUserDependingOnHisStatus(UserModel user) {
   switch (user.status) {
     case 'INCOMPLETE':
-      Get.off(() => OnboardingSymptomsPage());
+      user.userType == 1
+          ? Get.offAll(() => OnboardingMedicalSpecialityPage())
+          : Get.offAll(() => OnboardingSymptomsPage());
       break;
     case 'PENDING':
       //  Get.off(() => PendingPage());

@@ -4,28 +4,28 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../business_logic/models/pain_model.dart';
+import '../../../business_logic/models/speciality_model.dart';
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
-import 'onboarding_name_page.dart';
+import 'onboarding_symptoms_page.dart';
 
-class OnboardingSymptomsPage extends StatefulWidget {
-  const OnboardingSymptomsPage({Key? key}) : super(key: key);
+class OnboardingMedicalSpecialityPage extends StatefulWidget {
+  const OnboardingMedicalSpecialityPage({Key? key}) : super(key: key);
 
   @override
-  State<OnboardingSymptomsPage> createState() => _OnboardingSymptomsPageState();
+  State<OnboardingMedicalSpecialityPage> createState() => _OnboardingMedicalSpecialityPageState();
 }
 
-class _OnboardingSymptomsPageState extends State<OnboardingSymptomsPage> {
-  final List<PainType> painTypes = [
-    PainType('Shoulder Pain', Assets.images.symptoms.shoulderPain.path),
-    PainType('Knee Pain', Assets.images.symptoms.kneePain.path),
-    PainType('Headache', Assets.images.symptoms.headache.path),
-    PainType('Back Pain', Assets.images.symptoms.backPain.path),
-    PainType('Finger Fracture', Assets.images.symptoms.fingerFracture.path),
-    PainType('Hip Injury', Assets.images.symptoms.hipInjury.path),
-    PainType('Foot Pain', Assets.images.symptoms.footPain.path),
-    PainType('Elbow Pain', Assets.images.symptoms.elbowPain.path),
+class _OnboardingMedicalSpecialityPageState extends State<OnboardingMedicalSpecialityPage> {
+  final List<SpecialityType> specialityTypes = [
+    SpecialityType('Cardiology', Assets.images.specialities.cardiology.path),
+    SpecialityType('Dermatology', Assets.images.specialities.dermatology.path),
+    SpecialityType('Pediatrics', Assets.images.specialities.pediatrics.path),
+    SpecialityType('Orthopedics', Assets.images.specialities.orthopedics.path),
+    SpecialityType('Neurology', Assets.images.specialities.neurology.path),
+    SpecialityType('Psychiatry', Assets.images.specialities.psychiatry.path),
+    SpecialityType('Obstetrics', Assets.images.specialities.obstetrics.path),
+    SpecialityType('Gastroenterology', Assets.images.specialities.gastroenterology.path),
   ];
 
   @override
@@ -46,18 +46,16 @@ class _OnboardingSymptomsPageState extends State<OnboardingSymptomsPage> {
                     width: double.infinity,
                     margin: EdgeInsets.symmetric(horizontal: 26),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          onboardingController.userModel?.userType == 1
-                              ? "What can you help us with ?"
-                              : 'Select your Symptoms',
+                          'Select Your Medical Specialty',
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.plusJakartaSans(
+                          style: GoogleFonts.rubik(
                             color: Color(0xFF090F47),
-                            fontSize: 16.68,
-                            fontWeight: FontWeight.w700,
-                            height: 1.2,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: -0.50,
                           ),
                         ),
                         SizedBox(height: 36),
@@ -79,7 +77,7 @@ class _OnboardingSymptomsPageState extends State<OnboardingSymptomsPage> {
   Widget _continueButtonComponent(OnboardingController onboardingController) {
     return GestureDetector(
       onTap: () {
-        if (onboardingController.selectedPainTypes.isNotEmpty) Get.to(() => OnboardingNamePage());
+        if (onboardingController.selectedSpecialityType.value.title.isNotEmpty) Get.to(() => OnboardingSymptomsPage());
       },
       child: Container(
         width: Get.width,
@@ -118,30 +116,50 @@ class _OnboardingSymptomsPageState extends State<OnboardingSymptomsPage> {
       child: GridView.builder(
         padding: const EdgeInsets.all(8),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
+          crossAxisCount: 2,
           crossAxisSpacing: 18,
           mainAxisSpacing: 14,
-          childAspectRatio: 0.725,
+          childAspectRatio: 1.5,
         ),
-        itemCount: painTypes.length,
+        itemCount: specialityTypes.length,
         itemBuilder: (context, index) {
           return GridTile(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                _buildImageWithPlaceholder(painTypes[index], onboardingController: onboardingController),
-                SizedBox(height: 6),
-                Text(
-                  painTypes[index].title,
-                  style: GoogleFonts.plusJakartaSans(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    height: 1.5,
+            child: GestureDetector(
+              onTap: () {
+                onboardingController.setMedicalSpeciality(specialityTypes[index]);
+              },
+              child: Container(
+                alignment: Alignment.center,
+                decoration: ShapeDecoration(
+                  color: Color(0xFFFAFFFD),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      width: 1.50,
+                      color: onboardingController.selectedSpecialityType.value == specialityTypes[index]
+                          ? Color(0xFF3BC090)
+                          : Color(0xFF090F47),
+                    ),
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              ],
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    _buildImageWithPlaceholder(specialityTypes[index], onboardingController: onboardingController),
+                    SizedBox(height: 6),
+                    Text(
+                      specialityTypes[index].title,
+                      style: GoogleFonts.rubik(
+                        color: Color(0xFF090F47),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: -0.28,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
             ),
           );
         },
@@ -149,31 +167,13 @@ class _OnboardingSymptomsPageState extends State<OnboardingSymptomsPage> {
     );
   }
 
-  Widget _buildImageWithPlaceholder(PainType painType, {required OnboardingController onboardingController}) {
-    return GestureDetector(
-      onTap: () {
-        onboardingController.togglePainTypeSelection(painType);
-      },
-      child: Stack(
-        children: [
-          Image.asset(
-            painType.imagePath,
-            fit: BoxFit.cover,
-            width: 46.35,
-            height: 46.35,
-          ),
-          if (onboardingController.selectedPainTypes.contains(painType))
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: Image.asset(
-                Assets.icons.checkGreen.path,
-                height: 22,
-                width: 22,
-              ),
-            ),
-        ],
-      ),
+  Widget _buildImageWithPlaceholder(SpecialityType specialityType,
+      {required OnboardingController onboardingController}) {
+    return Image.asset(
+      specialityType.imagePath,
+      fit: BoxFit.cover,
+      width: 46.35,
+      height: 46.35,
     );
   }
 
@@ -205,23 +205,12 @@ class _OnboardingSymptomsPageState extends State<OnboardingSymptomsPage> {
           SvgPicture.asset(
             Assets.icons.dOCAREText.path,
           ),
-          Spacer(),
-          GestureDetector(
-            child: Text(
-              'Skip',
-              style: GoogleFonts.montserrat(
-                color: Color(0xFFFF0472),
-                fontSize: 15.65,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
         ],
       ),
     );
   }
 
   Color _continueButtonColor(OnboardingController onboardingController) {
-    return onboardingController.selectedPainTypes.isNotEmpty ? Color(0xFF33CE95) : Color(0x6D53C298);
+    return onboardingController.selectedSpecialityType.value.title.isNotEmpty ? Color(0xFF33CE95) : Color(0x6D53C298);
   }
 }
