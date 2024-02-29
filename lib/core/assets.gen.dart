@@ -47,8 +47,11 @@ class $AssetsImagesGen {
   $AssetsImagesSpecialitiesGen get specialities => const $AssetsImagesSpecialitiesGen();
   $AssetsImagesSymptomsGen get symptoms => const $AssetsImagesSymptomsGen();
 
+  /// File path: assets/images/syringe.png
+  AssetGenImage get syringe => const AssetGenImage('assets/images/syringe.png');
+
   /// List of all assets
-  List<dynamic> get values => [creativePanelPlanner, docareButtonLayout];
+  List<dynamic> get values => [creativePanelPlanner, docareButtonLayout, syringe];
 }
 
 class $AssetsIconsAuthGen {

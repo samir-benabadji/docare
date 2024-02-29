@@ -10,8 +10,23 @@ import '../../../business_logic/services/firebase_firestore_service.dart';
 class OnboardingController extends GetxController {
   RxList<PainType> selectedPainTypes = <PainType>[].obs;
   Rx<SpecialityType> selectedSpecialityType = SpecialityType("", "").obs;
+  // options
+  RxList<String> selectedOptions = <String>[].obs;
+  List<String> options = [
+    "IRM (Imagerie par Résonance Magnétique)",
+    "Scanner (Tomodensitométrie)",
+    "Radiographie (X-ray machine)",
+    "Échographe (Échographie médicale)",
+    "Colposcope (Colposcopie)",
+    "Stéthoscope",
+    "Otoscope et Ophtalmoscope",
+    "Électrocardiographe (ECG)",
+    "Appareil de mesure de la pression artérielle",
+    "Analyseur sanguin"
+  ];
   final TextEditingController nameController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   UserModel? userModel;
 
   @override
@@ -62,6 +77,15 @@ class OnboardingController extends GetxController {
       print('Error updating user info in Firestore: $e');
       return false;
     }
+  }
+
+  void toggleOptionSelection(String option) {
+    if (selectedOptions.contains(option)) {
+      selectedOptions.remove(option);
+    } else {
+      selectedOptions.add(option);
+    }
+    update();
   }
 
   bool validateForm() {

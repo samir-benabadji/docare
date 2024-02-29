@@ -8,6 +8,7 @@ import '../../../business_logic/models/pain_model.dart';
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
 import 'onboarding_name_page.dart';
+import 'onboarding_options_page.dart';
 
 class OnboardingSymptomsPage extends StatefulWidget {
   const OnboardingSymptomsPage({Key? key}) : super(key: key);
@@ -79,7 +80,11 @@ class _OnboardingSymptomsPageState extends State<OnboardingSymptomsPage> {
   Widget _continueButtonComponent(OnboardingController onboardingController) {
     return GestureDetector(
       onTap: () {
-        if (onboardingController.selectedPainTypes.isNotEmpty) Get.to(() => OnboardingNamePage());
+        if (onboardingController.selectedPainTypes.isNotEmpty) {
+          onboardingController.userModel?.userType == 1
+              ? Get.to(() => OnboardingOptionsPage())
+              : Get.to(() => OnboardingNamePage());
+        }
       },
       child: Container(
         width: Get.width,
