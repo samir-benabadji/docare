@@ -79,10 +79,11 @@ class _SessionComponentState extends State<SessionComponent> {
                       )
                     ],
                   ),
-                  child: Column(
+                  child: Row(
                     children: [
-                      Row(
+                      Column(
                         children: [
+                          SizedBox(height: 6),
                           Text(
                             "Starts",
                             style: GoogleFonts.radioCanada(
@@ -92,11 +93,27 @@ class _SessionComponentState extends State<SessionComponent> {
                               letterSpacing: -0.27,
                             ),
                           ),
-                          SizedBox(width: 59),
+                          SizedBox(height: 36),
+                          Text(
+                            "Ends",
+                            style: GoogleFonts.radioCanada(
+                              color: Color(0xFF090F47),
+                              fontSize: 15.12,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: -0.27,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 55),
+                      Column(
+                        children: [
                           GestureDetector(
                             onTap: () async {
                               TimeOfDay? startsAt = await _showTimePicker(context);
                               if (startsAt != null) {
+                                onboardingController.isSavedSuccessfully = false;
+                                onboardingController.update();
                                 SessionModel? sessionToUpdate = onboardingController.allSessions.firstWhereOrNull(
                                   (session) => session.id == widget.session.id,
                                 );
@@ -128,26 +145,14 @@ class _SessionComponentState extends State<SessionComponent> {
                                 ),
                               ),
                             ),
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 22),
-                      Row(
-                        children: [
-                          Text(
-                            "Ends",
-                            style: GoogleFonts.radioCanada(
-                              color: Color(0xFF090F47),
-                              fontSize: 15.12,
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: -0.27,
-                            ),
                           ),
-                          SizedBox(width: 59),
+                          SizedBox(height: 23),
                           GestureDetector(
                             onTap: () async {
                               TimeOfDay? endsAt = await _showTimePicker(context);
                               if (endsAt != null) {
+                                onboardingController.isSavedSuccessfully = false;
+                                onboardingController.update();
                                 SessionModel? sessionToUpdate = onboardingController.allSessions.firstWhereOrNull(
                                   (session) => session.id == widget.session.id,
                                 );

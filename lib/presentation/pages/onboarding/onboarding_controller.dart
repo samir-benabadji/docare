@@ -37,6 +37,8 @@ class OnboardingController extends GetxController {
 
   UserModel? userModel;
 
+  bool isSavedSuccessfully = false;
+
   @override
   void onInit() {
     getUserDataModel();
@@ -124,6 +126,18 @@ class OnboardingController extends GetxController {
   }
 
   void onSaveClicked() {
+    if (allSessions.isEmpty) {
+      Get.snackbar(
+        'No Sessions Added',
+        'Please add at least one session to save your schedule',
+        snackPosition: SnackPosition.TOP,
+        duration: Duration(seconds: 5),
+        backgroundColor: DocareTheme.tomato,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
     // Checking if any session has null startAt or endAt
     bool hasIncompleteSessions = allSessions.any((session) => session.startAt == null || session.endAt == null);
 
@@ -182,10 +196,13 @@ class OnboardingController extends GetxController {
       backgroundColor: DocareTheme.apple,
       colorText: Colors.white,
     );
+    isSavedSuccessfully = true;
+    update();
   }
 
   void deleteSessionById(String sessionId) {
     allSessions.removeWhere((session) => session.id == sessionId);
+    isSavedSuccessfully = false;
     update();
   }
 

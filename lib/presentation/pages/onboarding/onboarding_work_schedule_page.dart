@@ -1,3 +1,4 @@
+import 'package:docare/core/constants/theme.dart';
 import 'package:docare/presentation/pages/onboarding/widgets/onboarding_session_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../business_logic/models/session_model.dart';
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
+import 'onboarding_phone_number_page.dart';
 
 class OnboardingWorkSchedulePage extends StatefulWidget {
   @override
@@ -31,64 +33,68 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
                 SizedBox(height: 64),
                 _dayOfWeekComponent(onboardingController),
                 SizedBox(height: 24),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        ...onboardingController.allSessions
-                            .where((element) => element.day == onboardingController.currentDay)
-                            .toList()
-                            .asMap()
-                            .entries
-                            .map((entry) {
-                          return Column(
-                            children: [
-                              SessionComponent(
-                                session: entry.value,
-                                sessionIndex: entry.key,
-                              ),
-                              SizedBox(height: 28),
-                            ],
-                          );
-                        }).toList(),
-                        if (onboardingController.currentDay.isNotEmpty) SizedBox(height: 22),
-                        if (onboardingController.currentDay.isNotEmpty)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  onboardingController.allSessions
-                                      .add(SessionModel(day: onboardingController.currentDay));
-                                  onboardingController.update();
-                                },
-                                child: Container(
-                                  width: 41,
-                                  height: 41,
-                                  decoration: ShapeDecoration(
-                                    color: Color(0xFFFF0472),
-                                    shape: OvalBorder(),
-                                  ),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
+                _sessionContentComponent(onboardingController),
                 SizedBox(height: 16),
-                _continueButtonComponent(onboardingController),
+                if (onboardingController.isSavedSuccessfully) _continueButtonComponent(onboardingController),
                 SizedBox(height: 32)
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget _sessionContentComponent(OnboardingController onboardingController) {
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            ...onboardingController.allSessions
+                .where((element) => element.day == onboardingController.currentDay)
+                .toList()
+                .asMap()
+                .entries
+                .map((entry) {
+              return Column(
+                children: [
+                  SessionComponent(
+                    session: entry.value,
+                    sessionIndex: entry.key,
+                  ),
+                  SizedBox(height: 28),
+                ],
+              );
+            }).toList(),
+            if (onboardingController.currentDay.isNotEmpty) SizedBox(height: 22),
+            if (onboardingController.currentDay.isNotEmpty)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      onboardingController.allSessions.add(SessionModel(day: onboardingController.currentDay));
+                      onboardingController.isSavedSuccessfully = false;
+                      onboardingController.update();
+                    },
+                    child: Container(
+                      width: 41,
+                      height: 41,
+                      decoration: ShapeDecoration(
+                        color: Color(0xFFFF0472),
+                        shape: OvalBorder(),
+                      ),
+                      child: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -173,9 +179,25 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
                       width: 24,
                       height: 24,
                       decoration: BoxDecoration(
-                        color: onboardingController.currentDay == day ? Color(0x7F058155) : Color(0x2B058155),
+                        color: onboardingController.currentDay == day
+                            ? Color(0x7F058155)
+                            : (onboardingController.allSessions.any(
+                                      (element) => element.day == day,
+                                    ) &&
+                                    onboardingController.isSavedSuccessfully)
+                                ? Color(0xFFEFC02D)
+                                : Color(0x2B058155),
                         shape: BoxShape.circle,
                       ),
+                      child: (onboardingController.allSessions.any(
+                                (element) => element.day == day,
+                              ) &&
+                              onboardingController.isSavedSuccessfully)
+                          ? SvgPicture.asset(
+                              Assets.icons.check.path,
+                              fit: BoxFit.scaleDown,
+                            )
+                          : null,
                     ),
                   ],
                 ),
@@ -211,7 +233,7 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
             child: Text(
               'Save',
               style: GoogleFonts.montserrat(
-                color: Color(0xFFFF0472),
+                color: onboardingController.isSavedSuccessfully ? DocareTheme.babyStrawberry : DocareTheme.strawberry,
                 fontSize: 15.65,
                 fontWeight: FontWeight.w600,
               ),
@@ -225,7 +247,7 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
   Widget _continueButtonComponent(OnboardingController onboardingController) {
     return GestureDetector(
       onTap: () {
-        print("WORKING HOURS" + onboardingController.workingHours.toString());
+        Get.to(() => OnboardingPhoneNumberPage());
       },
       child: Container(
         width: Get.width,
@@ -260,6 +282,6 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
   }
 
   Color _continueButtonColor() {
-    return _textFieldController.text.isNotEmpty ? Color(0xFF33CE95) : Color(0x6D53C298);
+    return DocareTheme.apple;
   }
 }

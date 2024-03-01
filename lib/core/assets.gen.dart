@@ -25,6 +25,9 @@ class $AssetsIconsGen {
 
   $AssetsIconsAuthGen get auth => const $AssetsIconsAuthGen();
 
+  /// File path: assets/icons/check.svg
+  SvgGenImage get check => const SvgGenImage('assets/icons/check.svg');
+
   /// File path: assets/icons/check_green.png
   AssetGenImage get checkGreen => const AssetGenImage('assets/icons/check_green.png');
 
@@ -38,7 +41,7 @@ class $AssetsIconsGen {
   AssetGenImage get trashCan => const AssetGenImage('assets/icons/trash_can.png');
 
   /// List of all assets
-  List<dynamic> get values => [dOCARELogo, dOCARELogoText, dOCAREText, checkGreen, newUser, syringe, trashCan];
+  List<dynamic> get values => [dOCARELogo, dOCARELogoText, dOCAREText, check, checkGreen, newUser, syringe, trashCan];
 }
 
 class $AssetsImagesGen {
