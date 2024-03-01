@@ -98,7 +98,7 @@ class _OnboardingSpecificOptionsPageState extends State<OnboardingSpecificOption
           prefixIcon: Row(
             children: [
               Image.asset(
-                Assets.images.syringe.path,
+                Assets.icons.syringe.path,
               ),
             ],
           ),

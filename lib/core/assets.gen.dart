@@ -31,8 +31,14 @@ class $AssetsIconsGen {
   /// File path: assets/icons/new_user.svg
   SvgGenImage get newUser => const SvgGenImage('assets/icons/new_user.svg');
 
+  /// File path: assets/icons/syringe.png
+  AssetGenImage get syringe => const AssetGenImage('assets/icons/syringe.png');
+
+  /// File path: assets/icons/trash_can.png
+  AssetGenImage get trashCan => const AssetGenImage('assets/icons/trash_can.png');
+
   /// List of all assets
-  List<dynamic> get values => [dOCARELogo, dOCARELogoText, dOCAREText, checkGreen, newUser];
+  List<dynamic> get values => [dOCARELogo, dOCARELogoText, dOCAREText, checkGreen, newUser, syringe, trashCan];
 }
 
 class $AssetsImagesGen {
@@ -47,11 +53,8 @@ class $AssetsImagesGen {
   $AssetsImagesSpecialitiesGen get specialities => const $AssetsImagesSpecialitiesGen();
   $AssetsImagesSymptomsGen get symptoms => const $AssetsImagesSymptomsGen();
 
-  /// File path: assets/images/syringe.png
-  AssetGenImage get syringe => const AssetGenImage('assets/images/syringe.png');
-
   /// List of all assets
-  List<dynamic> get values => [creativePanelPlanner, docareButtonLayout, syringe];
+  List<dynamic> get values => [creativePanelPlanner, docareButtonLayout];
 }
 
 class $AssetsIconsAuthGen {

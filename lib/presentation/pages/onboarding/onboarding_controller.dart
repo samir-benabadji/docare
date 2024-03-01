@@ -1,4 +1,6 @@
+import 'package:docare/business_logic/models/session_model.dart';
 import 'package:docare/business_logic/models/speciality_model.dart';
+import 'package:docare/core/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,6 +26,12 @@ class OnboardingController extends GetxController {
     "Appareil de mesure de la pression artérielle",
     "Analyseur sanguin"
   ];
+
+  // Work Schedule
+  String currentDay = "";
+  Map<String, List<Map<String, dynamic>>>? workingHours;
+  List<SessionModel> allSessions = [];
+
   final TextEditingController nameController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -113,6 +121,79 @@ class OnboardingController extends GetxController {
       return false;
     }
     return true;
+  }
+
+  void onSaveClicked() {
+    // Checking if any session has null startAt or endAt
+    bool hasIncompleteSessions = allSessions.any((session) => session.startAt == null || session.endAt == null);
+
+    if (hasIncompleteSessions) {
+      Get.snackbar(
+        'Incomplete Sessions',
+        'Please finish filling the sessions that you added',
+        snackPosition: SnackPosition.TOP,
+        duration: Duration(seconds: 5),
+        backgroundColor: DocareTheme.tomato,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
+    // Checking for conflicts between session timings
+    bool hasConflict = false;
+    for (int i = 0; i < allSessions.length; i++) {
+      for (int j = i + 1; j < allSessions.length; j++) {
+        if (allSessions[i].day == allSessions[j].day) {
+          DateTime startDateTimeI = DateTime(1, 1, 1, allSessions[i].startAt!.hour, allSessions[i].startAt!.minute);
+          DateTime endDateTimeI = DateTime(1, 1, 1, allSessions[i].endAt!.hour, allSessions[i].endAt!.minute);
+          DateTime startDateTimeJ = DateTime(1, 1, 1, allSessions[j].startAt!.hour, allSessions[j].startAt!.minute);
+          DateTime endDateTimeJ = DateTime(1, 1, 1, allSessions[j].endAt!.hour, allSessions[j].endAt!.minute);
+
+          if ((startDateTimeI.isBefore(endDateTimeJ) && endDateTimeI.isAfter(startDateTimeJ)) ||
+              (startDateTimeJ.isBefore(endDateTimeI) && endDateTimeJ.isAfter(startDateTimeI))) {
+            // Conflict
+            hasConflict = true;
+            break;
+          }
+        }
+      }
+      if (hasConflict) {
+        break;
+      }
+    }
+
+    if (hasConflict) {
+      Get.snackbar(
+        'Time Conflict',
+        'Please fix the time conflicts between sessions',
+        snackPosition: SnackPosition.TOP,
+        duration: Duration(seconds: 5),
+        backgroundColor: DocareTheme.tomato,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
+    Get.snackbar(
+      'Success',
+      'All sessions are saved successfully',
+      snackPosition: SnackPosition.TOP,
+      duration: Duration(seconds: 5),
+      backgroundColor: DocareTheme.apple,
+      colorText: Colors.white,
+    );
+  }
+
+  void deleteSessionById(String sessionId) {
+    allSessions.removeWhere((session) => session.id == sessionId);
+    update();
+  }
+
+  String formatTimeOfDay(TimeOfDay time) {
+    final hour = time.hour.toString().padLeft(2, '0');
+    final minute = time.minute.toString().padLeft(2, '0');
+
+    return "$hour:$minute ${time.period.name}";
   }
 }
 

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
+import 'onboarding_work_schedule_page.dart';
 
 class OnboardingRatesPage extends StatefulWidget {
   const OnboardingRatesPage({Key? key}) : super(key: key);
@@ -89,7 +90,7 @@ class _OnboardingRatesPageState extends State<OnboardingRatesPage> {
       onTap: () {
         bool hasZeroPrice = onboardingController.selectedOptions.any((option) => option.price == 0.0);
         if (onboardingController.selectedOptions.isNotEmpty && !hasZeroPrice) {
-          // TODO: take him to the work schedule page
+          Get.to(() => OnboardingWorkSchedulePage());
         }
       },
       child: Container(
