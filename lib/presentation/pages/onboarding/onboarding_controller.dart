@@ -11,7 +11,7 @@ class OnboardingController extends GetxController {
   RxList<PainType> selectedPainTypes = <PainType>[].obs;
   Rx<SpecialityType> selectedSpecialityType = SpecialityType("", "").obs;
   // options
-  RxList<String> selectedOptions = <String>[].obs;
+  RxList<SelectedOption> selectedOptions = <SelectedOption>[].obs;
   List<String> options = [
     "IRM (Imagerie par Résonance Magnétique)",
     "Scanner (Tomodensitométrie)",
@@ -35,12 +35,27 @@ class OnboardingController extends GetxController {
     super.onInit();
   }
 
+  void sortOptions() {
+    options.sort((a, b) {
+      bool aSelected = selectedOptions.any((option) => option.name == a);
+      bool bSelected = selectedOptions.any((option) => option.name == b);
+
+      if (aSelected && !bSelected) {
+        return -1;
+      } else if (!aSelected && bSelected) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    update();
+  }
+
   void getUserDataModel() async {
     final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
     final FirebaseAuthService _firebaseAuthService = Get.find<FirebaseAuthService>();
 
-    if (_firebaseAuthService.user != null)
-      userModel = await _firebaseFirestoreService.getUserData(_firebaseAuthService.user!.uid);
+    if (_firebaseAuthService.user != null) userModel = await _firebaseFirestoreService.getUserData(_firebaseAuthService.user!.uid);
     update();
   }
 
@@ -80,12 +95,15 @@ class OnboardingController extends GetxController {
   }
 
   void toggleOptionSelection(String option) {
-    if (selectedOptions.contains(option)) {
-      selectedOptions.remove(option);
+    bool alreadySelected = selectedOptions.any((element) => element.name == option);
+
+    if (alreadySelected) {
+      selectedOptions.removeWhere((element) => element.name == option);
     } else {
-      selectedOptions.add(option);
+      SelectedOption newOption = SelectedOption(option);
+      selectedOptions.add(newOption);
     }
-    update();
+    sortOptions();
   }
 
   bool validateForm() {
@@ -95,4 +113,11 @@ class OnboardingController extends GetxController {
     }
     return true;
   }
+}
+
+class SelectedOption {
+  String name;
+  double price;
+
+  SelectedOption(this.name, {this.price = 0});
 }

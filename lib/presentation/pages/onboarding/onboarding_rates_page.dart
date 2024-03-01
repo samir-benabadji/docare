@@ -5,23 +5,20 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
-import 'onboarding_rates_page.dart';
-import 'onboarding_specific_option_page.dart';
+import 'onboarding_name_page.dart';
 
-class OnboardingOptionsPage extends StatefulWidget {
-  const OnboardingOptionsPage({Key? key}) : super(key: key);
+class OnboardingRatesPage extends StatefulWidget {
+  const OnboardingRatesPage({Key? key}) : super(key: key);
 
   @override
-  State<OnboardingOptionsPage> createState() => _OnboardingOptionsPageState();
+  State<OnboardingRatesPage> createState() => _OnboardingRatesPageState();
 }
 
-class _OnboardingOptionsPageState extends State<OnboardingOptionsPage> {
+class _OnboardingRatesPageState extends State<OnboardingRatesPage> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<OnboardingController>(
-      initState: (state) {
-        Get.find<OnboardingController>().getUserDataModel();
-      },
+      initState: (state) {},
       builder: (onboardingController) {
         return Scaffold(
           body: SafeArea(
@@ -39,13 +36,13 @@ class _OnboardingOptionsPageState extends State<OnboardingOptionsPage> {
                       children: [
                         SizedBox(height: 36),
                         _mainContentComponent(onboardingController),
-                        _otherOptionButton(context, onboardingController),
-                        _continueButtonComponent(onboardingController),
-                        SizedBox(height: 32)
+                        _addEquipmentButton(context, onboardingController),
                       ],
                     ),
                   ),
-                )
+                ),
+                _continueButtonComponent(onboardingController),
+                SizedBox(height: 32),
               ],
             ),
           ),
@@ -60,7 +57,7 @@ class _OnboardingOptionsPageState extends State<OnboardingOptionsPage> {
       child: Column(
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               IconButton(
                 icon: Icon(Icons.arrow_back),
@@ -70,7 +67,7 @@ class _OnboardingOptionsPageState extends State<OnboardingOptionsPage> {
               ),
               Expanded(
                 child: Text(
-                  "Configure Other Equipment and Specialties",
+                  "Enter the rates",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.rubik(
                     color: Color(0xFF090F47),
@@ -83,19 +80,6 @@ class _OnboardingOptionsPageState extends State<OnboardingOptionsPage> {
               SizedBox(width: 32),
             ],
           ),
-          SizedBox(height: 24),
-          Container(
-            width: Get.width,
-            decoration: ShapeDecoration(
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  width: 1,
-                  strokeAlign: BorderSide.strokeAlignCenter,
-                  color: Color(0xFFDEDEDE),
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );
@@ -104,8 +88,9 @@ class _OnboardingOptionsPageState extends State<OnboardingOptionsPage> {
   Widget _continueButtonComponent(OnboardingController onboardingController) {
     return GestureDetector(
       onTap: () {
-        if (onboardingController.selectedOptions.isNotEmpty) {
-          Get.to(() => OnboardingRatesPage());
+        bool hasZeroPrice = onboardingController.selectedOptions.any((option) => option.price == 0.0);
+        if (onboardingController.selectedOptions.isNotEmpty && !hasZeroPrice) {
+          // TODO: take him to the work schedule page
         }
       },
       child: Container(
@@ -128,7 +113,7 @@ class _OnboardingOptionsPageState extends State<OnboardingOptionsPage> {
           ],
         ),
         child: Text(
-          'Continue',
+          'Validate',
           style: GoogleFonts.rubik(
             color: Colors.white,
             fontSize: 18.55,
@@ -143,32 +128,78 @@ class _OnboardingOptionsPageState extends State<OnboardingOptionsPage> {
   Widget _mainContentComponent(OnboardingController onboardingController) {
     return Expanded(
       child: ListView.builder(
-        itemCount: onboardingController.options.length,
+        itemCount: onboardingController.selectedOptions.length,
         itemBuilder: (context, index) {
-          final String option = onboardingController.options[index];
-          final bool isSelected = onboardingController.selectedOptions.any((selectedOption) => selectedOption.name == option);
-          return Row(
-            children: [
-              Checkbox(
-                value: isSelected,
-                onChanged: (bool? value) {
-                  if (value != null) {
-                    onboardingController.toggleOptionSelection(option);
-                  }
-                },
-              ),
-              Expanded(
-                child: Text(
-                  option,
-                  style: GoogleFonts.rubik(
-                    color: Colors.black,
-                    fontSize: 14.96,
-                    fontWeight: FontWeight.w300,
-                    letterSpacing: -0.28,
+          final SelectedOption selectedOption = onboardingController.selectedOptions[index];
+          return Container(
+            padding: EdgeInsets.only(
+              left: 16,
+              right: 8,
+              top: 8,
+              bottom: 8,
+            ),
+            margin: EdgeInsets.only(bottom: 15),
+            decoration: ShapeDecoration(
+              color: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+              shadows: [
+                BoxShadow(
+                  color: Color(0x333BC090),
+                  blurRadius: 4,
+                  offset: Offset(3, 1),
+                  spreadRadius: 0,
+                )
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Text(
+                    selectedOption.name,
+                    style: GoogleFonts.rubik(
+                      color: Colors.black,
+                      fontSize: 14.96,
+                      fontWeight: FontWeight.w300,
+                      letterSpacing: -0.28,
+                    ),
                   ),
                 ),
-              ),
-            ],
+                SizedBox(width: 10),
+                Text(
+                  '\$ ',
+                  style: GoogleFonts.rubik(
+                    color: Color(0xFF090F47),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    height: 0.87,
+                    letterSpacing: -0.46,
+                  ),
+                ),
+                Flexible(
+                  child: TextField(
+                    controller: TextEditingController(
+                      text: selectedOption.price.toString(),
+                    ),
+                    onChanged: (value) {
+                      selectedOption.price = double.parse(value);
+                    },
+                    style: GoogleFonts.rubik(
+                      color: Color(0xFF090F47),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      height: 0.87,
+                      letterSpacing: -0.46,
+                    ),
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),
@@ -196,7 +227,7 @@ class _OnboardingOptionsPageState extends State<OnboardingOptionsPage> {
     );
   }
 
-  Widget _otherOptionButton(BuildContext context, OnboardingController onboardingController) {
+  Widget _addEquipmentButton(BuildContext context, OnboardingController onboardingController) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -204,15 +235,10 @@ class _OnboardingOptionsPageState extends State<OnboardingOptionsPage> {
           padding: const EdgeInsets.symmetric(horizontal: 26),
           child: TextButton(
             onPressed: () async {
-              SelectedOption? newOption = await Get.to(() => OnboardingSpecificOptionsPage());
-              if (newOption != null && newOption.name.isNotEmpty) {
-                onboardingController.options.add(newOption.name);
-                onboardingController.selectedOptions.add(newOption);
-                onboardingController.sortOptions();
-              }
+              Get.back();
             },
             child: Text(
-              'Other',
+              'Add Equipments',
               textAlign: TextAlign.center,
               style: GoogleFonts.rubik(
                 color: Color(0xFF090F47),
@@ -229,6 +255,7 @@ class _OnboardingOptionsPageState extends State<OnboardingOptionsPage> {
   }
 
   Color _continueButtonColor(OnboardingController onboardingController) {
-    return onboardingController.selectedOptions.isNotEmpty ? Color(0xFF33CE95) : Color(0x6D53C298);
+    bool hasZeroPrice = onboardingController.selectedOptions.any((option) => option.price == 0.0);
+    return onboardingController.selectedOptions.isNotEmpty && !hasZeroPrice ? Color(0xFF33CE95) : Color(0x6D53C298);
   }
 }

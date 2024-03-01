@@ -168,7 +168,7 @@ class _OnboardingMedicalSpecialityPageState extends State<OnboardingMedicalSpeci
   }
 
   Widget _buildImageWithPlaceholder(SpecialityType specialityType,
-      {required OnboardingController onboardingController}) {
+      {required OnboardingController onboardingController,}) {
     return Image.asset(
       specialityType.imagePath,
       fit: BoxFit.cover,

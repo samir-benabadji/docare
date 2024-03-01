@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/assets.gen.dart';
+import 'onboarding_controller.dart';
 
 class OnboardingSpecificOptionsPage extends StatefulWidget {
   @override
@@ -151,7 +152,7 @@ class _OnboardingSpecificOptionsPageState extends State<OnboardingSpecificOption
     return GestureDetector(
       onTap: () {
         if (_textFieldController.text.isNotEmpty) {
-          Get.back(result: _textFieldController.text);
+          Get.back(result: SelectedOption(_textFieldController.text));
         } else {}
       },
       child: Container(
