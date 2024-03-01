@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
-import 'onboarding_name_page.dart';
 
 class OnboardingRatesPage extends StatefulWidget {
   const OnboardingRatesPage({Key? key}) : super(key: key);

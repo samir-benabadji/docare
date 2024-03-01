@@ -146,7 +146,8 @@ class _OnboardingOptionsPageState extends State<OnboardingOptionsPage> {
         itemCount: onboardingController.options.length,
         itemBuilder: (context, index) {
           final String option = onboardingController.options[index];
-          final bool isSelected = onboardingController.selectedOptions.any((selectedOption) => selectedOption.name == option);
+          final bool isSelected =
+              onboardingController.selectedOptions.any((selectedOption) => selectedOption.name == option);
           return Row(
             children: [
               Checkbox(

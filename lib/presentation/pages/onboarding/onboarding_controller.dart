@@ -55,7 +55,8 @@ class OnboardingController extends GetxController {
     final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
     final FirebaseAuthService _firebaseAuthService = Get.find<FirebaseAuthService>();
 
-    if (_firebaseAuthService.user != null) userModel = await _firebaseFirestoreService.getUserData(_firebaseAuthService.user!.uid);
+    if (_firebaseAuthService.user != null)
+      userModel = await _firebaseFirestoreService.getUserData(_firebaseAuthService.user!.uid);
     update();
   }
 
