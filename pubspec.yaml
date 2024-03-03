@@ -42,9 +42,13 @@ dependencies:
   rxdart: ^0.27.7
   fluttertoast: ^8.2.4
   rename: ^3.0.1
+  flutter_verification_code: ^1.1.6
   cloud_firestore: ^4.14.0
   shimmer: ^3.0.0
   cached_network_image: ^3.2.3
+  intl_phone_number_input: ^0.7.3+1
+  dio: ^4.0.6
+  flutter_sim_country_code: ^0.1.2
 
 dev_dependencies:
   flutter_test:

@@ -1,11 +1,12 @@
+import 'package:docare/presentation/pages/auth/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
-import 'onboarding_rates_page.dart';
 
 class OnboardingPhoneNumberPage extends StatefulWidget {
   const OnboardingPhoneNumberPage({Key? key}) : super(key: key);
@@ -15,6 +16,9 @@ class OnboardingPhoneNumberPage extends StatefulWidget {
 }
 
 class _OnboardingPhoneNumberPageState extends State<OnboardingPhoneNumberPage> {
+  final authController = Get.find<AuthController>();
+  final FocusNode phoneNumberFocusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<OnboardingController>(
@@ -38,7 +42,8 @@ class _OnboardingPhoneNumberPageState extends State<OnboardingPhoneNumberPage> {
                       children: [
                         SizedBox(height: 36),
                         _mainContentComponent(onboardingController),
-                        _continueButtonComponent(onboardingController),
+                        Spacer(),
+                        _sendCodeComponent(onboardingController),
                         SizedBox(height: 32)
                       ],
                     ),
@@ -102,11 +107,16 @@ class _OnboardingPhoneNumberPageState extends State<OnboardingPhoneNumberPage> {
     );
   }
 
-  Widget _continueButtonComponent(OnboardingController onboardingController) {
+  Widget _sendCodeComponent(OnboardingController onboardingController) {
     return GestureDetector(
       onTap: () {
-        if (onboardingController.selectedOptions.isNotEmpty) {
-          Get.to(() => OnboardingRatesPage());
+        if (authController.isValidNumber) {
+          // Passing the current phone number to the verifyPhoneNumber method
+          authController.verifyPhoneNumber(customPhoneNumber: authController.currentPhoneNumber.phoneNumber);
+        } else {
+          if (authController.textEditingController.text.isEmpty) {
+            phoneNumberFocusNode.requestFocus();
+          }
         }
       },
       child: Container(
@@ -141,8 +151,92 @@ class _OnboardingPhoneNumberPageState extends State<OnboardingPhoneNumberPage> {
     );
   }
 
+  Widget _loginWithPhoneNumber() {
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  width: 1,
+                  color: Color(0xFF5D6679),
+                ),
+              ),
+            ),
+            child: InternationalPhoneNumberInput(
+              initialValue: authController.defaultCountryPhone,
+              onInputChanged: (PhoneNumber number) {
+                authController.currentPhoneNumber = number;
+                authController.isValidNumber = number.dialCode != number.phoneNumber;
+                authController.update();
+              },
+              onSaved: (PhoneNumber number) {
+                authController.currentPhoneNumber = number;
+                authController.update();
+              },
+              selectorConfig: SelectorConfig(
+                selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+              ),
+              spaceBetweenSelectorAndTextField: 0,
+              ignoreBlank: false,
+              focusNode: phoneNumberFocusNode,
+              autoValidateMode: AutovalidateMode.disabled,
+              selectorTextStyle: TextStyle(color: Colors.grey),
+              textFieldController: authController.textEditingController,
+              formatInput: false,
+              keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+              cursorColor: Colors.black,
+              textStyle: GoogleFonts.openSans(
+                color: Color(0xFF100C08),
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.30,
+              ),
+              inputDecoration: InputDecoration(
+                errorStyle: GoogleFonts.openSans(
+                  color: Color(0xFFF04437),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+                disabledBorder: InputBorder.none,
+                contentPadding: EdgeInsets.only(bottom: 10, left: 0),
+                border: InputBorder.none,
+                hintText: 'Phone number',
+                hintStyle: GoogleFonts.openSans(
+                  color: Color(0xFF858D9D),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 10),
+        if (authController.verificationFailedWithPhone != null)
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 28),
+            child: Container(
+              width: double.infinity,
+              child: Text(
+                authController.verificationFailedWithPhone!,
+                style: GoogleFonts.openSans(
+                  textStyle: GoogleFonts.openSans(
+                    color: Color(0xFFF04437),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          )
+      ],
+    );
+  }
+
   Widget _mainContentComponent(OnboardingController onboardingController) {
-    return Container();
+    return _loginWithPhoneNumber();
   }
 
   Widget _topBarComponent() {
@@ -160,6 +254,17 @@ class _OnboardingPhoneNumberPageState extends State<OnboardingPhoneNumberPage> {
           SizedBox(width: 2),
           SvgPicture.asset(
             Assets.icons.dOCAREText.path,
+          ),
+          Spacer(),
+          GestureDetector(
+            child: Text(
+              'Skip',
+              style: GoogleFonts.montserrat(
+                color: Color(0xFFFF0472),
+                fontSize: 15.65,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ],
       ),

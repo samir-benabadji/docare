@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:docare/presentation/pages/auth/auth_controller.dart';
 import 'package:get/get.dart';
 
 import '../../../business_logic/models/user_model.dart';
@@ -13,6 +14,11 @@ class SplashController extends GetxController {
   Future<bool> isUserLoggedIn() async {
     try {
       await InitialBinding.initDependencies();
+      // select user current country on login page
+      final authController = Get.find<AuthController>();
+      authController.defaultCountryPhone = await authController.getDefaultCountry();
+      authController.update();
+
       final firebaseAuthService = Get.find<FirebaseAuthService>();
       if (firebaseAuthService.user != null) {
         final firebaseAuthService = Get.find<FirebaseAuthService>();
