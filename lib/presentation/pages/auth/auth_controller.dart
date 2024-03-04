@@ -143,12 +143,12 @@ class AuthController extends GetxController {
     }
   }
 
-  void verifyOtp({String? otp, bool testingAccount = false}) async {
+  Future<bool> verifyOtp({String? otp, bool testingAccount = false}) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
 
     if (verificationId == null || otp == null) {
       showToast("Verification ID or OTP is null");
-      return;
+      return false; // Failure
     }
 
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
@@ -159,10 +159,10 @@ class AuthController extends GetxController {
     try {
       await _auth.signInWithCredential(credential);
       showToast("Phone number verified successfully!");
-      // Success
+      return true; // Success
     } catch (e) {
       showToast("Failed to Verify OTP: ${e.toString()}");
-      // Handle errors
+      return false; // Failure
     }
   }
 
@@ -184,7 +184,7 @@ class AuthController extends GetxController {
       if (user == null) {
         errorMessage.value = "Sign in failed. Check your email and password.";
       } else {
-        showToast("Signed in successfully"); // Show toast for successful sign-in
+        showToast("Signed in successfully");
         final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
         UserModel userModel = await _firebaseFirestoreService.getUserData(user.uid);
         navigatingTheUserDependingOnHisStatus(userModel);
@@ -195,7 +195,7 @@ class AuthController extends GetxController {
   }
 
   void _navigateToWelcomePage() {
-    Get.offAll(() => WelcomePage()); // Navigate to the welcome screen
+    Get.offAll(() => WelcomePage());
   }
 
   bool validateLoginForm() {

@@ -25,11 +25,26 @@ class $AssetsIconsGen {
 
   $AssetsIconsAuthGen get auth => const $AssetsIconsAuthGen();
 
+  /// File path: assets/icons/camera.png
+  AssetGenImage get camera => const AssetGenImage('assets/icons/camera.png');
+
+  /// File path: assets/icons/cameraIcon.svg
+  SvgGenImage get cameraIcon => const SvgGenImage('assets/icons/cameraIcon.svg');
+
   /// File path: assets/icons/check.svg
   SvgGenImage get check => const SvgGenImage('assets/icons/check.svg');
 
   /// File path: assets/icons/check_green.png
   AssetGenImage get checkGreen => const AssetGenImage('assets/icons/check_green.png');
+
+  /// File path: assets/icons/edit.svg
+  SvgGenImage get edit => const SvgGenImage('assets/icons/edit.svg');
+
+  /// File path: assets/icons/galleryIcon.svg
+  SvgGenImage get galleryIcon => const SvgGenImage('assets/icons/galleryIcon.svg');
+
+  /// File path: assets/icons/geo_pinpoint.svg
+  SvgGenImage get geoPinpoint => const SvgGenImage('assets/icons/geo_pinpoint.svg');
 
   /// File path: assets/icons/new_user.svg
   SvgGenImage get newUser => const SvgGenImage('assets/icons/new_user.svg');
@@ -41,7 +56,21 @@ class $AssetsIconsGen {
   AssetGenImage get trashCan => const AssetGenImage('assets/icons/trash_can.png');
 
   /// List of all assets
-  List<dynamic> get values => [dOCARELogo, dOCARELogoText, dOCAREText, check, checkGreen, newUser, syringe, trashCan];
+  List<dynamic> get values => [
+        dOCARELogo,
+        dOCARELogoText,
+        dOCAREText,
+        camera,
+        cameraIcon,
+        check,
+        checkGreen,
+        edit,
+        galleryIcon,
+        geoPinpoint,
+        newUser,
+        syringe,
+        trashCan
+      ];
 }
 
 class $AssetsImagesGen {
@@ -53,11 +82,17 @@ class $AssetsImagesGen {
   /// File path: assets/images/docareButtonLayout.svg
   SvgGenImage get docareButtonLayout => const SvgGenImage('assets/images/docareButtonLayout.svg');
 
+  /// File path: assets/images/image_upload.png
+  AssetGenImage get imageUpload => const AssetGenImage('assets/images/image_upload.png');
+
+  /// File path: assets/images/location_tracking.png
+  AssetGenImage get locationTracking => const AssetGenImage('assets/images/location_tracking.png');
+
   $AssetsImagesSpecialitiesGen get specialities => const $AssetsImagesSpecialitiesGen();
   $AssetsImagesSymptomsGen get symptoms => const $AssetsImagesSymptomsGen();
 
   /// List of all assets
-  List<dynamic> get values => [creativePanelPlanner, docareButtonLayout];
+  List<dynamic> get values => [creativePanelPlanner, docareButtonLayout, imageUpload, locationTracking];
 }
 
 class $AssetsIconsAuthGen {

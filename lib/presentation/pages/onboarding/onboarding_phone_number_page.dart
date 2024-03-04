@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../../core/assets.gen.dart';
+import 'onboarding_address_location_page.dart';
 import 'onboarding_controller.dart';
 
 class OnboardingPhoneNumberPage extends StatefulWidget {
@@ -257,6 +258,9 @@ class _OnboardingPhoneNumberPageState extends State<OnboardingPhoneNumberPage> {
           ),
           Spacer(),
           GestureDetector(
+            onTap: () {
+              Get.to(() => OnboardingAddressLocationPage());
+            },
             child: Text(
               'Skip',
               style: GoogleFonts.montserrat(

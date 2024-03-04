@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:docare/presentation/pages/onboarding/onboarding_address_location_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -35,7 +36,9 @@ class _OnboardingPhoneNumberVerificationPageState extends State<OnboardingPhoneN
       });
       // Correctly call verifyPhoneNumber for resending OTP
       verificationController.verifyPhoneNumber(
-          customPhoneNumber: verificationController.currentPhoneNumber.phoneNumber, gotoOTPPage: false);
+        customPhoneNumber: verificationController.currentPhoneNumber.phoneNumber,
+        gotoOTPPage: false,
+      );
       Timer.periodic(Duration(seconds: 1), (timer) {
         setState(() {
           if (_start > 0) {
@@ -145,8 +148,9 @@ class _OnboardingPhoneNumberVerificationPageState extends State<OnboardingPhoneN
   Widget _continueButtonComponent(AuthController authController) {
     return InkWell(
       onTap: authController.otpCode.length == 6
-          ? () {
-              authController.verifyOtp(otp: authController.otpCode);
+          ? () async {
+              var isSuccessful = await authController.verifyOtp(otp: authController.otpCode);
+              if (isSuccessful) Get.to(() => OnboardingAddressLocationPage());
             }
           : null,
       child: Container(

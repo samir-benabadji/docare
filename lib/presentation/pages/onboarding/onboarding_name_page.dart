@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
+import 'onboarding_doctor_account_details_page.dart';
 
 class OnboardingNamePage extends StatefulWidget {
   const OnboardingNamePage({Key? key}) : super(key: key);
@@ -34,16 +35,7 @@ class _OnboardingNamePageState extends State<OnboardingNamePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Hello! What should we call you ?',
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.rubik(
-                              color: Color(0xFF090F47),
-                              fontSize: 16.00,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: -0.30,
-                            ),
-                          ),
+                          _titleComponent(),
                           TextFormField(
                             style: GoogleFonts.openSans(
                               textStyle: TextStyle(
@@ -103,6 +95,37 @@ class _OnboardingNamePageState extends State<OnboardingNamePage> {
     );
   }
 
+  Widget _titleComponent() {
+    return Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Get.back();
+              },
+            ),
+            Expanded(
+              child: Text(
+                "Hello! What should we call you ?",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.rubik(
+                  color: Color(0xFF090F47),
+                  fontSize: 18.13,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -0.34,
+                ),
+              ),
+            ),
+            SizedBox(width: 32),
+          ],
+        ),
+      ],
+    );
+  }
+
   Row _imageComponent() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -120,11 +143,15 @@ class _OnboardingNamePageState extends State<OnboardingNamePage> {
   Widget _continueButtonComponent(OnboardingController onboardingController) {
     return GestureDetector(
       onTap: () async {
-        if (onboardingController.validateForm()) {
-          bool success = await onboardingController.updateUserInfo();
-          if (success) {
-            Get.offAll(() => HomePage());
-          } else {}
+        if (onboardingController.userModel != null && onboardingController.userModel!.userType == 1) {
+          if (onboardingController.validateForm()) Get.offAll(() => OnboardingDoctorAccountDetailsPage());
+        } else {
+          if (onboardingController.validateForm()) {
+            bool success = await onboardingController.updateUserInfo();
+            if (success) {
+              Get.offAll(() => HomePage());
+            } else {}
+          }
         }
       },
       child: Container(
