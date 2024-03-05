@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:docare/business_logic/models/session_model.dart';
 import 'package:docare/business_logic/models/speciality_model.dart';
 import 'package:docare/core/constants/theme.dart';
+import 'package:docare/presentation/pages/auth/auth_controller.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +17,12 @@ import '../../../business_logic/models/pain_model.dart';
 import '../../../business_logic/models/user_model.dart';
 import '../../../business_logic/services/firebase_auth_service.dart';
 import '../../../business_logic/services/firebase_firestore_service.dart';
+import '../../../business_logic/services/firebase_storage_service.dart';
 
 class OnboardingController extends GetxController {
+  UserModel? userModel;
+  OnboardingController({this.userModel});
+
   RxList<PainType> selectedPainTypes = <PainType>[].obs;
   Rx<SpecialityType> selectedSpecialityType = SpecialityType("", "").obs;
   // options
@@ -51,13 +56,11 @@ class OnboardingController extends GetxController {
   final TextEditingController nameController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  UserModel? userModel;
-
   bool isSavedSuccessfully = false;
 
   @override
   void onInit() {
-    getUserDataModel();
+    if (userModel == null) getUserDataModel();
     super.onInit();
   }
 
@@ -304,18 +307,42 @@ class OnboardingController extends GetxController {
   Future<bool> updateUserInfo() async {
     try {
       final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
+      final FirebaseStorageService _firebaseStorageService = Get.find<FirebaseStorageService>();
 
-      String? uid = Get.find<FirebaseAuthService>().user?.uid;
+      String? uid = userModel?.uid;
+      if (uid == null) return false;
+
+      String profileImageUrl = '';
+      if (userImageFile != null) {
+        profileImageUrl = await _firebaseStorageService.uploadUserImage(uid, userImageFile!);
+      }
+
       Map<String, dynamic> userUpdatedData = {
         'status': 'COMPLETED',
         'name': nameController.text,
-        'symptoms': selectedPainTypes.first.title,
+        'profileImageUrl': profileImageUrl,
+        'userType': userModel?.userType,
       };
-      if (uid != null) {
-        await _firebaseFirestoreService.addOrUpdateUser(uid, userUpdatedData);
-        return true;
+
+      
+      if (userModel?.userType == 1) {
+        userUpdatedData.addAll({
+          'symptoms': selectedPainTypes.map((painType) => painType.title).toList(),
+          "medicalSpeciality": selectedSpecialityType.value.title,
+          "addressLocation": locationTextEditingController.text,
+          "phoneNumber": Get.find<AuthController>().currentPhoneNumber.phoneNumber,
+          "phoneNumberDialCode": Get.find<AuthController>().currentPhoneNumber.dialCode,
+          "options": selectedOptions.map((option) => option.name).toList(),
+          'workingHours': workingHours,
+        });
+      } else if (userModel?.userType == 2) {
+        userUpdatedData.addAll({
+          'symptoms': selectedPainTypes.map((painType) => painType.title).toList(),
+        });
       }
-      return false;
+
+      await _firebaseFirestoreService.addOrUpdateUser(uid, userUpdatedData);
+      return true;
     } catch (e) {
       print('Error updating user info in Firestore: $e');
       return false;

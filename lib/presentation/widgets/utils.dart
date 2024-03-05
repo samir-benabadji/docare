@@ -1,4 +1,3 @@
-// Helper method to show toast messages
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -26,17 +25,16 @@ void navigatingTheUserDependingOnHisStatus(UserModel user) {
   switch (user.status) {
     case 'INCOMPLETE':
       user.userType == 1
-          ? Get.offAll(() => OnboardingMedicalSpecialityPage())
-          : Get.offAll(() => OnboardingSymptomsPage());
+          ? Get.offAll(() => OnboardingMedicalSpecialityPage(
+              userModel: user,),) 
+          : Get.offAll(() => OnboardingSymptomsPage(userModel: user));
       break;
     case 'PENDING':
-      //  Get.off(() => PendingPage());
       break;
     case 'COMPLETED':
-      Get.off(() => HomePage());
+      Get.off(() => HomePage(userModel: user));
       break;
     case 'REJECTED':
-      //   Get.off(() => RejectedPage());
       break;
     case 'BANNED':
     case 'DISABLED':

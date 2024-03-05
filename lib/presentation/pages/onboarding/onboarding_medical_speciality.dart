@@ -5,12 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../business_logic/models/speciality_model.dart';
+import '../../../business_logic/models/user_model.dart';
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
 import 'onboarding_symptoms_page.dart';
 
 class OnboardingMedicalSpecialityPage extends StatefulWidget {
-  const OnboardingMedicalSpecialityPage({Key? key}) : super(key: key);
+  UserModel userModel;
+  OnboardingMedicalSpecialityPage({Key? key, required this.userModel}) : super(key: key);
 
   @override
   State<OnboardingMedicalSpecialityPage> createState() => _OnboardingMedicalSpecialityPageState();
@@ -77,7 +79,12 @@ class _OnboardingMedicalSpecialityPageState extends State<OnboardingMedicalSpeci
   Widget _continueButtonComponent(OnboardingController onboardingController) {
     return GestureDetector(
       onTap: () {
-        if (onboardingController.selectedSpecialityType.value.title.isNotEmpty) Get.to(() => OnboardingSymptomsPage());
+        if (onboardingController.selectedSpecialityType.value.title.isNotEmpty) {
+          if (onboardingController.userModel != null)
+            Get.to(
+              () => OnboardingSymptomsPage(userModel: onboardingController.userModel!),
+            );
+        }
       },
       child: Container(
         width: Get.width,

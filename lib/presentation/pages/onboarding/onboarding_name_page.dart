@@ -149,7 +149,12 @@ class _OnboardingNamePageState extends State<OnboardingNamePage> {
           if (onboardingController.validateForm()) {
             bool success = await onboardingController.updateUserInfo();
             if (success) {
-              Get.offAll(() => HomePage());
+              if (onboardingController.userModel != null)
+                Get.offAll(
+                  () => HomePage(
+                    userModel: onboardingController.userModel!,
+                  ),
+                );
             } else {}
           }
         }

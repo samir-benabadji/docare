@@ -59,6 +59,7 @@ dependencies:
   wechat_assets_picker: ^8.4.3
   image_cropper: ^1.4.1
   image_picker: ^0.8.6
+  firebase_storage: ^11.6.0
 
 dev_dependencies:
   flutter_test:

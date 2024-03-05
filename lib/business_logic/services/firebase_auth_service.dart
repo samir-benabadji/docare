@@ -2,7 +2,6 @@ import 'package:docare/presentation/widgets/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
-import '../models/user_model.dart';
 import 'firebase_firestore_service.dart';
 
 class FirebaseAuthService {
@@ -22,10 +21,6 @@ class FirebaseAuthService {
           'email': email,
           'userType': userType,
           'status': 'INCOMPLETE',
-          'name': '',
-          'symptoms': '',
-          'profileImageUrl': '',
-          'workingHours': (userType == 1) ? {} : null, // Setting working hours to null if not a doctor
         };
         final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
 
@@ -78,18 +73,18 @@ class FirebaseAuthService {
     }
   }
 
-  Future<void> refreshUserData() async {
-    try {
-      var currentUser = user;
-      if (currentUser != null) {
-        final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
-        UserModel user = await _firebaseFirestoreService.getUserData(currentUser.uid);
-        // print("User data refreshed: ${user.username}");
-      }
-    } catch (e) {
-      print("Error refreshing user data: $e");
+  /* Future<void> refreshUserData() async {
+  try {
+    var currentUser = _firebaseAuth.currentUser;
+    if (currentUser != null) {
+      final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
+      int userType = ...;
+      UserModel user = await _firebaseFirestoreService.getUserData(currentUser.uid, userType);
     }
+  } catch (e) {
+    print("Error refreshing user data: $e");
   }
+}*/
 
   // Sign Out
   Future<void> signOut() async {

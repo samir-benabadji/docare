@@ -5,13 +5,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../business_logic/models/pain_model.dart';
+import '../../../business_logic/models/user_model.dart';
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
 import 'onboarding_name_page.dart';
 import 'onboarding_options_page.dart';
 
 class OnboardingSymptomsPage extends StatefulWidget {
-  const OnboardingSymptomsPage({Key? key}) : super(key: key);
+  final UserModel userModel;
+  const OnboardingSymptomsPage({Key? key, required this.userModel}) : super(key: key);
 
   @override
   State<OnboardingSymptomsPage> createState() => _OnboardingSymptomsPageState();

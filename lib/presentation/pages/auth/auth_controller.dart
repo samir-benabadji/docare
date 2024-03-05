@@ -171,8 +171,12 @@ class AuthController extends GetxController {
     if (uid != null) {
       showToast("Signed up successfully");
       final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
-      UserModel userModel = await _firebaseFirestoreService.getUserData(uid);
-      navigatingTheUserDependingOnHisStatus(userModel);
+      UserModel? userModel = await _firebaseFirestoreService.getUserData(uid);
+      if (userModel != null) {
+        navigatingTheUserDependingOnHisStatus(userModel);
+      } else {
+        showToast("User data could not be retrieved.");
+      }
     } else {
       showToast("Sign up failed");
     }
@@ -186,8 +190,12 @@ class AuthController extends GetxController {
       } else {
         showToast("Signed in successfully");
         final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
-        UserModel userModel = await _firebaseFirestoreService.getUserData(user.uid);
-        navigatingTheUserDependingOnHisStatus(userModel);
+        UserModel? userModel = await _firebaseFirestoreService.getUserData(user.uid);
+        if (userModel != null) {
+          navigatingTheUserDependingOnHisStatus(userModel);
+        } else {
+          errorMessage.value = "User data could not be retrieved.";
+        }
       }
     } catch (e) {
       errorMessage.value = "An error occurred during sign in.";

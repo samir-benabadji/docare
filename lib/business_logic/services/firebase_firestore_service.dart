@@ -7,7 +7,8 @@ class FirebaseFirestoreService {
 
   Future<void> addOrUpdateUser(String uid, Map<String, dynamic> userData) async {
     try {
-      await _firebaseFirestore.collection('users').doc(uid).set(
+      String collectionPath = _getCollectionPathFromUserType(userData['userType']);
+      await _firebaseFirestore.collection(collectionPath).doc(uid).set(
             userData,
             SetOptions(merge: true),
           );
@@ -17,23 +18,38 @@ class FirebaseFirestoreService {
     }
   }
 
-  Future<UserModel> getUserData(String uid) async {
-    try {
-      final DocumentSnapshot docSnapshot = await _firebaseFirestore.collection('users').doc(uid).get();
-      return UserModel.fromFirestore(docSnapshot);
-    } catch (e) {
-      print("Error fetching user data from Firestore: $e");
-      rethrow;
+  Future<UserModel?> getUserData(String uid) async {
+    final List<String> collections = ['doctors', 'patients', 'admins'];
+    for (String collection in collections) {
+      final DocumentSnapshot docSnapshot = await _firebaseFirestore.collection(collection).doc(uid).get();
+      if (docSnapshot.exists) {
+        return UserModel.fromFirestore(docSnapshot);
+      }
     }
+    print("User not found in any collection");
+    return null; // Returning null if user is not found in any collection
   }
 
-  // method to delete user
-  Future<void> deleteUser(String uid) async {
+  Future<void> deleteUser(String uid, int userType) async {
     try {
-      await _firebaseFirestore.collection('users').doc(uid).delete();
+      String collectionPath = _getCollectionPathFromUserType(userType);
+      await _firebaseFirestore.collection(collectionPath).doc(uid).delete();
     } catch (e) {
       print('Error deleting user from Firestore: $e');
       // Handle exceptions
+    }
+  }
+
+  String _getCollectionPathFromUserType(int userType) {
+    switch (userType) {
+      case 1:
+        return 'doctors';
+      case 2:
+        return 'patients';
+      case 3:
+        return 'admins';
+      default:
+        return 'users';
     }
   }
 }

@@ -21,10 +21,13 @@ class SplashController extends GetxController {
 
       final firebaseAuthService = Get.find<FirebaseAuthService>();
       if (firebaseAuthService.user != null) {
-        final firebaseAuthService = Get.find<FirebaseAuthService>();
         final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
-        UserModel user = await _firebaseFirestoreService.getUserData(firebaseAuthService.user!.uid);
-        navigatingTheUserDependingOnHisStatus(user);
+        UserModel? user = await _firebaseFirestoreService.getUserData(firebaseAuthService.user!.uid);
+        if (user != null) {
+          navigatingTheUserDependingOnHisStatus(user);
+        } else {
+          Get.off(() => WelcomePage());
+        }
       } else {
         Get.off(() => WelcomePage());
       }

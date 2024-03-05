@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/assets.gen.dart';
 import '../../widgets/utils.dart';
+import '../auth/home/home_page.dart';
 import 'onboarding_controller.dart';
 
 class OnboardingDoctorAccountDetailsPage extends StatefulWidget {
@@ -194,7 +195,30 @@ class _OnboardingDoctorAccountDetailsPageState extends State<OnboardingDoctorAcc
 
   Widget _continueButtonComponent(OnboardingController onboardingController) {
     return GestureDetector(
-      onTap: () async {},
+      onTap: () async {
+        bool success = await onboardingController.updateUserInfo();
+        if (success) {
+          Get.snackbar(
+            'Success',
+            'Your information has been saved successfully!',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          );
+          if (onboardingController.userModel != null)
+            Get.to(() => HomePage(
+                  userModel: onboardingController.userModel!,
+                ),);
+        } else {
+          Get.snackbar(
+            'Error',
+            'Failed to save your information. Please try again.',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
+      },
       child: Container(
         width: Get.width,
         height: 49,
