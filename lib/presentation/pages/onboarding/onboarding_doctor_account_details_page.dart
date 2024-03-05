@@ -1,9 +1,11 @@
+import 'package:docare/presentation/pages/auth/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/assets.gen.dart';
+import '../../widgets/utils.dart';
 import 'onboarding_controller.dart';
 
 class OnboardingDoctorAccountDetailsPage extends StatefulWidget {
@@ -27,29 +29,13 @@ class _OnboardingDoctorAccountDetailsPageState extends State<OnboardingDoctorAcc
                   SizedBox(height: 32),
                   _titleComponent(),
                   SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 27),
-                    child: Row(
-                      children: [
-                        _userImagePreviewComponent(onboardingController),
-                        SizedBox(width: 32),
-                        _userNameComponent(),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            height: 36,
-                            width: 48,
-                            color: Colors.transparent,
-                            child: SvgPicture.asset(
-                              Assets.icons.edit.path,
-                              fit: BoxFit.scaleDown,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 115),
+                  _imagePlusNameComponents(onboardingController),
+                  _detailComponent('Speciality', 'Cardiology'),
+                  _detailComponent('Options', onboardingController.getSelectedOptionsAsString()),
+                  _detailComponent('Working Days', formatWorkingDays(onboardingController.workingHours ?? {})),
+                  _detailComponent('Phone Number', formatPhoneNumber(Get.find<AuthController>().currentPhoneNumber)),
+                  _detailComponent('Address', onboardingController.locationTextEditingController.text),
+                  SizedBox(height: 32),
                   Container(
                     width: double.infinity,
                     margin: EdgeInsets.symmetric(horizontal: 26),
@@ -65,7 +51,75 @@ class _OnboardingDoctorAccountDetailsPageState extends State<OnboardingDoctorAcc
     );
   }
 
-  Widget _userNameComponent() {
+  Padding _imagePlusNameComponents(OnboardingController onboardingController) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 27),
+      child: Row(
+        children: [
+          _userImagePreviewComponent(onboardingController),
+          SizedBox(width: 32),
+          _userNameComponent(onboardingController),
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+              height: 36,
+              width: 48,
+              color: Colors.transparent,
+              child: SvgPicture.asset(
+                Assets.icons.edit.path,
+                fit: BoxFit.scaleDown,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _detailComponent(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 27, vertical: 8),
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: GoogleFonts.rubik(
+              color: Color(0xFF3BC090),
+              fontSize: 15.14,
+              fontWeight: FontWeight.w500,
+              letterSpacing: -0.38,
+            ),
+          ),
+          SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              value,
+              style: GoogleFonts.rubik(
+                color: Color(0xFF090F47),
+                fontSize: 13.78,
+                fontWeight: FontWeight.w400,
+                letterSpacing: -0.34,
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+              height: 36,
+              width: 48,
+              color: Colors.transparent,
+              child: SvgPicture.asset(
+                Assets.icons.edit.path,
+                fit: BoxFit.scaleDown,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _userNameComponent(OnboardingController onboardingController) {
     return Text.rich(
       TextSpan(
         children: [
@@ -79,7 +133,7 @@ class _OnboardingDoctorAccountDetailsPageState extends State<OnboardingDoctorAcc
             ),
           ),
           TextSpan(
-            text: 'Wissam',
+            text: onboardingController.nameController.text,
             style: GoogleFonts.rubik(
               color: Color(0xFF090F47),
               fontSize: 14.33,
@@ -134,20 +188,6 @@ class _OnboardingDoctorAccountDetailsPageState extends State<OnboardingDoctorAcc
           ),
         ),
         SizedBox(width: 32),
-      ],
-    );
-  }
-
-  Row _imageComponent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset(
-          Assets.images.creativePanelPlanner.path,
-          fit: BoxFit.cover,
-          width: 200,
-          height: 200,
-        ),
       ],
     );
   }
@@ -209,8 +249,6 @@ class _OnboardingDoctorAccountDetailsPageState extends State<OnboardingDoctorAcc
   }
 
   Color _continueButtonColor(OnboardingController onboardingController) {
-    return (onboardingController.nameController.text.isNotEmpty && onboardingController.nameController.text.length >= 2)
-        ? Color(0xFF33CE95)
-        : Color(0x6D53C298);
+    return Color(0xFF33CE95);
   }
 }

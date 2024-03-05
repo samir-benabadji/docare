@@ -61,6 +61,10 @@ class OnboardingController extends GetxController {
     super.onInit();
   }
 
+  String getSelectedOptionsAsString() {
+    return selectedOptions.map((option) => option.name).join(', ');
+  }
+
   getFromCamera() async {
     final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.camera,
@@ -409,8 +413,30 @@ class OnboardingController extends GetxController {
       backgroundColor: DocareTheme.apple,
       colorText: Colors.white,
     );
+    workingHours = mapSessionsToWorkingHours(allSessions);
     isSavedSuccessfully = true;
     update();
+  }
+
+  Map<String, List<Map<String, dynamic>>> mapSessionsToWorkingHours(List<SessionModel> sessions) {
+    Map<String, List<Map<String, dynamic>>> mappedSessions = {};
+
+    for (var session in sessions) {
+      final day = session.day;
+      final start = formatTimeOfDay(session.startAt!);
+      final end = formatTimeOfDay(session.endAt!);
+
+      if (!mappedSessions.containsKey(day)) {
+        mappedSessions[day] = [];
+      }
+
+      mappedSessions[day]!.add({
+        'start at': start,
+        'end at': end,
+      });
+    }
+
+    return mappedSessions;
   }
 
   void deleteSessionById(String sessionId) {

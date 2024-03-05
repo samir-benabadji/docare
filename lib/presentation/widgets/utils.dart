@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../business_logic/models/user_model.dart';
 import '../pages/auth/home/home_page.dart';
@@ -46,4 +47,27 @@ void navigatingTheUserDependingOnHisStatus(UserModel user) {
       Get.off(() => WelcomePage());
       break;
   }
+}
+
+String formatPhoneNumber(PhoneNumber phoneNumber) {
+  if (phoneNumber.phoneNumber == null) return "Unknown";
+  if (phoneNumber.phoneNumber!.isEmpty) return "Unknown";
+  return '${phoneNumber.phoneNumber}';
+}
+
+String formatWorkingDays(Map<String, List<Map<String, dynamic>>> workingHours) {
+  if (workingHours.isEmpty) return "Not specified";
+
+  List<String> days = workingHours.keys.toList();
+
+  return days.join(', ');
+}
+
+String formatWorkingHoursOfDay(Map<String, List<Map<String, dynamic>>> workingHours, String day) {
+  if (workingHours.isEmpty || !workingHours.containsKey(day)) return "Not specified";
+
+  var daySchedule = workingHours[day]?.first;
+  if (daySchedule == null) return "Closed";
+
+  return "Start at ${daySchedule['start at']} and end at ${daySchedule['end at']}";
 }
