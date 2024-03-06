@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/assets.gen.dart';
 import '../../widgets/utils.dart';
-import '../auth/home/home_page.dart';
+import '../home/home_page.dart';
 import 'onboarding_controller.dart';
 
 class OnboardingDoctorAccountDetailsPage extends StatefulWidget {
@@ -206,9 +206,11 @@ class _OnboardingDoctorAccountDetailsPageState extends State<OnboardingDoctorAcc
             colorText: Colors.white,
           );
           if (onboardingController.userModel != null)
-            Get.to(() => HomePage(
-                  userModel: onboardingController.userModel!,
-                ),);
+            Get.to(
+              () => HomePage(
+                userModel: onboardingController.userModel!,
+              ),
+            );
         } else {
           Get.snackbar(
             'Error',

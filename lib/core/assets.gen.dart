@@ -24,6 +24,7 @@ class $AssetsIconsGen {
   SvgGenImage get dOCAREText => const SvgGenImage('assets/icons/DOCARE_text.svg');
 
   $AssetsIconsAuthGen get auth => const $AssetsIconsAuthGen();
+  $AssetsIconsBottomNavBarGen get bottomNavBar => const $AssetsIconsBottomNavBarGen();
 
   /// File path: assets/icons/camera.png
   AssetGenImage get camera => const AssetGenImage('assets/icons/camera.png');
@@ -45,6 +46,8 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/geo_pinpoint.svg
   SvgGenImage get geoPinpoint => const SvgGenImage('assets/icons/geo_pinpoint.svg');
+
+  $AssetsIconsHomeGen get home => const $AssetsIconsHomeGen();
 
   /// File path: assets/icons/new_user.svg
   SvgGenImage get newUser => const SvgGenImage('assets/icons/new_user.svg');
@@ -109,6 +112,35 @@ class $AssetsIconsAuthGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [address, lockCheck, lock];
+}
+
+class $AssetsIconsBottomNavBarGen {
+  const $AssetsIconsBottomNavBarGen();
+
+  /// File path: assets/icons/bottomNavBar/appointments.png
+  AssetGenImage get appointments => const AssetGenImage('assets/icons/bottomNavBar/appointments.png');
+
+  /// File path: assets/icons/bottomNavBar/discovery.png
+  AssetGenImage get discovery => const AssetGenImage('assets/icons/bottomNavBar/discovery.png');
+
+  /// File path: assets/icons/bottomNavBar/history.png
+  AssetGenImage get history => const AssetGenImage('assets/icons/bottomNavBar/history.png');
+
+  /// File path: assets/icons/bottomNavBar/profile.png
+  AssetGenImage get profile => const AssetGenImage('assets/icons/bottomNavBar/profile.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [appointments, discovery, history, profile];
+}
+
+class $AssetsIconsHomeGen {
+  const $AssetsIconsHomeGen();
+
+  /// File path: assets/icons/home/largeSearchSign.svg
+  SvgGenImage get largeSearchSign => const SvgGenImage('assets/icons/home/largeSearchSign.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [largeSearchSign];
 }
 
 class $AssetsImagesSpecialitiesGen {

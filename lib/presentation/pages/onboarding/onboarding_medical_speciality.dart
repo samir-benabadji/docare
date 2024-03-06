@@ -7,6 +7,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../business_logic/models/speciality_model.dart';
 import '../../../business_logic/models/user_model.dart';
 import '../../../core/assets.gen.dart';
+import '../../../core/constants/constants.dart';
 import 'onboarding_controller.dart';
 import 'onboarding_symptoms_page.dart';
 
@@ -19,17 +20,6 @@ class OnboardingMedicalSpecialityPage extends StatefulWidget {
 }
 
 class _OnboardingMedicalSpecialityPageState extends State<OnboardingMedicalSpecialityPage> {
-  final List<SpecialityType> specialityTypes = [
-    SpecialityType('Cardiology', Assets.images.specialities.cardiology.path),
-    SpecialityType('Dermatology', Assets.images.specialities.dermatology.path),
-    SpecialityType('Pediatrics', Assets.images.specialities.pediatrics.path),
-    SpecialityType('Orthopedics', Assets.images.specialities.orthopedics.path),
-    SpecialityType('Neurology', Assets.images.specialities.neurology.path),
-    SpecialityType('Psychiatry', Assets.images.specialities.psychiatry.path),
-    SpecialityType('Obstetrics', Assets.images.specialities.obstetrics.path),
-    SpecialityType('Gastroenterology', Assets.images.specialities.gastroenterology.path),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<OnboardingController>(
@@ -128,12 +118,12 @@ class _OnboardingMedicalSpecialityPageState extends State<OnboardingMedicalSpeci
           mainAxisSpacing: 14,
           childAspectRatio: 1.5,
         ),
-        itemCount: specialityTypes.length,
+        itemCount: Constants.specialityTypes.length,
         itemBuilder: (context, index) {
           return GridTile(
             child: GestureDetector(
               onTap: () {
-                onboardingController.setMedicalSpeciality(specialityTypes[index]);
+                onboardingController.setMedicalSpeciality(Constants.specialityTypes[index]);
               },
               child: Container(
                 alignment: Alignment.center,
@@ -142,7 +132,7 @@ class _OnboardingMedicalSpecialityPageState extends State<OnboardingMedicalSpeci
                   shape: RoundedRectangleBorder(
                     side: BorderSide(
                       width: 1.50,
-                      color: onboardingController.selectedSpecialityType.value == specialityTypes[index]
+                      color: onboardingController.selectedSpecialityType.value == Constants.specialityTypes[index]
                           ? Color(0xFF3BC090)
                           : Color(0xFF090F47),
                     ),
@@ -152,10 +142,13 @@ class _OnboardingMedicalSpecialityPageState extends State<OnboardingMedicalSpeci
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    _buildImageWithPlaceholder(specialityTypes[index], onboardingController: onboardingController),
+                    _buildImageWithPlaceholder(
+                      Constants.specialityTypes[index],
+                      onboardingController: onboardingController,
+                    ),
                     SizedBox(height: 6),
                     Text(
-                      specialityTypes[index].title,
+                      Constants.specialityTypes[index].title,
                       style: GoogleFonts.rubik(
                         color: Color(0xFF090F47),
                         fontSize: 14,

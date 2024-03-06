@@ -60,6 +60,7 @@ dependencies:
   image_cropper: ^1.4.1
   image_picker: ^0.8.6
   firebase_storage: ^11.6.0
+  badges: ^3.1.1
 
 dev_dependencies:
   flutter_test:
@@ -102,6 +103,8 @@ flutter:
     - assets/images/specialities/
     - assets/icons/
     - assets/icons/auth/
+    - assets/icons/home/
+    - assets/icons/bottomNavBar/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

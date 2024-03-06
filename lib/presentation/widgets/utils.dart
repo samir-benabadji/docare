@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../business_logic/models/user_model.dart';
-import '../pages/auth/home/home_page.dart';
+import '../pages/home/home_page.dart';
 import '../pages/onboarding/onboarding_medical_speciality.dart';
 import '../pages/onboarding/onboarding_symptoms_page.dart';
 import '../pages/welcome/welcome_page.dart';
@@ -25,8 +25,11 @@ void navigatingTheUserDependingOnHisStatus(UserModel user) {
   switch (user.status) {
     case 'INCOMPLETE':
       user.userType == 1
-          ? Get.offAll(() => OnboardingMedicalSpecialityPage(
-              userModel: user,),) 
+          ? Get.offAll(
+              () => OnboardingMedicalSpecialityPage(
+                userModel: user,
+              ),
+            )
           : Get.offAll(() => OnboardingSymptomsPage(userModel: user));
       break;
     case 'PENDING':

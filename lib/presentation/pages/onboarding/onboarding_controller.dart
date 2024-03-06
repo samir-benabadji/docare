@@ -324,7 +324,6 @@ class OnboardingController extends GetxController {
         'userType': userModel?.userType,
       };
 
-      
       if (userModel?.userType == 1) {
         userUpdatedData.addAll({
           'symptoms': selectedPainTypes.map((painType) => painType.title).toList(),
