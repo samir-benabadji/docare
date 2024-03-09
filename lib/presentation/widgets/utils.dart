@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../business_logic/models/user_model.dart';
 import '../pages/home/home_page.dart';
@@ -71,4 +72,35 @@ String formatWorkingHoursOfDay(Map<String, List<Map<String, dynamic>>> workingHo
   if (daySchedule == null) return "Closed";
 
   return "Start at ${daySchedule['start at']} and end at ${daySchedule['end at']}";
+}
+
+Widget shimmerComponent(double width, double height, {BorderRadius? borderRadius}) {
+  return Container(
+    width: width,
+    height: height,
+    child: Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Container(
+        width: width,
+        height: height,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: ClipRRect(
+                borderRadius: borderRadius ??
+                    BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
+                    ),
+                child: Container(
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }

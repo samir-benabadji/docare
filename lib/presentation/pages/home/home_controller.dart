@@ -8,7 +8,7 @@ import '../../../core/assets.gen.dart';
 import '../appointments/appointments_page.dart';
 import '../discovery/discovery_page.dart';
 import '../history/history_page.dart';
-import '../profile/profile_page.dart';
+import '../patientProfile/patient_profile_page.dart';
 
 class HomeController extends GetxController {
   final UserModel? userModel;
@@ -49,7 +49,7 @@ class HomeController extends GetxController {
         bottomNavIconPath: Assets.icons.bottomNavBar.history.path,
       ),
       CustomNavigator(
-        page: ProfilePage(),
+        page: PatientProfilePage(),
         bottomNavIconPath: Assets.icons.bottomNavBar.profile.path,
       ),
     ]);

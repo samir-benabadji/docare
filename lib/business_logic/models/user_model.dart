@@ -6,7 +6,7 @@ class UserModel {
   final int userType; // 1 for doctors, 2 for users, 0 for admins
   String? name;
   String? status;
-  String? symptoms;
+  List<String>? symptoms;
   String? profileImageUrl;
   String? medicalSpeciality;
   String? addressLocation;
@@ -39,9 +39,13 @@ class UserModel {
       options = List<String>.from(data['options']);
     }
 
-    String symptoms = '';
+    List<String> symptoms = [];
     if (data['symptoms'] != null) {
-      symptoms = data['symptoms'] is List ? data['symptoms'].join(', ') : data['symptoms'];
+      if (data['symptoms'] is List) {
+        symptoms = List<String>.from(data['symptoms']);
+      } else {
+        symptoms = [data['symptoms']];
+      }
     }
 
     return UserModel(

@@ -40,13 +40,20 @@ class FirebaseFirestoreService {
     }
   }
 
+  // getting all doctors from firestore
+  Stream<List<UserModel>> getDoctorsStream() {
+    return _firebaseFirestore.collection(_getCollectionPathFromUserType(1)).snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) => UserModel.fromFirestore(doc)).toList();
+    });
+  }
+
   String _getCollectionPathFromUserType(int userType) {
     switch (userType) {
       case 1:
         return 'doctors';
       case 2:
         return 'patients';
-      case 3:
+      case 0:
         return 'admins';
       default:
         return 'users';

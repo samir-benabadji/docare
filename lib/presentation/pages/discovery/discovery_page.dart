@@ -1,35 +1,92 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:docare/core/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../business_logic/models/user_model.dart';
 import '../../../core/assets.gen.dart';
 import '../../../core/constants/constants.dart';
+import '../../widgets/utils.dart';
+import '../doctorProfile/doctor_profile_page.dart';
+import 'discovery_controller.dart';
 
 class DiscoveryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            _topBarComponent(),
-            SizedBox(height: 10),
-            _searchTextField(),
-            SizedBox(height: 27),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 17),
+    return GetBuilder<DiscoveryController>(
+      init: DiscoveryController(),
+      builder: (discoveryController) {
+        return Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
               child: Column(
                 children: [
-                  _specialistDoctorTitleComponent(),
+                  _topBarComponent(),
+                  SizedBox(height: 10),
+                  _searchTextField(),
                   SizedBox(height: 27),
-                  _specialityGrid(),
+                  _mainSpecialistDoctorComponent(),
+                  SizedBox(height: 32),
+                  _mainTopDoctorsComponent(discoveryController),
+                  SizedBox(height: 27),
                 ],
               ),
             ),
-            SizedBox(height: 27),
-          ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _mainTopDoctorsComponent(DiscoveryController discoveryController) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 17),
+      child: Column(
+        children: [
+          _topDoctorsTitleComponent(),
+          SizedBox(height: 13),
+          _topDoctorsContentComponent(discoveryController),
+        ],
+      ),
+    );
+  }
+
+  Widget _topDoctorsTitleComponent() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          'Top Doctors',
+          style: GoogleFonts.inter(
+            color: Color(0xFF090F47),
+            fontSize: 15.45,
+            fontWeight: FontWeight.w600,
+          ),
         ),
+        Text(
+          'See all',
+          style: GoogleFonts.inter(
+            color: DocareTheme.apple,
+            fontSize: 13.52,
+            fontWeight: FontWeight.w400,
+            letterSpacing: -0.54,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Padding _mainSpecialistDoctorComponent() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 17),
+      child: Column(
+        children: [
+          _specialistDoctorTitleComponent(),
+          SizedBox(height: 27),
+          _specialityGrid(),
+        ],
       ),
     );
   }
@@ -200,6 +257,143 @@ class DiscoveryPage extends StatelessWidget {
           contentPadding: EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 12),
         ),
       ),
+    );
+  }
+
+  Widget _topDoctorsContentComponent(DiscoveryController discoveryController) {
+    return StreamBuilder<List<UserModel>>(
+      stream: discoveryController.doctorsStream.stream,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (!snapshot.hasData) {
+          return Text('No doctors found');
+        } else {
+          final doctors = snapshot.data!;
+          return Container(
+            height: 180,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: doctors.length,
+              itemBuilder: (context, index) {
+                final doctor = doctors[index];
+                return GestureDetector(
+                  onTap: () {
+                    Get.to(
+                      () => DoctorProfilePage(
+                        userModel: doctor,
+                      ),
+                    );
+                  },
+                  child: Container(
+                    child: Column(
+                      children: <Widget>[
+                        ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(13),
+                            topRight: Radius.circular(13),
+                          ),
+                          child: Container(
+                            width: 130,
+                            height: 130,
+                            decoration: ShapeDecoration(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(13),
+                                  topRight: Radius.circular(13),
+                                ),
+                              ),
+                              shadows: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.25),
+                                  blurRadius: 2.30,
+                                  offset: Offset(0, 0),
+                                  spreadRadius: 0,
+                                )
+                              ],
+                            ),
+                            child: CachedNetworkImage(
+                              imageUrl: doctor.profileImageUrl ?? "",
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: double.infinity,
+                              placeholder: (context, url) {
+                                return SizedBox(
+                                  height: 130,
+                                  child: Center(
+                                    child: shimmerComponent(
+                                      double.infinity,
+                                      double.infinity,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(13),
+                                        topRight: Radius.circular(13),
+                                      ),
+                                    ),
+                                    //child: CircularProgressIndicator.adaptive(),
+                                  ),
+                                );
+                              },
+                              errorWidget: (context, url, error) {
+                                return Center(
+                                  child: CircleAvatar(
+                                    backgroundColor: DocareTheme.apple,
+                                    child: Icon(
+                                      Icons.broken_image,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 130,
+                          height: 50,
+                          decoration: ShapeDecoration(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(13),
+                                bottomRight: Radius.circular(13),
+                              ),
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                doctor.name ?? 'No name provided',
+                                style: GoogleFonts.inter(
+                                  color: Color(0xFF090F47),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: -0.40,
+                                ),
+                              ),
+                              Text(
+                                doctor.medicalSpeciality ?? 'Unknown',
+                                style: GoogleFonts.rubik(
+                                  color: Color(0xFF090F47),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w300,
+                                  letterSpacing: -0.14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        }
+      },
     );
   }
 }

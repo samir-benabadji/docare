@@ -49,6 +49,9 @@ class $AssetsIconsGen {
 
   $AssetsIconsHomeGen get home => const $AssetsIconsHomeGen();
 
+  /// File path: assets/icons/left_arrow.svg
+  SvgGenImage get leftArrow => const SvgGenImage('assets/icons/left_arrow.svg');
+
   /// File path: assets/icons/new_user.svg
   SvgGenImage get newUser => const SvgGenImage('assets/icons/new_user.svg');
 
@@ -70,6 +73,7 @@ class $AssetsIconsGen {
         edit,
         galleryIcon,
         geoPinpoint,
+        leftArrow,
         newUser,
         syringe,
         trashCan

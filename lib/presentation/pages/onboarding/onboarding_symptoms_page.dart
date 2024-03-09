@@ -1,3 +1,4 @@
+import 'package:docare/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -20,17 +21,6 @@ class OnboardingSymptomsPage extends StatefulWidget {
 }
 
 class _OnboardingSymptomsPageState extends State<OnboardingSymptomsPage> {
-  final List<PainType> painTypes = [
-    PainType('Shoulder Pain', Assets.images.symptoms.shoulderPain.path),
-    PainType('Knee Pain', Assets.images.symptoms.kneePain.path),
-    PainType('Headache', Assets.images.symptoms.headache.path),
-    PainType('Back Pain', Assets.images.symptoms.backPain.path),
-    PainType('Finger Fracture', Assets.images.symptoms.fingerFracture.path),
-    PainType('Hip Injury', Assets.images.symptoms.hipInjury.path),
-    PainType('Foot Pain', Assets.images.symptoms.footPain.path),
-    PainType('Elbow Pain', Assets.images.symptoms.elbowPain.path),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<OnboardingController>(
@@ -130,16 +120,16 @@ class _OnboardingSymptomsPageState extends State<OnboardingSymptomsPage> {
           mainAxisSpacing: 14,
           childAspectRatio: 0.725,
         ),
-        itemCount: painTypes.length,
+        itemCount: Constants.painTypes.length,
         itemBuilder: (context, index) {
           return GridTile(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                _buildImageWithPlaceholder(painTypes[index], onboardingController: onboardingController),
+                _buildImageWithPlaceholder(Constants.painTypes[index], onboardingController: onboardingController),
                 SizedBox(height: 6),
                 Text(
-                  painTypes[index].title,
+                  Constants.painTypes[index].title,
                   style: GoogleFonts.plusJakartaSans(
                     color: Colors.black,
                     fontSize: 12,
