@@ -140,11 +140,17 @@ class $AssetsIconsBottomNavBarGen {
 class $AssetsIconsHomeGen {
   const $AssetsIconsHomeGen();
 
+  /// File path: assets/icons/home/Magnifier.png
+  AssetGenImage get magnifier => const AssetGenImage('assets/icons/home/Magnifier.png');
+
+  /// File path: assets/icons/home/heart.svg
+  SvgGenImage get heart => const SvgGenImage('assets/icons/home/heart.svg');
+
   /// File path: assets/icons/home/largeSearchSign.svg
   SvgGenImage get largeSearchSign => const SvgGenImage('assets/icons/home/largeSearchSign.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [largeSearchSign];
+  List<dynamic> get values => [magnifier, heart, largeSearchSign];
 }
 
 class $AssetsImagesSpecialitiesGen {

@@ -11,6 +11,7 @@ class UserModel {
   String? medicalSpeciality;
   String? addressLocation;
   String? phoneNumber;
+  List<String>? favoriteDoctors;
   String? phoneNumberDialCode;
   List<String>? options;
   Map<String, List<Map<String, dynamic>>>? workingHours;
@@ -26,6 +27,7 @@ class UserModel {
     this.medicalSpeciality,
     this.addressLocation,
     this.phoneNumber,
+    this.favoriteDoctors,
     this.phoneNumberDialCode,
     this.options,
     this.workingHours,
@@ -59,6 +61,7 @@ class UserModel {
       medicalSpeciality: data['medicalSpeciality'],
       addressLocation: data['addressLocation'],
       phoneNumber: data['phoneNumber'],
+      favoriteDoctors: List<String>.from(data['favoriteDoctors'] ?? []),
       phoneNumberDialCode: data['phoneNumberDialCode'],
       options: options,
       workingHours: (data['workingHours'] as Map<String, dynamic>?)?.map((key, value) {
@@ -78,6 +81,7 @@ class UserModel {
       'medicalSpeciality': medicalSpeciality,
       'addressLocation': addressLocation,
       'phoneNumber': phoneNumber,
+      'favoriteDoctors': favoriteDoctors,
       'phoneNumberDialCode': phoneNumberDialCode,
       'options': options,
       'workingHours': workingHours,

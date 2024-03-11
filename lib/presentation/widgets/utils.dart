@@ -1,3 +1,4 @@
+import 'package:docare/presentation/pages/home/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -23,6 +24,7 @@ void showToast(String message) {
 }
 
 void navigatingTheUserDependingOnHisStatus(UserModel user) {
+  Get.find<HomeController>().userModel = user;
   switch (user.status) {
     case 'INCOMPLETE':
       user.userType == 1

@@ -11,9 +11,7 @@ import '../history/history_page.dart';
 import '../patientProfile/patient_profile_page.dart';
 
 class HomeController extends GetxController {
-  final UserModel? userModel;
-
-  HomeController({this.userModel});
+  UserModel? userModel;
 
   int currentIndex = 0;
   int previousIndex = 0;

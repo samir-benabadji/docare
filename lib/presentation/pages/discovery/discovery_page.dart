@@ -10,6 +10,7 @@ import '../../../core/assets.gen.dart';
 import '../../../core/constants/constants.dart';
 import '../../widgets/utils.dart';
 import '../doctorProfile/doctor_profile_page.dart';
+import '../favoriteDoctor/favorite_doctor_page.dart';
 import 'discovery_controller.dart';
 
 class DiscoveryPage extends StatelessWidget {
@@ -162,7 +163,7 @@ class DiscoveryPage extends StatelessWidget {
       padding: const EdgeInsets.only(
         top: 14,
         left: 17,
-        right: 26,
+        right: 13,
       ),
       child: Row(
         children: [
@@ -172,6 +173,19 @@ class DiscoveryPage extends StatelessWidget {
           SizedBox(width: 2),
           SvgPicture.asset(
             Assets.icons.dOCAREText.path,
+          ),
+          Spacer(),
+          GestureDetector(
+            onTap: () {
+              Get.to(() => FavoriteDoctorPage());
+            },
+            child: Container(
+              padding: EdgeInsets.all(6),
+              color: Colors.transparent,
+              child: SvgPicture.asset(
+                Assets.icons.home.heart.path,
+              ),
+            ),
           ),
         ],
       ),

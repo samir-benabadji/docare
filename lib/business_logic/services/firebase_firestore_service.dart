@@ -47,6 +47,22 @@ class FirebaseFirestoreService {
     });
   }
 
+  Future<List<UserModel>> getDoctorsByIds(List<String> doctorIds) async {
+    List<UserModel> doctors = [];
+    try {
+      for (String id in doctorIds) {
+        final docSnapshot = await _firebaseFirestore.collection('doctors').doc(id).get();
+        if (docSnapshot.exists) {
+          doctors.add(UserModel.fromFirestore(docSnapshot));
+        }
+      }
+    } catch (e) {
+      print('Error fetching doctors by IDs: $e');
+      // Handle exceptions
+    }
+    return doctors;
+  }
+
   String _getCollectionPathFromUserType(int userType) {
     switch (userType) {
       case 1:

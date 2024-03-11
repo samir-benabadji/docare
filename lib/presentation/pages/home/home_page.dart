@@ -43,7 +43,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
-      init: HomeController(userModel: widget.userModel),
       builder: (homeController) {
         String greeting = "Welcome";
         switch (widget.userModel.userType) {
