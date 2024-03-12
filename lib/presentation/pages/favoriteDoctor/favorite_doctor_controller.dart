@@ -1,4 +1,3 @@
-import 'package:docare/presentation/pages/home/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -22,7 +21,7 @@ class FavoriteDoctorController extends GetxController {
   }
 
   void loadFavoriteDoctors() async {
-    List<String>? favoriteDoctorIds = Get.find<HomeController>().userModel?.favoriteDoctors;
+    List<String>? favoriteDoctorIds = Get.find<FirebaseFirestoreService>().userModel?.favoriteDoctors;
     if (favoriteDoctorIds == null || favoriteDoctorIds.isEmpty) {
       if (!favoriteDoctorsStream.isClosed) {
         favoriteDoctorsStream.add([]);

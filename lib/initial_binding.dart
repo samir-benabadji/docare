@@ -10,9 +10,9 @@ import 'business_logic/services/firebase_storage_service.dart';
 class InitialBinding {
   static Future<bool> initDependencies() async {
     // services
-    Get.put<FirebaseStorageService>(FirebaseStorageService(), permanent: true);
     Get.put<FirebaseAuthService>(FirebaseAuthService(), permanent: true);
     Get.put<FirebaseFirestoreService>(FirebaseFirestoreService(), permanent: true);
+    Get.put<FirebaseStorageService>(FirebaseStorageService(), permanent: true);
 
     // controllers
     Get.put<AuthController>(AuthController(), permanent: true);

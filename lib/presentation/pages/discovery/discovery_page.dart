@@ -174,6 +174,8 @@ class DiscoveryPage extends StatelessWidget {
           SvgPicture.asset(
             Assets.icons.dOCAREText.path,
           ),
+          //Always getting the live stream data
+          //Obx(() => Text(Get.find<FirebaseFirestoreService>().userModel?.name ?? " unknown")),
           Spacer(),
           GestureDetector(
             onTap: () {

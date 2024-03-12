@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../business_logic/models/user_model.dart';
 import '../../../business_logic/services/firebase_auth_service.dart';
 import '../../../core/assets.gen.dart';
 import '../appointments/appointments_page.dart';
@@ -11,8 +10,6 @@ import '../history/history_page.dart';
 import '../patientProfile/patient_profile_page.dart';
 
 class HomeController extends GetxController {
-  UserModel? userModel;
-
   int currentIndex = 0;
   int previousIndex = 0;
 

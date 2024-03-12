@@ -1,9 +1,58 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 
 import '../models/user_model.dart';
 
 class FirebaseFirestoreService {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+  String? _collectionPathFromUserType;
+  final _userModel = Rx<UserModel?>(null);
+
+  // Getter
+  String? get collectionPathFromUserType => _collectionPathFromUserType;
+
+  // Setter
+  set collectionPathFromUserType(String? value) {
+    _collectionPathFromUserType = value;
+    // If the collection path is set, we start listening for changes
+    if (_collectionPathFromUserType != null) {
+      _startListeningForChanges();
+    }
+  }
+
+  // Getter
+  UserModel? get userModel => _userModel.value;
+
+  // Setter
+  set userModel(UserModel? value) {
+    _userModel.value = value;
+  }
+
+  // Updating userModel's data whenever there is a change / trigger on the firestore collection
+  void _updateUserModel(String docId) async {
+    if (collectionPathFromUserType != null) {
+      final UserModel? updatedUser = await getUserData(docId);
+      if (updatedUser != null) {
+        userModel = updatedUser;
+      } else {
+        print("User not found in Firestore.");
+      }
+    } else {
+      print("Collection path is not set.");
+    }
+  }
+
+  void _startListeningForChanges() {
+    // Listening for changes
+    _firebaseFirestore.collection(collectionPathFromUserType!).snapshots().listen((QuerySnapshot snapshot) {
+      snapshot.docChanges.forEach((change) {
+        if (change.type == DocumentChangeType.modified) {
+          print('User data changed: ${change.doc.id}');
+          _updateUserModel(change.doc.id);
+        }
+      });
+    });
+  }
 
   Future<void> addOrUpdateUser(String uid, Map<String, dynamic> userData) async {
     try {
@@ -19,15 +68,29 @@ class FirebaseFirestoreService {
   }
 
   Future<UserModel?> getUserData(String uid) async {
-    final List<String> collections = ['doctors', 'patients', 'admins'];
-    for (String collection in collections) {
-      final DocumentSnapshot docSnapshot = await _firebaseFirestore.collection(collection).doc(uid).get();
+    // If collectionPathFromUserType is not null, we use it directly
+    if (collectionPathFromUserType != null) {
+      final DocumentSnapshot docSnapshot =
+          await _firebaseFirestore.collection(collectionPathFromUserType!).doc(uid).get();
       if (docSnapshot.exists) {
         return UserModel.fromFirestore(docSnapshot);
+      } else {
+        print("User not found in collection: $collectionPathFromUserType");
+        return null;
       }
+    } else {
+      // If collectionPathFromUserType is null, we iterate over collections
+      final List<String> collections = ['doctors', 'patients', 'admins'];
+      for (String collection in collections) {
+        final DocumentSnapshot docSnapshot = await _firebaseFirestore.collection(collection).doc(uid).get();
+        if (docSnapshot.exists) {
+          collectionPathFromUserType = collection;
+          return UserModel.fromFirestore(docSnapshot);
+        }
+      }
+      print("User not found in any collection");
+      return null; // Returning null if user is not found in any collection
     }
-    print("User not found in any collection");
-    return null; // Returning null if user is not found in any collection
   }
 
   Future<void> deleteUser(String uid, int userType) async {
