@@ -146,11 +146,17 @@ class $AssetsIconsHomeGen {
   /// File path: assets/icons/home/heart.svg
   SvgGenImage get heart => const SvgGenImage('assets/icons/home/heart.svg');
 
+  /// File path: assets/icons/home/heart_with_shadow.png
+  AssetGenImage get heartWithShadow => const AssetGenImage('assets/icons/home/heart_with_shadow.png');
+
   /// File path: assets/icons/home/largeSearchSign.svg
   SvgGenImage get largeSearchSign => const SvgGenImage('assets/icons/home/largeSearchSign.svg');
 
+  /// File path: assets/icons/home/x_close.svg
+  SvgGenImage get xClose => const SvgGenImage('assets/icons/home/x_close.svg');
+
   /// List of all assets
-  List<dynamic> get values => [magnifier, heart, largeSearchSign];
+  List<dynamic> get values => [magnifier, heart, heartWithShadow, largeSearchSign, xClose];
 }
 
 class $AssetsImagesSpecialitiesGen {
