@@ -152,11 +152,17 @@ class $AssetsIconsHomeGen {
   /// File path: assets/icons/home/largeSearchSign.svg
   SvgGenImage get largeSearchSign => const SvgGenImage('assets/icons/home/largeSearchSign.svg');
 
+  /// File path: assets/icons/home/mini_calendar.svg
+  SvgGenImage get miniCalendar => const SvgGenImage('assets/icons/home/mini_calendar.svg');
+
+  /// File path: assets/icons/home/mini_clock.svg
+  SvgGenImage get miniClock => const SvgGenImage('assets/icons/home/mini_clock.svg');
+
   /// File path: assets/icons/home/x_close.svg
   SvgGenImage get xClose => const SvgGenImage('assets/icons/home/x_close.svg');
 
   /// List of all assets
-  List<dynamic> get values => [magnifier, heart, heartWithShadow, largeSearchSign, xClose];
+  List<dynamic> get values => [magnifier, heart, heartWithShadow, largeSearchSign, miniCalendar, miniClock, xClose];
 }
 
 class $AssetsImagesSpecialitiesGen {
