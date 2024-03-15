@@ -158,11 +158,27 @@ class $AssetsIconsHomeGen {
   /// File path: assets/icons/home/mini_clock.svg
   SvgGenImage get miniClock => const SvgGenImage('assets/icons/home/mini_clock.svg');
 
+  /// File path: assets/icons/home/tiny_left_arrow.svg
+  SvgGenImage get tinyLeftArrow => const SvgGenImage('assets/icons/home/tiny_left_arrow.svg');
+
+  /// File path: assets/icons/home/tiny_right_arrow.svg
+  SvgGenImage get tinyRightArrow => const SvgGenImage('assets/icons/home/tiny_right_arrow.svg');
+
   /// File path: assets/icons/home/x_close.svg
   SvgGenImage get xClose => const SvgGenImage('assets/icons/home/x_close.svg');
 
   /// List of all assets
-  List<dynamic> get values => [magnifier, heart, heartWithShadow, largeSearchSign, miniCalendar, miniClock, xClose];
+  List<dynamic> get values => [
+        magnifier,
+        heart,
+        heartWithShadow,
+        largeSearchSign,
+        miniCalendar,
+        miniClock,
+        tinyLeftArrow,
+        tinyRightArrow,
+        xClose
+      ];
 }
 
 class $AssetsImagesSpecialitiesGen {

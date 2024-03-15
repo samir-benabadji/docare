@@ -261,15 +261,7 @@ class AppointmentsPage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          IconButton(
-            icon: Container(
-              width: 40,
-              height: 40,
-              color: Colors.transparent,
-              child: Icon(Icons.arrow_back, color: Colors.black),
-            ),
-            onPressed: () => Get.back(),
-          ),
+          SizedBox(),
           Text(
             "My appointments",
             textAlign: TextAlign.center,

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:docare/business_logic/models/user_model.dart';
+import 'package:docare/presentation/pages/doctorProfile/widgets/doctor_date_time_schedule_component.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,6 +10,7 @@ import '../../../business_logic/models/speciality_model.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/constants/theme.dart';
 import '../../widgets/utils.dart';
+import 'doctor_profile_controller.dart';
 
 class DoctorProfilePage extends StatelessWidget {
   final UserModel userModel;
@@ -16,44 +18,123 @@ class DoctorProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: _appBarComponent(context),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 30),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 23),
-              child: Row(
-                children: [
-                  _doctorImageComponent(),
-                  SizedBox(width: 27),
-                  _doctorNameAndSpecialityComponent(),
-                ],
-              ),
+    return GetBuilder<DoctorProfileController>(
+      init: DoctorProfileController(),
+      builder: (doctorProfileController) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: _appBarComponent(context),
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 23),
+                  child: Row(
+                    children: [
+                      _doctorImageComponent(),
+                      SizedBox(width: 27),
+                      _doctorNameAndSpecialityComponent(),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 25),
+                _doctorConsultationDurationComponent(),
+                SizedBox(height: 26),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _specialityTitleComponent(),
+                      SizedBox(height: 17),
+                      _specialityContentComponent(),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 24),
+                if (userModel.symptoms != null) _symptomComponent(),
+                SizedBox(height: 24),
+                if (userModel.options != null) _doctorOptionsComponent(),
+                SizedBox(height: 24),
+                _doctorExtraInformationsComponent(doctorProfileController),
+                SizedBox(height: 16),
+                if (doctorProfileController.currentSelectedDoctorExtraInformation == "Appoitement")
+                  DoctorDateTimeScheduleComponent(userModel: userModel),
+                SizedBox(height: 27),
+              ],
             ),
-            SizedBox(height: 25),
-            _doctorConsultationDurationComponent(),
-            SizedBox(height: 26),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _specialityTitleComponent(),
-                  SizedBox(height: 17),
-                  _specialityContentComponent(),
-                ],
-              ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _doctorExtraInformationsComponent(DoctorProfileController doctorProfileController) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 18),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: doctorProfileController.doctorExtraInformations
+              .map(
+                (doctorExtraInformation) => _appointmentTitleComponent(doctorProfileController, doctorExtraInformation),
+              )
+              .toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget _appointmentTitleComponent(DoctorProfileController doctorProfileController, String doctorExtraInformation) {
+    return GestureDetector(
+      onTap: () {
+        doctorProfileController.currentSelectedDoctorExtraInformation = doctorExtraInformation;
+        doctorProfileController.update();
+      },
+      child: Container(
+        margin: EdgeInsets.only(right: 15),
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        decoration: ShapeDecoration(
+          shadows: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.25),
+              spreadRadius: 0,
+              blurRadius: 4,
+              blurStyle: BlurStyle.inner,
+              offset: Offset(-2, 2),
             ),
-            SizedBox(height: 24),
-            if (userModel.symptoms != null) _symptomComponent(),
-            SizedBox(height: 24),
-            if (userModel.options != null) _doctorOptionsComponent(),
-            SizedBox(height: 24),
           ],
+          gradient: doctorProfileController.currentSelectedDoctorExtraInformation == doctorExtraInformation
+              ? LinearGradient(
+                  begin: Alignment(1.00, 0.00),
+                  end: Alignment(-1, 0),
+                  colors: [
+                    Color(0xFFFF0472).withOpacity(0.72),
+                    Color(0xFF2AD495).withOpacity(0.72),
+                  ],
+                )
+              : LinearGradient(
+                  begin: Alignment(1.00, 0.00),
+                  end: Alignment(-1, 0),
+                  colors: [
+                    Color(0xFF2AD495).withOpacity(0.72),
+                    Color(0xFF2AD495).withOpacity(0.72),
+                  ],
+                ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(11.11),
+          ),
+        ),
+        child: Text(
+          doctorExtraInformation,
+          style: GoogleFonts.openSans(
+            color: Colors.white,
+            fontSize: 14.42,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
     );

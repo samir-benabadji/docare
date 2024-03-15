@@ -14,7 +14,8 @@ class UserModel {
   List<String>? favoriteDoctors;
   String? phoneNumberDialCode;
   List<String>? options;
-  Map<String, List<Map<String, dynamic>>>? workingHours;
+  Map<String, List<Map<String, dynamic>>>?
+      workingHours; // Working hours for each day (key: day name, value:(key: "start at" / "end at", value: hour of work))
 
   UserModel({
     required this.uid,
