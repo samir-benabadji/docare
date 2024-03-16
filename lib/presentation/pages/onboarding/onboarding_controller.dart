@@ -41,7 +41,7 @@ class OnboardingController extends GetxController {
   ];
 
   // Work Schedule
-  String currentDay = "";
+  int currentSelectedTimeStamp = 0;
   Map<String, List<Map<String, dynamic>>>? workingHours;
   List<SessionModel> allSessions = [];
 
@@ -331,7 +331,7 @@ class OnboardingController extends GetxController {
           "addressLocation": locationTextEditingController.text,
           "phoneNumber": Get.find<AuthController>().currentPhoneNumber.phoneNumber,
           "phoneNumberDialCode": Get.find<AuthController>().currentPhoneNumber.dialCode,
-          "options": selectedOptions.map((option) => option.name).toList(),
+          "options": selectedOptions.map((option) => {'name': option.name, 'price': option.price}).toList(),
           'workingHours': workingHours,
         });
       } else if (userModel?.userType == 2) {
@@ -400,7 +400,7 @@ class OnboardingController extends GetxController {
     bool hasConflict = false;
     for (int i = 0; i < allSessions.length; i++) {
       for (int j = i + 1; j < allSessions.length; j++) {
-        if (allSessions[i].day == allSessions[j].day) {
+        if (allSessions[i].timestamp == allSessions[j].timestamp) {
           DateTime startDateTimeI = DateTime(1, 1, 1, allSessions[i].startAt!.hour, allSessions[i].startAt!.minute);
           DateTime endDateTimeI = DateTime(1, 1, 1, allSessions[i].endAt!.hour, allSessions[i].endAt!.minute);
           DateTime startDateTimeJ = DateTime(1, 1, 1, allSessions[j].startAt!.hour, allSessions[j].startAt!.minute);
@@ -448,15 +448,15 @@ class OnboardingController extends GetxController {
     Map<String, List<Map<String, dynamic>>> mappedSessions = {};
 
     for (var session in sessions) {
-      final day = session.day;
+      final timestamp = session.timestamp.toString();
       final start = formatTimeOfDay(session.startAt!);
       final end = formatTimeOfDay(session.endAt!);
 
-      if (!mappedSessions.containsKey(day)) {
-        mappedSessions[day] = [];
+      if (!mappedSessions.containsKey(timestamp)) {
+        mappedSessions[timestamp] = [];
       }
 
-      mappedSessions[day]!.add({
+      mappedSessions[timestamp]!.add({
         'start at': start,
         'end at': end,
       });

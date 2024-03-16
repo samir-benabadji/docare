@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:intl/intl.dart';
 
 import '../../business_logic/models/user_model.dart';
 import '../pages/home/home_page.dart';
@@ -24,7 +25,7 @@ void showToast(String message) {
 }
 
 void navigatingTheUserDependingOnHisStatus(UserModel user) {
-  Get.find<FirebaseFirestoreService>().userModel = user;
+  Get.find<FirebaseFirestoreService>().setUserModel = user;
   switch (user.status) {
     case 'INCOMPLETE':
       user.userType == 1
@@ -62,7 +63,14 @@ String formatPhoneNumber(PhoneNumber phoneNumber) {
 String formatWorkingDays(Map<String, List<Map<String, dynamic>>> workingHours) {
   if (workingHours.isEmpty) return "Not specified";
 
-  List<String> days = workingHours.keys.toList();
+  List<String> days = workingHours.keys.map((timestamp) {
+    // Converting timestamp to DateTime to extract day name
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp));
+    String dayName = DateFormat('EEEE').format(dateTime); // Getting full day name
+    // Extracting day number
+    int dayNumber = dateTime.day;
+    return '$dayName $dayNumber';
+  }).toList();
 
   return days.join(', ');
 }

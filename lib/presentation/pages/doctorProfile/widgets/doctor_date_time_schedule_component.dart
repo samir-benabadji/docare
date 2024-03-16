@@ -135,8 +135,8 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
     return dayWidgets;
   }
 
-  List<Widget> _buildSessions(BuildContext context, DoctorProfileController controller) {
-    String selectedDay = DateFormat('E').format(controller.highlightedDate).substring(0, 3).toLowerCase();
+  List<Widget> _buildSessions(BuildContext context, DoctorProfileController doctorProfileController) {
+    String selectedDay = DateFormat('E').format(doctorProfileController.highlightedDate).substring(0, 3).toLowerCase();
     selectedDay = selectedDay[0].toUpperCase() + selectedDay.substring(1);
     List<Map<String, dynamic>>? workingHours = userModel.workingHours?[selectedDay];
     List<Widget> sessionWidgets = [];
@@ -149,14 +149,18 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
         sessionWidgets.add(
           GestureDetector(
             onTap: () {
-              controller.currentSelectedSessionStartAt = startAt;
-              controller.update();
+              doctorProfileController.currentSelectedSessionStartAt = startAt;
+              doctorProfileController.update();
+
+              _appointmentConfirmationModalSheet(context, doctorProfileController, startAt, endAt);
             },
             child: Container(
               margin: EdgeInsets.only(right: 15),
               padding: EdgeInsets.symmetric(vertical: 8, horizontal: 17),
               decoration: ShapeDecoration(
-                color: controller.currentSelectedSessionStartAt == startAt ? Color(0xFF7ACDAF) : Color(0x5EC3C3C3),
+                color: doctorProfileController.currentSelectedSessionStartAt == startAt
+                    ? Color(0xFF7ACDAF)
+                    : Color(0x5EC3C3C3),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(11.11),
                 ),
@@ -164,7 +168,9 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
               child: Text(
                 startAt,
                 style: GoogleFonts.roboto(
-                  color: controller.currentSelectedSessionStartAt == startAt ? Color(0xFFF9F6F4) : Color(0xFF090F47),
+                  color: doctorProfileController.currentSelectedSessionStartAt == startAt
+                      ? Color(0xFFF9F6F4)
+                      : Color(0xFF090F47),
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                 ),
@@ -187,5 +193,68 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
     }
 
     return sessionWidgets;
+  }
+
+  Future<dynamic> _appointmentConfirmationModalSheet(
+    BuildContext context,
+    DoctorProfileController doctorProfileController,
+    String startAt,
+    String endAt,
+  ) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Pick the type of appointment:',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                  if (userModel.options != null)
+                    Column(
+                      children: userModel.options!.map((option) {
+                        return RadioListTile(
+                          title: Text(option['name']),
+                          value: option,
+                          groupValue: doctorProfileController.selectedOption,
+                          onChanged: (value) {
+                            setState(() {
+                              doctorProfileController.selectedOption = value.toString();
+                            });
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  SizedBox(height: 20.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (doctorProfileController.selectedOption.isNotEmpty) {
+                        doctorProfileController.createAppointment(
+                          startAt: startAt,
+                          endAt: endAt,
+                          doctorId: userModel.uid,
+                          optionPicked: doctorProfileController.selectedOption,
+                        );
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Text('Confirm', style: TextStyle(color: Colors.white)),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }

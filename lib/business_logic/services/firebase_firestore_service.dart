@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
+import '../../presentation/widgets/utils.dart';
+import '../models/appointment_model.dart';
 import '../models/user_model.dart';
 
 class FirebaseFirestoreService {
@@ -21,11 +23,56 @@ class FirebaseFirestoreService {
   }
 
   // Getter
-  UserModel? get userModel => _userModel.value;
+  UserModel? get getUserModel => _userModel.value;
 
   // Setter
-  set userModel(UserModel? value) {
+  set setUserModel(UserModel value) {
     _userModel.value = value;
+  }
+
+  Future<void> checkAppointmentAvailability(Appointment appointment) async {
+    try {
+      // Checking if the appointment already exists
+      final QuerySnapshot appointmentsSnapshot = await _firebaseFirestore
+          .collection('appointments')
+          .where('doctorId', isEqualTo: appointment.doctorId)
+          .where('startAt', isEqualTo: appointment.startAt)
+          .limit(1) // Limiting to 1 to optimize query
+          .get();
+
+      if (appointmentsSnapshot.docs.isNotEmpty) {
+        final appointmentData = appointmentsSnapshot.docs.first.data() as Map<String, dynamic>;
+        final String patientId = appointmentData['patientId'];
+
+        // Checking if the appointment is already taken
+        if (patientId != appointment.patientId) {
+          showToast('Sorry, this appointment is already taken.');
+          return;
+        }
+
+        // Checking if the request is coming from the same user
+        if (patientId == appointment.patientId) {
+          showToast('You already made this appointment.');
+          return;
+        }
+      }
+
+      // available
+      await addAppointment(appointment);
+    } catch (e) {
+      print('Error checking appointment availability: $e');
+      showToast('Failed to check appointment availability. Please try again later.');
+    }
+  }
+
+  Future<void> addAppointment(Appointment appointment) async {
+    try {
+      await _firebaseFirestore.collection('appointments').add(appointment.toFirestore());
+      showToast('Appointment created successfully');
+    } catch (e) {
+      print('Error adding appointment to Firestore: $e');
+      showToast('Failed to create appointment. Please try again later.');
+    }
   }
 
   // Updating userModel's data whenever there is a change / trigger on the firestore collection
@@ -33,7 +80,7 @@ class FirebaseFirestoreService {
     if (collectionPathFromUserType != null) {
       final UserModel? updatedUser = await getUserData(docId);
       if (updatedUser != null) {
-        userModel = updatedUser;
+        setUserModel = updatedUser;
       } else {
         print("User not found in Firestore.");
       }
@@ -58,9 +105,12 @@ class FirebaseFirestoreService {
     try {
       String collectionPath = _getCollectionPathFromUserType(userData['userType']);
       await _firebaseFirestore.collection(collectionPath).doc(uid).set(
-            userData,
-            SetOptions(merge: true),
-          );
+        {
+          ...userData,
+          'createdAt': FieldValue.serverTimestamp(),
+        },
+        SetOptions(merge: true),
+      );
     } catch (e) {
       print('Error adding or updating user in Firestore: $e');
       // Handle exceptions

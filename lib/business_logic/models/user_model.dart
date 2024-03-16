@@ -13,9 +13,10 @@ class UserModel {
   String? phoneNumber;
   List<String>? favoriteDoctors;
   String? phoneNumberDialCode;
-  List<String>? options;
+  List<Map<String, dynamic>>? options;
   Map<String, List<Map<String, dynamic>>>?
-      workingHours; // Working hours for each day (key: day name, value:(key: "start at" / "end at", value: hour of work))
+      workingHours; // Working hours for each day (key: timestamp, value:(key: "start at" / "end at", value: hour of work))
+  Timestamp? createdAt;
 
   UserModel({
     required this.uid,
@@ -32,15 +33,11 @@ class UserModel {
     this.phoneNumberDialCode,
     this.options,
     this.workingHours,
+    this.createdAt,
   });
 
   factory UserModel.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data() as Map<String, dynamic>;
-
-    List<String> options = [];
-    if (data['options'] != null) {
-      options = List<String>.from(data['options']);
-    }
 
     List<String> symptoms = [];
     if (data['symptoms'] != null) {
@@ -49,6 +46,15 @@ class UserModel {
       } else {
         symptoms = [data['symptoms']];
       }
+    }
+
+    List<Map<String, dynamic>>? options;
+    if (data['options'] != null) {
+      options = List<Map<String, dynamic>>.from(
+        data['options'].map(
+          (option) => {'name': option['name'], 'price': option['price']},
+        ),
+      );
     }
 
     return UserModel(
@@ -68,6 +74,7 @@ class UserModel {
       workingHours: (data['workingHours'] as Map<String, dynamic>?)?.map((key, value) {
         return MapEntry(key, List<Map<String, dynamic>>.from(value));
       }),
+      createdAt: data['createdAt'],
     );
   }
 
@@ -84,8 +91,9 @@ class UserModel {
       'phoneNumber': phoneNumber,
       'favoriteDoctors': favoriteDoctors,
       'phoneNumberDialCode': phoneNumberDialCode,
-      'options': options,
+      'options': options?.map((option) => {'name': option['name'], 'price': option['price']}).toList(),
       'workingHours': workingHours,
+      'createdAt': createdAt,
     };
   }
 }

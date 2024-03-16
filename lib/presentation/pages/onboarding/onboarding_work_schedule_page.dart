@@ -51,7 +51,7 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
         child: Column(
           children: [
             ...onboardingController.allSessions
-                .where((element) => element.day == onboardingController.currentDay)
+                .where((element) => element.timestamp == onboardingController.currentSelectedTimeStamp)
                 .toList()
                 .asMap()
                 .entries
@@ -66,14 +66,15 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
                 ],
               );
             }).toList(),
-            if (onboardingController.currentDay.isNotEmpty) SizedBox(height: 22),
-            if (onboardingController.currentDay.isNotEmpty)
+            if (onboardingController.currentSelectedTimeStamp != 0) SizedBox(height: 22),
+            if (onboardingController.currentSelectedTimeStamp != 0)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
                     onTap: () {
-                      onboardingController.allSessions.add(SessionModel(day: onboardingController.currentDay));
+                      onboardingController.allSessions
+                          .add(SessionModel(timestamp: onboardingController.currentSelectedTimeStamp));
                       onboardingController.isSavedSuccessfully = false;
                       onboardingController.update();
                     },
@@ -130,6 +131,23 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
 
   Widget _dayOfWeekComponent(OnboardingController onboardingController) {
     List<String> days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+    // Getting the index of the current day
+    DateTime now = DateTime.now();
+    int currentDayIndex = now.weekday - 1; // Adjusting index to start from 0
+
+    // Moving the current day to the beginning of the list
+    List<String> reorderedDays = [
+      days[currentDayIndex],
+      ...days.getRange(currentDayIndex + 1, days.length),
+      ...days.getRange(0, currentDayIndex),
+    ];
+
+    // Getting the current date
+    int currentDate = now.day;
+    int currentMonth = now.month;
+    int currentYear = now.year;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 17),
       child: Container(
@@ -153,11 +171,31 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: days.map((String day) {
+          children: reorderedDays.asMap().entries.map((entry) {
+            String day = entry.value;
+            int index = entry.key;
+            // Calculating the date for each day, considering month end
+            int date = currentDate + index;
+            if (date > DateTime(now.year, now.month + 1, 0).day) {
+              date -= DateTime(now.year, now.month + 1, 0).day;
+            }
+
+            int timestamp = DateTime(currentYear, currentMonth, date).millisecondsSinceEpoch;
+
             return GestureDetector(
               onTap: () {
-                final String currentDay = day;
-                onboardingController.currentDay = currentDay;
+                int selectedDate = currentDate + index;
+                if (selectedDate > DateTime(now.year, now.month + 1, 0).day) {
+                  selectedDate -= DateTime(now.year, now.month + 1, 0).day;
+                  currentMonth++;
+                  if (currentMonth > 12) {
+                    currentMonth = 1;
+                    currentYear++;
+                  }
+                }
+
+                onboardingController.currentSelectedTimeStamp = timestamp;
+
                 onboardingController.update();
               },
               child: Container(
@@ -166,7 +204,7 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Text(
-                      day,
+                      '$day $date',
                       style: GoogleFonts.radioCanada(
                         color: Color(0xFF090F47),
                         fontSize: 12,
@@ -179,10 +217,10 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
                       width: 24,
                       height: 24,
                       decoration: BoxDecoration(
-                        color: onboardingController.currentDay == day
+                        color: onboardingController.currentSelectedTimeStamp == timestamp
                             ? Color(0x7F058155)
                             : (onboardingController.allSessions.any(
-                                      (element) => element.day == day,
+                                      (element) => element.timestamp == timestamp,
                                     ) &&
                                     onboardingController.isSavedSuccessfully)
                                 ? Color(0xFFEFC02D)
@@ -190,7 +228,7 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
                         shape: BoxShape.circle,
                       ),
                       child: (onboardingController.allSessions.any(
-                                (element) => element.day == day,
+                                (element) => element.timestamp == timestamp,
                               ) &&
                               onboardingController.isSavedSuccessfully)
                           ? SvgPicture.asset(

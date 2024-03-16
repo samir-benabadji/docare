@@ -157,7 +157,7 @@ class DoctorProfilePage extends StatelessWidget {
                 ),
               ),
               child: Text(
-                option,
+                option['name'],
                 style: GoogleFonts.openSans(
                   color: Color(0xFF090F47),
                   fontSize: 14.00,

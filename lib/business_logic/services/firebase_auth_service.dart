@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:docare/presentation/widgets/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -21,6 +22,7 @@ class FirebaseAuthService {
           'email': email,
           'userType': userType,
           'status': 'INCOMPLETE',
+          'createdAt': Timestamp.now(),
         };
         final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
 

@@ -21,7 +21,7 @@ class FavoriteDoctorController extends GetxController {
   }
 
   void loadFavoriteDoctors() async {
-    List<String>? favoriteDoctorIds = Get.find<FirebaseFirestoreService>().userModel?.favoriteDoctors;
+    List<String>? favoriteDoctorIds = Get.find<FirebaseFirestoreService>().getUserModel?.favoriteDoctors;
     if (favoriteDoctorIds == null || favoriteDoctorIds.isEmpty) {
       if (!favoriteDoctorsStream.isClosed) {
         favoriteDoctorsStream.add([]);
