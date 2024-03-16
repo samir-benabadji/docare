@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../business_logic/services/firebase_auth_service.dart';
 import '../../../core/assets.gen.dart';
 import '../appointments/appointments_page.dart';
 import '../discovery/discovery_page.dart';
@@ -21,11 +20,6 @@ class HomeController extends GetxController {
   void onInit() {
     initBotttomNav();
     super.onInit();
-  }
-
-  Future<void> logout() async {
-    final _firebaseAuthService = Get.find<FirebaseAuthService>();
-    await _firebaseAuthService.signOut();
   }
 
   initBotttomNav() {

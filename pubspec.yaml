@@ -104,6 +104,7 @@ flutter:
     - assets/icons/
     - assets/icons/auth/
     - assets/icons/home/
+    - assets/icons/profile/
     - assets/icons/bottomNavBar/
 
 

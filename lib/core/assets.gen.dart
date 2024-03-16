@@ -55,6 +55,8 @@ class $AssetsIconsGen {
   /// File path: assets/icons/new_user.svg
   SvgGenImage get newUser => const SvgGenImage('assets/icons/new_user.svg');
 
+  $AssetsIconsProfileGen get profile => const $AssetsIconsProfileGen();
+
   /// File path: assets/icons/syringe.png
   AssetGenImage get syringe => const AssetGenImage('assets/icons/syringe.png');
 
@@ -179,6 +181,31 @@ class $AssetsIconsHomeGen {
         tinyRightArrow,
         xClose
       ];
+}
+
+class $AssetsIconsProfileGen {
+  const $AssetsIconsProfileGen();
+
+  /// File path: assets/icons/profile/eye_open.svg
+  SvgGenImage get eyeOpen => const SvgGenImage('assets/icons/profile/eye_open.svg');
+
+  /// File path: assets/icons/profile/lock.svg
+  SvgGenImage get lock => const SvgGenImage('assets/icons/profile/lock.svg');
+
+  /// File path: assets/icons/profile/logout.svg
+  SvgGenImage get logout => const SvgGenImage('assets/icons/profile/logout.svg');
+
+  /// File path: assets/icons/profile/notifications.svg
+  SvgGenImage get notifications => const SvgGenImage('assets/icons/profile/notifications.svg');
+
+  /// File path: assets/icons/profile/question_mark.svg
+  SvgGenImage get questionMark => const SvgGenImage('assets/icons/profile/question_mark.svg');
+
+  /// File path: assets/icons/profile/two_users.svg
+  SvgGenImage get twoUsers => const SvgGenImage('assets/icons/profile/two_users.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [eyeOpen, lock, logout, notifications, questionMark, twoUsers];
 }
 
 class $AssetsImagesSpecialitiesGen {
