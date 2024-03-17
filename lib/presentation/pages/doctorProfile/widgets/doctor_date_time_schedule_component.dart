@@ -312,7 +312,7 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
                     onPressed: () {
                       if (doctorProfileController.selectedOption != null) {
                         doctorProfileController.createAppointment(
-                          doctorId: userModel.uid,
+                          doctorUserModel: userModel,
                           optionPicked: doctorProfileController.selectedOption!,
                         );
                         Navigator.pop(context);

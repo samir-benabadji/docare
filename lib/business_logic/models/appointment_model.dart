@@ -3,6 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class AppointmentModel {
   final String patientId;
   final String doctorId;
+  final String doctorName;
+  final String doctorSpecialty;
+  final String doctorProfileImageUrl;
   final Map<String, dynamic> optionPicked;
   final String startAt;
   final String endAt;
@@ -12,6 +15,9 @@ class AppointmentModel {
   AppointmentModel({
     required this.patientId,
     required this.doctorId,
+    required this.doctorName,
+    required this.doctorSpecialty,
+    required this.doctorProfileImageUrl,
     required this.optionPicked,
     required this.startAt,
     required this.endAt,
@@ -24,6 +30,9 @@ class AppointmentModel {
     return AppointmentModel(
       patientId: data['patientId'],
       doctorId: data['doctorId'],
+      doctorName: data['doctorName'],
+      doctorSpecialty: data['doctorSpecialty'],
+      doctorProfileImageUrl: data['doctorProfileImageUrl'],
       optionPicked: data['optionPicked'],
       startAt: data['startAt'],
       endAt: data['endAt'],
@@ -36,6 +45,9 @@ class AppointmentModel {
     return {
       'patientId': patientId,
       'doctorId': doctorId,
+      'doctorName': doctorName,
+      'doctorSpecialty': doctorSpecialty,
+      'doctorProfileImageUrl': doctorProfileImageUrl,
       'optionPicked': optionPicked,
       'startAt': startAt,
       'endAt': endAt,

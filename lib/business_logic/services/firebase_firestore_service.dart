@@ -30,6 +30,23 @@ class FirebaseFirestoreService {
     _userModel.value = value;
   }
 
+  Future<UserModel?> getDoctorByUid(String doctorUid) async {
+    try {
+      final DocumentSnapshot docSnapshot = await _firebaseFirestore.collection('doctors').doc(doctorUid).get();
+      if (docSnapshot.exists) {
+        return UserModel.fromFirestore(docSnapshot);
+      } else {
+        print("Doctor not found with UID: $doctorUid");
+        showToast('Doctor not found. Please verify the UID and try again.');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching doctor by UID: $e');
+      showToast('Failed to fetch doctor. Please try again later.');
+      return null;
+    }
+  }
+
   Future<List<AppointmentModel>> getAppointmentsForPatient(String patientId) async {
     try {
       QuerySnapshot appointmentSnapshot =

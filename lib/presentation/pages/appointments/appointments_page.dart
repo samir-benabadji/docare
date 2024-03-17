@@ -1,11 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 import '../../../business_logic/models/appointment_model.dart';
 import '../../../core/assets.gen.dart';
+import '../../../core/constants/theme.dart';
+import '../../widgets/utils.dart';
 import 'appointments_controller.dart';
+import 'appointments_detail_page.dart';
 
 class AppointmentsPage extends StatelessWidget {
   @override
@@ -23,8 +28,6 @@ class AppointmentsPage extends StatelessWidget {
                 SizedBox(height: 32),
                 _toggleButtonComponent(appointmentsController),
                 SizedBox(height: 22),
-                _searchTextField(),
-                _appointmentComponent(),
                 _appointmentsMainContent(appointmentsController),
               ],
             ),
@@ -34,7 +37,9 @@ class AppointmentsPage extends StatelessWidget {
     );
   }
 
-  Widget _appointmentComponent() {
+  Widget _appointmentComponent(AppointmentsController appointmentsController, AppointmentModel appointment) {
+    DateTime appointmentDate = DateTime.fromMillisecondsSinceEpoch(appointment.appointmentTimeStamp);
+    String formattedDate = DateFormat('EEEE, d MMMM').format(appointmentDate); // TODO: also show the year?
     return Container(
       margin: EdgeInsets.only(
         bottom: 16,
@@ -60,12 +65,43 @@ class AppointmentsPage extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  shape: BoxShape.circle,
+              ClipOval(
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  child: CachedNetworkImage(
+                    imageUrl: appointment.doctorProfileImageUrl,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                    placeholder: (context, url) {
+                      return SizedBox(
+                        width: 48,
+                        height: 48,
+                        child: Center(
+                          child: shimmerComponent(
+                            double.infinity,
+                            double.infinity,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(13),
+                              topRight: Radius.circular(13),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    errorWidget: (context, url, error) {
+                      return Center(
+                        child: CircleAvatar(
+                          backgroundColor: DocareTheme.apple,
+                          child: Icon(
+                            Icons.broken_image,
+                            color: Colors.white,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
               SizedBox(width: 10),
@@ -75,7 +111,7 @@ class AppointmentsPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Dr. Wissam Azrine',
+                    appointment.doctorName,
                     style: GoogleFonts.poppins(
                       color: Color(0xFF0D1B34),
                       fontSize: 16,
@@ -84,7 +120,7 @@ class AppointmentsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Dental Specialist',
+                    appointment.doctorSpecialty,
                     style: GoogleFonts.poppins(
                       color: Color(0xFF8696BB),
                       fontSize: 14,
@@ -102,8 +138,7 @@ class AppointmentsPage extends StatelessWidget {
             color: Color(0xffF5F5F5),
           ),
           SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
             children: [
               Row(
                 children: [
@@ -112,7 +147,7 @@ class AppointmentsPage extends StatelessWidget {
                   ),
                   SizedBox(width: 8),
                   Text(
-                    'Sunday, 12 June',
+                    formattedDate,
                     style: GoogleFonts.poppins(
                       color: Color(0xFF8696BB),
                       fontSize: 14,
@@ -121,6 +156,7 @@ class AppointmentsPage extends StatelessWidget {
                   )
                 ],
               ),
+              SizedBox(height: 8),
               Row(
                 children: [
                   SvgPicture.asset(
@@ -128,7 +164,7 @@ class AppointmentsPage extends StatelessWidget {
                   ),
                   SizedBox(width: 8),
                   Text(
-                    "11:00 - 12:00 AM",
+                    "${appointment.startAt.split(' ')[0]} - ${appointment.endAt.split(' ')[0]}",
                     style: GoogleFonts.poppins(
                       color: Color(0xFF8696BB),
                       fontSize: 14,
@@ -140,23 +176,33 @@ class AppointmentsPage extends StatelessWidget {
             ],
           ),
           SizedBox(height: 20),
-          Container(
-            alignment: Alignment.center,
-            width: Get.width,
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-            decoration: ShapeDecoration(
-              color: Color(0x192AD495),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(100),
+          GestureDetector(
+            onTap: () {
+              appointmentsController.getDoctorUserModel(appointment.doctorId);
+              Get.to(
+                () => AppointmentsDetailPage(
+                  appointment: appointment,
+                ),
+              );
+            },
+            child: Container(
+              alignment: Alignment.center,
+              width: Get.width,
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+              decoration: ShapeDecoration(
+                color: Color(0x192AD495),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
               ),
-            ),
-            child: Text(
-              'Detail',
-              style: GoogleFonts.poppins(
-                color: Color(0xFF2AD495),
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                height: 1.1,
+              child: Text(
+                'Detail',
+                style: GoogleFonts.poppins(
+                  color: Color(0xFF2AD495),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  height: 1.1,
+                ),
               ),
             ),
           )
@@ -373,22 +419,26 @@ class AppointmentsPage extends StatelessWidget {
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return _noAppointmentsComponent();
         } else {
-          final doctors = snapshot.data!;
+          final appointments = snapshot.data!;
           return Expanded(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 19, vertical: 32),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 0.6,
-                  crossAxisSpacing: 19,
-                  mainAxisSpacing: 19,
-                ),
-                itemCount: doctors.length,
-                itemBuilder: (context, index) {
-                  final doctor = doctors[index];
-                  return _appointmentComponent();
-                },
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _searchTextField(),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 19, vertical: 32),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (final appointment in appointments)
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 19),
+                            child: _appointmentComponent(appointmentsController, appointment),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           );

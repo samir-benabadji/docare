@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import '../../../business_logic/models/appointment_model.dart';
+import '../../../business_logic/models/user_model.dart';
 import '../../../business_logic/services/firebase_firestore_service.dart';
 import '../../widgets/utils.dart';
 
@@ -36,7 +37,7 @@ class DoctorProfileController extends GetxController {
   }
 
   void createAppointment({
-    required String doctorId,
+    required UserModel doctorUserModel,
     required Map<String, dynamic> optionPicked,
   }) async {
     try {
@@ -61,12 +62,15 @@ class DoctorProfileController extends GetxController {
 
       final appointment = AppointmentModel(
         patientId: _firebaseFirestoreService.getUserModel!.uid,
-        doctorId: doctorId,
+        doctorId: doctorUserModel.uid,
         optionPicked: optionPicked,
         startAt: startAtAppointment,
         appointmentTimeStamp: timestamp!,
         endAt: endAtAppointment,
         createdAt: Timestamp.now(),
+        doctorName: doctorUserModel.name ?? "Unknown",
+        doctorProfileImageUrl: doctorUserModel.profileImageUrl ?? "",
+        doctorSpecialty: doctorUserModel.medicalSpeciality ?? "Unknown",
       );
 
       await _firebaseFirestoreService.checkAppointmentAvailability(appointment);

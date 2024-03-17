@@ -304,6 +304,7 @@ class DiscoveryPage extends StatelessWidget {
                     );
                   },
                   child: Container(
+                    margin: EdgeInsets.only(right: 20),
                     child: Column(
                       children: <Widget>[
                         ClipRRect(
