@@ -1,3 +1,4 @@
+import 'package:docare/core/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../business_logic/models/user_model.dart';
 import '../../../../core/assets.gen.dart';
+import '../../../widgets/utils.dart';
 import '../doctor_profile_controller.dart';
 
 class DoctorDateTimeScheduleComponent extends StatelessWidget {
@@ -26,10 +28,40 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
               _currentSelectedDayComponent(context),
               SizedBox(height: 22),
               _currentSelectedSessionComponent(context),
+              SizedBox(height: 22),
+              _bookAppointmentButtonComponent(context, doctorProfileController),
             ],
           ),
         );
       },
+    );
+  }
+
+  Widget _bookAppointmentButtonComponent(BuildContext context, DoctorProfileController doctorProfileController) {
+    return GestureDetector(
+      onTap: () {
+        _appointmentConfirmationModalSheet(context, doctorProfileController);
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 14),
+        alignment: Alignment.center,
+        decoration: ShapeDecoration(
+          color: doctorProfileController.currentSelectedSessionStartAt.isNotEmpty
+              ? DocareTheme.apple
+              : DocareTheme.babyApple,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.03),
+          ),
+        ),
+        child: Text(
+          'Book Appointment',
+          style: GoogleFonts.openSans(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
     );
   }
 
@@ -47,8 +79,11 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
   Widget _currentSelectedDayComponent(BuildContext context) {
     return GetBuilder<DoctorProfileController>(
       builder: (controller) {
-        return Row(
-          children: _buildDays(context, controller),
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: _buildDays(context, controller),
+          ),
         );
       },
     );
@@ -89,43 +124,71 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
   List<Widget> _buildDays(BuildContext context, DoctorProfileController controller) {
     DateFormat dayFormat = DateFormat('E');
     DateFormat dateFormat = DateFormat('dd');
-    DateTime startDate = controller.selectedDate.subtract(Duration(days: controller.selectedDate.weekday - 1));
+
+    // Getting the total number of days in the selected month
+    int totalDaysCount = DateTime(controller.selectedDate.year, controller.selectedDate.month + 1, 0).day;
+
     List<Widget> dayWidgets = [];
 
-    for (int i = 0; i < 7; i++) {
-      DateTime thisDay = startDate.add(Duration(days: i));
-      bool isSelected = controller.highlightedDate.isAtSameMomentAs(thisDay);
+    // Getting today's date
+    DateTime today = DateTime.now();
+
+    for (int i = 1; i <= totalDaysCount; i++) {
+      // Creating a DateTime object for each day of the month
+      DateTime thisDay = DateTime(controller.selectedDate.year, controller.selectedDate.month, i);
+
+      // Checking if this day is the highlighted date
+      bool isSelected = controller.highlightedDate.year == thisDay.year &&
+          controller.highlightedDate.month == thisDay.month &&
+          controller.highlightedDate.day == thisDay.day;
+
+      // Checking if this day is before today
+      bool isPastDay = thisDay.isBefore(DateTime(today.year, today.month, today.day));
+
+      // Getting the day name and date number
       String dayName = dayFormat.format(thisDay);
       dayName = dayName[0].toUpperCase() + dayName.substring(1, 3).toLowerCase();
       String dateNumber = dateFormat.format(thisDay);
 
       dayWidgets.add(
-        Expanded(
-          child: GestureDetector(
-            onTap: () => controller.selectDate(thisDay),
-            child: Container(
-              color: Colors.transparent,
-              child: Column(
-                children: [
-                  Text(
-                    dayName,
-                    style: GoogleFonts.roboto(
-                      color: isSelected ? Color(0xFF7ACDAF) : Color(0xFF090F47),
-                      fontSize: 14.28,
-                      fontWeight: FontWeight.w400,
-                    ),
+        GestureDetector(
+          onTap: () {
+            // Only allowing selection if the day is not in the past
+            if (!isPastDay) {
+              controller.selectDate(thisDay);
+            }
+          },
+          child: Container(
+            margin: EdgeInsets.only(right: 22),
+            color: Colors.transparent,
+            child: Column(
+              children: [
+                Text(
+                  dayName,
+                  style: GoogleFonts.roboto(
+                    color: isPastDay
+                        ? Colors.red
+                        : isSelected
+                            ? Color(0xFF7ACDAF)
+                            : Color(0xFF090F47),
+                    fontSize: 14.28,
+                    fontWeight: FontWeight.w400,
                   ),
-                  SizedBox(height: 8),
-                  Text(
-                    dateNumber,
-                    style: GoogleFonts.roboto(
-                      color: isSelected ? Color(0xFF7ACDAF) : Colors.black.withOpacity(0.27000001072883606),
-                      fontSize: 14.28,
-                      fontWeight: FontWeight.w400,
-                    ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  dateNumber,
+                  style: GoogleFonts.roboto(
+                    color: isPastDay
+                        ? Colors.red
+                        : isSelected
+                            ? Color(0xFF7ACDAF)
+                            : Colors.black.withOpacity(0.27),
+                    fontSize: 14.28,
+                    fontWeight: FontWeight.w400,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -136,9 +199,11 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
   }
 
   List<Widget> _buildSessions(BuildContext context, DoctorProfileController doctorProfileController) {
-    String selectedDay = DateFormat('E').format(doctorProfileController.highlightedDate).substring(0, 3).toLowerCase();
-    selectedDay = selectedDay[0].toUpperCase() + selectedDay.substring(1);
-    List<Map<String, dynamic>>? workingHours = userModel.workingHours?[selectedDay];
+    // Getting the current selected day
+    DateTime selectedDay = doctorProfileController.highlightedDate;
+
+    // Getting the working hours for the selected day
+    List<Map<String, dynamic>>? workingHours = userModel.workingHours?[selectedDay.millisecondsSinceEpoch.toString()];
     List<Widget> sessionWidgets = [];
 
     if (workingHours != null && workingHours.isNotEmpty) {
@@ -146,38 +211,48 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
         String startAt = session['start at'].split(' ')[0];
         String endAt = session['end at'].split(' ')[0];
 
-        sessionWidgets.add(
-          GestureDetector(
-            onTap: () {
-              doctorProfileController.currentSelectedSessionStartAt = startAt;
-              doctorProfileController.update();
+        int? timestamp = int.tryParse(selectedDay.millisecondsSinceEpoch.toString());
 
-              _appointmentConfirmationModalSheet(context, doctorProfileController, startAt, endAt);
-            },
-            child: Container(
-              margin: EdgeInsets.only(right: 15),
-              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 17),
-              decoration: ShapeDecoration(
-                color: doctorProfileController.currentSelectedSessionStartAt == startAt
-                    ? Color(0xFF7ACDAF)
-                    : Color(0x5EC3C3C3),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(11.11),
-                ),
-              ),
-              child: Text(
-                startAt,
-                style: GoogleFonts.roboto(
+        // Checking if the session is for the selected day
+        if (startAt.isNotEmpty) {
+          sessionWidgets.add(
+            GestureDetector(
+              onTap: () {
+                doctorProfileController.startAtAppointment = session['start at'];
+                doctorProfileController.endAtAppointment = session['end at'];
+                doctorProfileController.currentSelectedSessionStartAt = startAt;
+                if (timestamp != null) {
+                  doctorProfileController.timestamp = timestamp;
+                  doctorProfileController.update();
+                } else {
+                  showToast('Doctor did not provide appointment date');
+                }
+              },
+              child: Container(
+                margin: EdgeInsets.only(right: 15),
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 17),
+                decoration: ShapeDecoration(
                   color: doctorProfileController.currentSelectedSessionStartAt == startAt
-                      ? Color(0xFFF9F6F4)
-                      : Color(0xFF090F47),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
+                      ? Color(0xFF7ACDAF)
+                      : Color(0x5EC3C3C3),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(11.11),
+                  ),
+                ),
+                child: Text(
+                  startAt,
+                  style: GoogleFonts.roboto(
+                    color: doctorProfileController.currentSelectedSessionStartAt == startAt
+                        ? Color(0xFFF9F6F4)
+                        : Color(0xFF090F47),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ),
-          ),
-        );
+          );
+        }
       }
     } else {
       sessionWidgets.add(
@@ -198,8 +273,6 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
   Future<dynamic> _appointmentConfirmationModalSheet(
     BuildContext context,
     DoctorProfileController doctorProfileController,
-    String startAt,
-    String endAt,
   ) {
     return showModalBottomSheet(
       context: context,
@@ -223,12 +296,12 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
                     Column(
                       children: userModel.options!.map((option) {
                         return RadioListTile(
-                          title: Text(option['name']),
+                          title: Text(option['name'] + ", " + option['price'].toString() + " \$"),
                           value: option,
                           groupValue: doctorProfileController.selectedOption,
                           onChanged: (value) {
                             setState(() {
-                              doctorProfileController.selectedOption = value.toString();
+                              doctorProfileController.selectedOption = value;
                             });
                           },
                         );
@@ -237,12 +310,10 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
                   SizedBox(height: 20.0),
                   ElevatedButton(
                     onPressed: () {
-                      if (doctorProfileController.selectedOption.isNotEmpty) {
+                      if (doctorProfileController.selectedOption != null) {
                         doctorProfileController.createAppointment(
-                          startAt: startAt,
-                          endAt: endAt,
                           doctorId: userModel.uid,
-                          optionPicked: doctorProfileController.selectedOption,
+                          optionPicked: doctorProfileController.selectedOption!,
                         );
                         Navigator.pop(context);
                       }

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserModel {
   final String uid;
   final String email;
-  final int userType; // 1 for doctors, 2 for users, 0 for admins
+  final int userType; // 1 for doctors, 2 for patients, 0 for admins
   String? name;
   String? status;
   List<String>? symptoms;

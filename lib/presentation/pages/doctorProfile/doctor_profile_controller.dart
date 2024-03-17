@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import '../../../business_logic/models/appointment_model.dart';
@@ -14,10 +15,15 @@ class DoctorProfileController extends GetxController {
   List<String> doctorExtraInformations = ["Appoitement", "Clinic"];
   String currentSelectedDoctorExtraInformation = "";
 
-  String selectedOption = "";
+  Map<String, dynamic>? selectedOption;
 
   DateTime get selectedDate => currentSelectedMonth;
   DateTime get highlightedDate => currentSelectedDay;
+
+  // Booking an appointment
+  String startAtAppointment = '';
+  String endAtAppointment = '';
+  int? timestamp;
 
   void previousMonth() {
     currentSelectedMonth = DateTime(currentSelectedMonth.year, currentSelectedMonth.month - 1, 1);
@@ -31,23 +37,36 @@ class DoctorProfileController extends GetxController {
 
   void createAppointment({
     required String doctorId,
-    required String optionPicked,
-    required String startAt,
-    required String endAt,
+    required Map<String, dynamic> optionPicked,
   }) async {
     try {
-      if (_firebaseFirestoreService.getUserModel == null) return;
+      if (_firebaseFirestoreService.getUserModel == null) {
+        showToast("User's information is not available.");
+        return;
+      }
+
       if (_firebaseFirestoreService.getUserModel?.userType != 2) {
         showToast('Only patients can make appointments.');
         return;
       }
 
-      final appointment = Appointment(
+      if (startAtAppointment.isEmpty || endAtAppointment.isEmpty) {
+        showToast('Doctor has not provided appointment timings.');
+        return;
+      }
+      if (timestamp == null) {
+        showToast('Doctor has not provided appointment date.');
+        return;
+      }
+
+      final appointment = AppointmentModel(
         patientId: _firebaseFirestoreService.getUserModel!.uid,
         doctorId: doctorId,
         optionPicked: optionPicked,
-        startAt: startAt,
-        endAt: endAt,
+        startAt: startAtAppointment,
+        appointmentTimeStamp: timestamp!,
+        endAt: endAtAppointment,
+        createdAt: Timestamp.now(),
       );
 
       await _firebaseFirestoreService.checkAppointmentAvailability(appointment);

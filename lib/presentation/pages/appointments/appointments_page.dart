@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../business_logic/models/user_model.dart';
+import '../../../business_logic/models/appointment_model.dart';
 import '../../../core/assets.gen.dart';
 import 'appointments_controller.dart';
 
@@ -359,7 +359,7 @@ class AppointmentsPage extends StatelessWidget {
   }
 
   Widget _appointmentsMainContent(AppointmentsController appointmentsController) {
-    return StreamBuilder<List<UserModel>>(
+    return StreamBuilder<List<AppointmentModel>>(
       stream: appointmentsController.appointmentsStream.stream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

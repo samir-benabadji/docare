@@ -30,7 +30,24 @@ class FirebaseFirestoreService {
     _userModel.value = value;
   }
 
-  Future<void> checkAppointmentAvailability(Appointment appointment) async {
+  Future<List<AppointmentModel>> getAppointmentsForPatient(String patientId) async {
+    try {
+      QuerySnapshot appointmentSnapshot =
+          await _firebaseFirestore.collection('appointments').where('patientId', isEqualTo: patientId).get();
+
+      List<AppointmentModel> appointments = appointmentSnapshot.docs.map((doc) {
+        return AppointmentModel.fromFirestore(doc);
+      }).toList();
+
+      return appointments;
+    } catch (e) {
+      print('Error fetching appointments for patient: $e');
+      showToast('Failed to get appointments. Please try again later.');
+      return [];
+    }
+  }
+
+  Future<void> checkAppointmentAvailability(AppointmentModel appointment) async {
     try {
       // Checking if the appointment already exists
       final QuerySnapshot appointmentsSnapshot = await _firebaseFirestore
@@ -65,7 +82,7 @@ class FirebaseFirestoreService {
     }
   }
 
-  Future<void> addAppointment(Appointment appointment) async {
+  Future<void> addAppointment(AppointmentModel appointment) async {
     try {
       await _firebaseFirestore.collection('appointments').add(appointment.toFirestore());
       showToast('Appointment created successfully');
