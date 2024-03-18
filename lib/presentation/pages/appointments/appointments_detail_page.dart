@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 import '../../../business_logic/models/appointment_model.dart';
 import '../../../core/assets.gen.dart';
@@ -131,7 +132,132 @@ class AppointmentsDetailPage extends StatelessWidget {
         _sessionTimeContentComponent(),
         SizedBox(height: 15),
         _dividerComponent(),
+        SizedBox(height: 15),
+        _visitTimeContentComponent(),
+        SizedBox(height: 28),
+        _dividerComponent(),
+        SizedBox(height: 15),
+        _patientInformationsContentComponent(),
+        SizedBox(height: 32),
+        _cancelAppointmentButtonComponent()
       ],
+    );
+  }
+
+  Widget _cancelAppointmentButtonComponent() {
+    DateTime appointmentDateTime = DateTime.fromMillisecondsSinceEpoch(appointment.appointmentTimeStamp);
+    DateTime currentDateTime = DateTime.now();
+    bool is24HoursAhead = appointmentDateTime.isAfter(currentDateTime.add(Duration(hours: 24)));
+
+    return GestureDetector(
+      onTap: () {
+        if (is24HoursAhead) {
+          // TODO: Implement cancel appointment
+        } else {
+          showToast('You cannot cancel appointments within 24 hours of the scheduled time.');
+        }
+      },
+      child: Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.symmetric(horizontal: 40),
+        width: Get.width,
+        padding: EdgeInsets.symmetric(vertical: 14),
+        decoration: ShapeDecoration(
+          color: is24HoursAhead ? DocareTheme.apple : DocareTheme.babyApple,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
+          shadows: [
+            BoxShadow(
+              color: Color(0xff494949).withOpacity(0.25),
+              blurRadius: 4.60,
+              offset: Offset(0, 1),
+              spreadRadius: 0,
+            )
+          ],
+        ),
+        child: Text(
+          'Cancel the appointment',
+          style: GoogleFonts.rubik(
+            color: Colors.white,
+            fontSize: 18.55,
+            fontWeight: FontWeight.w500,
+            letterSpacing: -0.35,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _visitTimeContentComponent() {
+    DateTime appointmentDate = DateTime.fromMillisecondsSinceEpoch(appointment.appointmentTimeStamp);
+    String formattedDate = DateFormat('EEEE, d MMMM yyyy').format(appointmentDate);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 31),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Visit Time',
+            style: GoogleFonts.openSans(
+              color: Color(0xFF090F47),
+              fontSize: 15.57,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          SizedBox(height: 10),
+          Text(
+            formattedDate,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.openSans(
+              color: Color(0xFF090F47),
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            "${appointment.startAt.split(' ')[0]} - ${appointment.endAt.split(' ')[0]}",
+            textAlign: TextAlign.center,
+            style: GoogleFonts.openSans(
+              color: Color(0xFF090F47),
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _patientInformationsContentComponent() {
+    UserModel? patientUserModel = Get.find<FirebaseFirestoreService>().getUserModel;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 31),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Patient Information',
+            style: GoogleFonts.openSans(
+              color: Color(0xFF090F47),
+              fontSize: 15.57,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          SizedBox(height: 10),
+          Text(
+            'Full Name: ${patientUserModel?.name ?? "Unknown"}',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.openSans(
+              color: Color(0xFF090F47),
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

@@ -1,3 +1,5 @@
+import 'package:docare/core/constants/theme.dart';
+import 'package:docare/presentation/pages/onboarding/onboarding_session_option_association_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -201,6 +203,31 @@ class _SessionComponentState extends State<SessionComponent> {
                       Assets.icons.trashCan.path,
                       width: 24,
                       height: 24,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 8,
+                  right: 24,
+                  child: GestureDetector(
+                    onTap: () async {
+                      String? associatedSessionOption = await Get.to(() => OnboardingSessionOptionAssociationPage());
+                      if (associatedSessionOption != null) {
+                        SessionModel? sessionToUpdate = onboardingController.allSessions.firstWhereOrNull(
+                          (session) => session.id == widget.session.id,
+                        );
+                        if (sessionToUpdate != null) {
+                          sessionToUpdate.sessionOption = associatedSessionOption;
+                          onboardingController.update();
+                        }
+                      }
+                    },
+                    child: Image.asset(
+                      Assets.icons.syringe.path,
+                      width: 30,
+                      height: 30,
+                      color: widget.session.sessionOption != null ? DocareTheme.apple : null,
                       fit: BoxFit.cover,
                     ),
                   ),
