@@ -6,9 +6,8 @@ class SessionModel {
   final int timestamp;
   TimeOfDay? startAt;
   TimeOfDay? endAt;
-  String? sessionOption;
 
-  SessionModel({required this.timestamp, this.startAt, this.endAt, this.sessionOption})
+  SessionModel({required this.timestamp, this.startAt, this.endAt})
       : id = DateTime.now().millisecondsSinceEpoch.toString();
 
   String getDayName() {

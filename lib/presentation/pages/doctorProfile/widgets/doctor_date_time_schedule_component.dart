@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../../../../business_logic/models/user_model.dart';
 import '../../../../core/assets.gen.dart';
 import '../../../widgets/utils.dart';
+import '../../patientDetails/patient_details_page.dart';
 import '../doctor_profile_controller.dart';
 
 class DoctorDateTimeScheduleComponent extends StatelessWidget {
@@ -40,7 +41,8 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
   Widget _bookAppointmentButtonComponent(BuildContext context, DoctorProfileController doctorProfileController) {
     return GestureDetector(
       onTap: () {
-        _appointmentConfirmationModalSheet(context, doctorProfileController);
+        Get.to(() => PatientDetailsPage());
+        //_appointmentConfirmationModalSheet(context, doctorProfileController);
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 14),
@@ -220,6 +222,7 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
               onTap: () {
                 doctorProfileController.startAtAppointment = session['start at'];
                 doctorProfileController.endAtAppointment = session['end at'];
+                doctorProfileController.sessionOption = {"name": session['session option']};
                 doctorProfileController.currentSelectedSessionStartAt = startAt;
                 if (timestamp != null) {
                   doctorProfileController.timestamp = timestamp;
@@ -274,6 +277,12 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
     BuildContext context,
     DoctorProfileController doctorProfileController,
   ) {
+    Map<String, dynamic>? foundSessionOption;
+    if (doctorProfileController.sessionOption != null) {
+      foundSessionOption = userModel.options
+          ?.firstWhere((element) => element['name'] == doctorProfileController.sessionOption!["name"], orElse: null);
+      doctorProfileController.sessionOption = foundSessionOption;
+    }
     return showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -285,40 +294,41 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Pick the type of appointment:',
+                    'Option associated with this session',
                     style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 20.0),
-                  if (userModel.options != null)
-                    Column(
-                      children: userModel.options!.map((option) {
-                        return RadioListTile(
-                          title: Text(option['name'] + ", " + option['price'].toString() + " \$"),
-                          value: option,
-                          groupValue: doctorProfileController.selectedOption,
-                          onChanged: (value) {
-                            setState(() {
-                              doctorProfileController.selectedOption = value;
-                            });
-                          },
-                        );
-                      }).toList(),
+                  if (doctorProfileController.sessionOption != null)
+                    ListTile(
+                      title: Text(foundSessionOption?['name'] ?? 'Unknown'),
+                      subtitle: Text(
+                        '${foundSessionOption?['price'] ?? 'Unknown'} \$',
+                      ),
                     ),
                   SizedBox(height: 20.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (doctorProfileController.selectedOption != null) {
+                  GestureDetector(
+                    onTap: () {
+                      if (doctorProfileController.sessionOption != null) {
                         doctorProfileController.createAppointment(
                           doctorUserModel: userModel,
-                          optionPicked: doctorProfileController.selectedOption!,
+                          optionPicked: doctorProfileController.sessionOption!,
                         );
                         Navigator.pop(context);
                       }
                     },
-                    child: Text('Confirm', style: TextStyle(color: Colors.white)),
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      width: Get.width,
+                      decoration: BoxDecoration(color: DocareTheme.apple, borderRadius: BorderRadius.circular(12)),
+                      child: Text(
+                        'Confirm',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ),
                 ],
               ),

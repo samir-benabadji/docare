@@ -127,6 +127,8 @@ class AppointmentsDetailPage extends StatelessWidget {
         SizedBox(height: 18),
         _dividerComponent(),
         SizedBox(height: 11),
+        _optionContentComponent(),
+        SizedBox(height: 18),
         _rateContentComponent(),
         SizedBox(height: 18),
         _sessionTimeContentComponent(),
@@ -262,6 +264,15 @@ class AppointmentsDetailPage extends StatelessWidget {
   }
 
   Widget _sessionTimeContentComponent() {
+    DateTime startTime = parseTime(appointment.startAt);
+    DateTime endTime = parseTime(appointment.endAt);
+    Duration sessionDuration = endTime.difference(startTime);
+    String sessionDurationString;
+    if (sessionDuration.inMinutes.remainder(60) == 0) {
+      sessionDurationString = '${sessionDuration.inHours}h';
+    } else {
+      sessionDurationString = '${sessionDuration.inHours}h ${sessionDuration.inMinutes.remainder(60)}m';
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 31),
       child: Row(
@@ -276,13 +287,44 @@ class AppointmentsDetailPage extends StatelessWidget {
             ),
           ),
           Text(
-            "", //'\$ ${appointment.optionPicked["price"]}',
+            sessionDurationString,
             textAlign: TextAlign.center,
             style: GoogleFonts.redHatDisplay(
               color: Color(0xFF090F47),
               fontSize: 18.43,
               fontWeight: FontWeight.w600,
               letterSpacing: -0.35,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _optionContentComponent() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 31),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Option',
+            style: GoogleFonts.openSans(
+              color: Color(0xFF090F47),
+              fontSize: 15.57,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              appointment.optionPicked["name"],
+              textAlign: TextAlign.end,
+              style: GoogleFonts.redHatDisplay(
+                color: Color(0xFF090F47),
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.35,
+              ),
             ),
           ),
         ],

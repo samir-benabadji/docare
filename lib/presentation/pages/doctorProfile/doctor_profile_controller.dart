@@ -16,7 +16,7 @@ class DoctorProfileController extends GetxController {
   List<String> doctorExtraInformations = ["Appoitement", "Clinic"];
   String currentSelectedDoctorExtraInformation = "";
 
-  Map<String, dynamic>? selectedOption;
+  Map<String, dynamic>? sessionOption;
 
   DateTime get selectedDate => currentSelectedMonth;
   DateTime get highlightedDate => currentSelectedDay;

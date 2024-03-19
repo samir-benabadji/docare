@@ -24,6 +24,16 @@ void showToast(String message) {
   );
 }
 
+DateTime parseTime(String timeString) {
+  // Splitting the time string to get hours and minutes
+  List<String> timeParts = timeString.split(':');
+  int hours = int.parse(timeParts[0]);
+  int minutes = int.parse(timeParts[1].split(' ')[0]);
+
+  // Creating a DateTime object with the parsed time
+  return DateTime(1, 1, 1, hours, minutes);
+}
+
 void navigatingTheUserDependingOnHisStatus(UserModel user) {
   Get.find<FirebaseFirestoreService>().setUserModel = user;
   switch (user.status) {

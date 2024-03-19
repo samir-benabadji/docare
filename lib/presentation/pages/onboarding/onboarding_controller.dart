@@ -381,21 +381,6 @@ class OnboardingController extends GetxController {
       return;
     }
 
-    bool hasSessionWithoutOption =
-        allSessions.any((session) => session.sessionOption == null || session.sessionOption!.isEmpty);
-
-    if (hasSessionWithoutOption) {
-      Get.snackbar(
-        'Session Options Missing',
-        'Please associate each session with an option',
-        snackPosition: SnackPosition.TOP,
-        duration: Duration(seconds: 5),
-        backgroundColor: DocareTheme.tomato,
-        colorText: Colors.white,
-      );
-      return;
-    }
-
     // Checking if any session has null startAt or endAt
     bool hasIncompleteSessions = allSessions.any((session) => session.startAt == null || session.endAt == null);
 
@@ -474,7 +459,6 @@ class OnboardingController extends GetxController {
       mappedSessions[timestamp]!.add({
         'start at': start,
         'end at': end,
-        'session option': session.sessionOption,
       });
     }
 
