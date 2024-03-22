@@ -26,7 +26,7 @@ class FirebaseAuthService {
         };
         final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
 
-        await _firebaseFirestoreService.addOrUpdateUser(user.uid, userData);
+        await _firebaseFirestoreService.addOrUpdateUser(user.uid, userData, isUpdatingUser: false);
         return user.uid;
       }
       return null;

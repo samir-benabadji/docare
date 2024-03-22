@@ -39,7 +39,7 @@ class AuthController extends GetxController {
   PhoneNumber? defaultCountryPhone;
   PhoneNumber currentPhoneNumber = PhoneNumber();
   bool isValidNumber = false;
-  TextEditingController textEditingController = TextEditingController();
+  TextEditingController textEditingPhoneController = TextEditingController();
   String? verificationFailedWithPhone;
   bool isIncorrectCode = false;
   bool isFirstTimeTrying = true;

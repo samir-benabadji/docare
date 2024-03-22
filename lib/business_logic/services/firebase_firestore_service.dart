@@ -135,19 +135,24 @@ class FirebaseFirestoreService {
     });
   }
 
-  Future<void> addOrUpdateUser(String uid, Map<String, dynamic> userData) async {
+  Future<bool> addOrUpdateUser(String uid, Map<String, dynamic> userData, {required bool isUpdatingUser}) async {
     try {
       String collectionPath = _getCollectionPathFromUserType(userData['userType']);
+      Map<String, dynamic> dataToUpdate = {
+        ...userData,
+        if (isUpdatingUser) 'updatedAt': FieldValue.serverTimestamp() else 'createdAt': FieldValue.serverTimestamp(),
+      };
+
       await _firebaseFirestore.collection(collectionPath).doc(uid).set(
-        {
-          ...userData,
-          'createdAt': FieldValue.serverTimestamp(),
-        },
-        SetOptions(merge: true),
-      );
+            dataToUpdate,
+            SetOptions(merge: true),
+          );
+
+      return true;
     } catch (e) {
       print('Error adding or updating user in Firestore: $e');
       // Handle exceptions
+      return false;
     }
   }
 

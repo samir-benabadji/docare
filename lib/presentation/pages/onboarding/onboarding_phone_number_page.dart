@@ -115,7 +115,7 @@ class _OnboardingPhoneNumberPageState extends State<OnboardingPhoneNumberPage> {
           // Passing the current phone number to the verifyPhoneNumber method
           authController.verifyPhoneNumber(customPhoneNumber: authController.currentPhoneNumber.phoneNumber);
         } else {
-          if (authController.textEditingController.text.isEmpty) {
+          if (authController.textEditingPhoneController.text.isEmpty) {
             phoneNumberFocusNode.requestFocus();
           }
         }
@@ -185,7 +185,7 @@ class _OnboardingPhoneNumberPageState extends State<OnboardingPhoneNumberPage> {
               focusNode: phoneNumberFocusNode,
               autoValidateMode: AutovalidateMode.disabled,
               selectorTextStyle: TextStyle(color: Colors.grey),
-              textFieldController: authController.textEditingController,
+              textFieldController: authController.textEditingPhoneController,
               formatInput: false,
               keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
               cursorColor: Colors.black,

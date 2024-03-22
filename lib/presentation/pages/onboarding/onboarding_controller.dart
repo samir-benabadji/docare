@@ -340,7 +340,7 @@ class OnboardingController extends GetxController {
         });
       }
 
-      await _firebaseFirestoreService.addOrUpdateUser(uid, userUpdatedData);
+      await _firebaseFirestoreService.addOrUpdateUser(uid, userUpdatedData, isUpdatingUser: true);
       return true;
     } catch (e) {
       print('Error updating user info in Firestore: $e');

@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../business_logic/models/user_model.dart';
+import '../../../../business_logic/services/firebase_firestore_service.dart';
 import '../../../../core/assets.gen.dart';
 import '../../../widgets/utils.dart';
 import '../../patientDetails/patient_details_page.dart';
@@ -15,6 +16,8 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
   final UserModel userModel;
 
   DoctorDateTimeScheduleComponent({required this.userModel});
+
+  final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +44,11 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
   Widget _bookAppointmentButtonComponent(BuildContext context, DoctorProfileController doctorProfileController) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => PatientDetailsPage());
+        if (_firebaseFirestoreService.getUserModel != null) {
+          if (_firebaseFirestoreService.getUserModel?.phoneNumber == null ||
+              _firebaseFirestoreService.getUserModel?.gender == null ||
+              _firebaseFirestoreService.getUserModel?.birthDate == null) Get.to(() => PatientDetailsPage());
+        }
         //_appointmentConfirmationModalSheet(context, doctorProfileController);
       },
       child: Container(

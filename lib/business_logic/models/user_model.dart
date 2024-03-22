@@ -17,6 +17,8 @@ class UserModel {
   Map<String, List<Map<String, dynamic>>>?
       workingHours; // Working hours for each day (key: timestamp, value:(key: "start at" / "end at", value: hour of work))
   Timestamp? createdAt;
+  Timestamp? birthDate;
+  String? gender;
 
   UserModel({
     required this.uid,
@@ -34,6 +36,8 @@ class UserModel {
     this.options,
     this.workingHours,
     this.createdAt,
+    this.birthDate,
+    this.gender,
   });
 
   factory UserModel.fromFirestore(DocumentSnapshot doc) {
@@ -75,6 +79,8 @@ class UserModel {
         return MapEntry(key, List<Map<String, dynamic>>.from(value));
       }),
       createdAt: data['createdAt'],
+      birthDate: data['birthDate'],
+      gender: data['gender'],
     );
   }
 
@@ -94,6 +100,8 @@ class UserModel {
       'options': options?.map((option) => {'name': option['name'], 'price': option['price']}).toList(),
       'workingHours': workingHours,
       'createdAt': createdAt,
+      'birthDate': birthDate,
+      'gender': gender,
     };
   }
 }
