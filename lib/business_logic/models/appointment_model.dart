@@ -10,6 +10,8 @@ class AppointmentModel {
   final String startAt;
   final String endAt;
   final int appointmentTimeStamp;
+  final String patientProblem;
+  final String appointmentStatus;
   final Timestamp? createdAt;
 
   AppointmentModel({
@@ -22,6 +24,8 @@ class AppointmentModel {
     required this.startAt,
     required this.endAt,
     required this.appointmentTimeStamp,
+    required this.patientProblem,
+    required this.appointmentStatus,
     this.createdAt,
   });
 
@@ -37,6 +41,8 @@ class AppointmentModel {
       startAt: data['startAt'],
       endAt: data['endAt'],
       appointmentTimeStamp: data['appointmentTimeStamp'],
+      patientProblem: data['patientProblem'],
+      appointmentStatus: data['appointmentStatus'],
       createdAt: data['createdAt'],
     );
   }
@@ -52,6 +58,8 @@ class AppointmentModel {
       'startAt': startAt,
       'endAt': endAt,
       'appointmentTimeStamp': appointmentTimeStamp,
+      'patientProblem': patientProblem,
+      'appointmentStatus': appointmentStatus,
       'createdAt': createdAt,
     };
   }

@@ -91,6 +91,8 @@ class $AssetsImagesGen {
   /// File path: assets/images/docareButtonLayout.svg
   SvgGenImage get docareButtonLayout => const SvgGenImage('assets/images/docareButtonLayout.svg');
 
+  $AssetsImagesDoctorProfileGen get doctorProfile => const $AssetsImagesDoctorProfileGen();
+
   /// File path: assets/images/image_upload.png
   AssetGenImage get imageUpload => const AssetGenImage('assets/images/image_upload.png');
 
@@ -206,6 +208,16 @@ class $AssetsIconsProfileGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [eyeOpen, lock, logout, notifications, questionMark, twoUsers];
+}
+
+class $AssetsImagesDoctorProfileGen {
+  const $AssetsImagesDoctorProfileGen();
+
+  /// File path: assets/images/doctorProfile/appointment_created.png
+  AssetGenImage get appointmentCreated => const AssetGenImage('assets/images/doctorProfile/appointment_created.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [appointmentCreated];
 }
 
 class $AssetsImagesSpecialitiesGen {

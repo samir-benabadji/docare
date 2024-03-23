@@ -41,15 +41,49 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
     );
   }
 
+  Widget _patientProblemTextFieldComponent(DoctorProfileController doctorProfileController) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextField(
+            minLines: 3,
+            maxLines: 3,
+            controller: doctorProfileController.textEditingProblemController,
+            decoration: InputDecoration(
+              hintStyle: GoogleFonts.poppins(
+                color: Color(0xFFAFB2B9),
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+              hintText: 'Describe your medical issue or concerns here',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(17),
+                borderSide: BorderSide(
+                  color: Color(0xFF5D6679),
+                  width: 1.0,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _bookAppointmentButtonComponent(BuildContext context, DoctorProfileController doctorProfileController) {
     return GestureDetector(
       onTap: () {
         if (_firebaseFirestoreService.getUserModel != null) {
           if (_firebaseFirestoreService.getUserModel?.phoneNumber == null ||
               _firebaseFirestoreService.getUserModel?.gender == null ||
-              _firebaseFirestoreService.getUserModel?.birthDate == null) Get.to(() => PatientDetailsPage());
+              _firebaseFirestoreService.getUserModel?.birthDate == null) {
+            Get.to(() => PatientDetailsPage());
+            return;
+          }
+          _appointmentConfirmationOptionSelectionModalSheet(context, doctorProfileController);
         }
-        //_appointmentConfirmationModalSheet(context, doctorProfileController);
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 14),
@@ -229,7 +263,7 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
               onTap: () {
                 doctorProfileController.startAtAppointment = session['start at'];
                 doctorProfileController.endAtAppointment = session['end at'];
-                doctorProfileController.sessionOption = {"name": session['session option']};
+
                 doctorProfileController.currentSelectedSessionStartAt = startAt;
                 if (timestamp != null) {
                   doctorProfileController.timestamp = timestamp;
@@ -280,18 +314,13 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
     return sessionWidgets;
   }
 
-  Future<dynamic> _appointmentConfirmationModalSheet(
+  Future<dynamic> _appointmentConfirmationOptionSelectionModalSheet(
     BuildContext context,
     DoctorProfileController doctorProfileController,
   ) {
-    Map<String, dynamic>? foundSessionOption;
-    if (doctorProfileController.sessionOption != null) {
-      foundSessionOption = userModel.options
-          ?.firstWhere((element) => element['name'] == doctorProfileController.sessionOption!["name"], orElse: null);
-      doctorProfileController.sessionOption = foundSessionOption;
-    }
     return showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
@@ -300,44 +329,199 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'Option associated with this session',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: SvgPicture.asset(
+                            Assets.icons.leftArrow.path,
+                          ),
+                        ),
+                        SizedBox(width: 37),
+                        Text(
+                          'Select your option',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.rubik(
+                            color: Color(0xFF2AD495),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: -0.31,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(height: 20.0),
-                  if (doctorProfileController.sessionOption != null)
-                    ListTile(
-                      title: Text(foundSessionOption?['name'] ?? 'Unknown'),
-                      subtitle: Text(
-                        '${foundSessionOption?['price'] ?? 'Unknown'} \$',
-                      ),
+                  if (userModel.options != null)
+                    Column(
+                      children: userModel.options!.map((option) {
+                        return CheckboxListTile(
+                          title: Row(
+                            children: [
+                              Expanded(child: Text(option['name'])),
+                              Text(option['price'].toString() + " \$"),
+                            ],
+                          ),
+                          value: doctorProfileController.sessionOption == option,
+                          onChanged: (value) {
+                            setState(() {
+                              if (value!) {
+                                doctorProfileController.sessionOption = option;
+                              } else {
+                                doctorProfileController.sessionOption = null;
+                              }
+                            });
+                          },
+                        );
+                      }).toList(),
                     ),
                   SizedBox(height: 20.0),
                   GestureDetector(
                     onTap: () {
-                      if (doctorProfileController.sessionOption != null) {
-                        doctorProfileController.createAppointment(
-                          doctorUserModel: userModel,
-                          optionPicked: doctorProfileController.sessionOption!,
-                        );
-                        Navigator.pop(context);
-                      }
+                      Navigator.pop(context);
+                      _appointmentConfirmationPatientProblemModalSheet(context, doctorProfileController);
                     },
                     child: Container(
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.symmetric(vertical: 12),
                       width: Get.width,
-                      decoration: BoxDecoration(color: DocareTheme.apple, borderRadius: BorderRadius.circular(12)),
+                      height: 49,
+                      margin: EdgeInsets.symmetric(horizontal: 18),
+                      alignment: Alignment.center,
+                      decoration: ShapeDecoration(
+                        color: _continueButtonColor(doctorProfileController),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        shadows: [
+                          BoxShadow(
+                            color: Color(0x3F494949),
+                            blurRadius: 4.60,
+                            offset: Offset(0, 1),
+                            spreadRadius: 0,
+                          )
+                        ],
+                      ),
                       child: Text(
-                        'Confirm',
-                        style: TextStyle(color: Colors.white),
+                        'Continue',
+                        style: GoogleFonts.rubik(
+                          color: Colors.white,
+                          fontSize: 18.55,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: -0.35,
+                        ),
                       ),
                     ),
                   ),
                 ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Color _continueButtonColor(DoctorProfileController doctorProfileController) {
+    return doctorProfileController.sessionOption != null ? Color(0xFF33CE95) : Color(0x6D53C298);
+  }
+
+  Color _confirmButtonColor(DoctorProfileController doctorProfileController) {
+    return doctorProfileController.textEditingProblemController.text.isNotEmpty ? Color(0xFF33CE95) : Color(0x6D53C298);
+  }
+
+  Future<dynamic> _appointmentConfirmationPatientProblemModalSheet(
+    BuildContext context,
+    DoctorProfileController doctorProfileController,
+  ) {
+    return showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: Container(
+                padding: EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Get.back();
+                            },
+                            child: SvgPicture.asset(
+                              Assets.icons.leftArrow.path,
+                            ),
+                          ),
+                          SizedBox(width: 37),
+                          Text(
+                            'Write Down Your Problem',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.rubik(
+                              color: Color(0xFF2AD495),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: -0.31,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
+                    _patientProblemTextFieldComponent(doctorProfileController),
+                    SizedBox(height: 20.0),
+                    GestureDetector(
+                      onTap: () {
+                        if (doctorProfileController.sessionOption != null) {
+                          doctorProfileController.createAppointment(
+                            doctorUserModel: userModel,
+                            optionPicked: doctorProfileController.sessionOption!,
+                          );
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Container(
+                        width: Get.width,
+                        height: 49,
+                        margin: EdgeInsets.symmetric(horizontal: 18),
+                        alignment: Alignment.center,
+                        decoration: ShapeDecoration(
+                          color: _confirmButtonColor(doctorProfileController),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          shadows: [
+                            BoxShadow(
+                              color: Color(0x3F494949),
+                              blurRadius: 4.60,
+                              offset: Offset(0, 1),
+                              spreadRadius: 0,
+                            )
+                          ],
+                        ),
+                        child: Text(
+                          'Confirm',
+                          style: GoogleFonts.rubik(
+                            color: Colors.white,
+                            fontSize: 18.55,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: -0.35,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },

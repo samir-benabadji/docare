@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../business_logic/models/appointment_model.dart';
@@ -24,6 +25,7 @@ class DoctorProfileController extends GetxController {
   // Booking an appointment
   String startAtAppointment = '';
   String endAtAppointment = '';
+  TextEditingController textEditingProblemController = TextEditingController();
   int? timestamp;
 
   void previousMonth() {
@@ -59,6 +61,10 @@ class DoctorProfileController extends GetxController {
         showToast('Doctor has not provided appointment date.');
         return;
       }
+      if (textEditingProblemController.text.isEmpty) {
+        showToast('Please provide the problem description.');
+        return;
+      }
 
       final appointment = AppointmentModel(
         patientId: _firebaseFirestoreService.getUserModel!.uid,
@@ -71,7 +77,12 @@ class DoctorProfileController extends GetxController {
         doctorName: doctorUserModel.name ?? "Unknown",
         doctorProfileImageUrl: doctorUserModel.profileImageUrl ?? "",
         doctorSpecialty: doctorUserModel.medicalSpeciality ?? "Unknown",
+        appointmentStatus: "PENDING",
+        patientProblem: textEditingProblemController.text,
       );
+
+      sessionOption = null;
+      textEditingProblemController.clear();
 
       await _firebaseFirestoreService.checkAppointmentAvailability(appointment);
     } catch (e) {

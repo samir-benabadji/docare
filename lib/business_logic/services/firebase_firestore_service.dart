@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
+import '../../presentation/pages/doctorProfile/widgets/appointment_created_successfully_component.dart';
 import '../../presentation/widgets/utils.dart';
 import '../models/appointment_model.dart';
 import '../models/user_model.dart';
@@ -102,7 +103,7 @@ class FirebaseFirestoreService {
   Future<void> addAppointment(AppointmentModel appointment) async {
     try {
       await _firebaseFirestore.collection('appointments').add(appointment.toFirestore());
-      showToast('Appointment created successfully');
+      Get.dialog(AppointmentCreatedSuccessfullyComponent());
     } catch (e) {
       print('Error adding appointment to Firestore: $e');
       showToast('Failed to create appointment. Please try again later.');
