@@ -36,6 +36,17 @@ class AppointmentsController extends GetxController {
     }
   }
 
+  Future<void> cancelAppointment(String appointmentId) async {
+    bool? success = await _firebaseFirestoreService.cancelAppointment(appointmentId);
+    if (success != null && success) {
+      showToast('Appointment canceled successfully.');
+    } else {
+      showToast('Failed to cancel appointment. Please try again later.');
+    }
+    getPatientAppointments();
+    Get.back();
+  }
+
   Future<void> getPatientAppointments() async {
     if (_firebaseFirestoreService.getUserModel == null) {
       showToast("User's information is not available.");

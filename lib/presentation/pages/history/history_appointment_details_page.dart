@@ -14,16 +14,16 @@ import '../../../core/assets.gen.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/constants/theme.dart';
 import '../../widgets/utils.dart';
-import 'appointments_controller.dart';
+import 'history_controller.dart';
 
-class AppointmentsDetailPage extends StatelessWidget {
+class HistoryAppointmentDetailsPage extends StatelessWidget {
   final AppointmentModel appointment;
-  AppointmentsDetailPage({required this.appointment});
+  HistoryAppointmentDetailsPage({required this.appointment});
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<AppointmentsController>(
-      init: AppointmentsController(),
-      builder: (appointmentsController) {
+    return GetBuilder<HistoryController>(
+      init: HistoryController(),
+      builder: (historyController) {
         return Scaffold(
           body: SafeArea(
             child: SingleChildScrollView(
@@ -31,9 +31,9 @@ class AppointmentsDetailPage extends StatelessWidget {
                 children: [
                   _topBarComponent(),
                   SizedBox(height: 6),
-                  _appointmentDetailsTitleComponent(),
+                  _historyAppointmentDetailsTitleComponent(),
                   SizedBox(height: 22),
-                  _appointmentDetailsMainContent(appointmentsController),
+                  _historyAppointmentDetailsMainContent(historyController),
                 ],
               ),
             ),
@@ -60,7 +60,7 @@ class AppointmentsDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _appointmentDetailsTitleComponent() {
+  Widget _historyAppointmentDetailsTitleComponent() {
     return Padding(
       padding: const EdgeInsets.only(right: 8, left: 21),
       child: Row(
@@ -92,9 +92,9 @@ class AppointmentsDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _appointmentDetailsMainContent(AppointmentsController appointmentsController) {
+  Widget _historyAppointmentDetailsMainContent(HistoryController historyController) {
     return StreamBuilder<UserModel?>(
-      stream: appointmentsController.doctorUserModelStream.stream,
+      stream: historyController.doctorUserModelStream.stream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Expanded(
@@ -112,13 +112,13 @@ class AppointmentsDetailPage extends StatelessWidget {
           );
         } else {
           final doctorUserModel = snapshot.data!;
-          return _appointmentDetailsComponent(doctorUserModel, appointmentsController);
+          return _appointmentDetailsComponent(doctorUserModel, historyController);
         }
       },
     );
   }
 
-  Widget _appointmentDetailsComponent(UserModel doctorUserModel, AppointmentsController appointmentsController) {
+  Widget _appointmentDetailsComponent(UserModel doctorUserModel, HistoryController historyController) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -141,55 +141,8 @@ class AppointmentsDetailPage extends StatelessWidget {
         _dividerComponent(),
         SizedBox(height: 15),
         _patientInformationsContentComponent(),
-        SizedBox(height: 32),
-        _cancelAppointmentButtonComponent(appointmentsController),
-        SizedBox(height: 24)
+        SizedBox(height: 24),
       ],
-    );
-  }
-
-  Widget _cancelAppointmentButtonComponent(AppointmentsController appointmentsController) {
-    DateTime appointmentDateTime = DateTime.fromMillisecondsSinceEpoch(appointment.appointmentTimeStamp);
-    DateTime currentDateTime = DateTime.now();
-    bool is24HoursAhead = appointmentDateTime.isAfter(currentDateTime.add(Duration(hours: 24)));
-
-    return GestureDetector(
-      onTap: () {
-        if (is24HoursAhead) {
-          appointmentsController.cancelAppointment(appointment.id);
-        } else {
-          showToast('You cannot cancel appointments within 24 hours of the scheduled time.');
-        }
-      },
-      child: Container(
-        alignment: Alignment.center,
-        margin: EdgeInsets.symmetric(horizontal: 40),
-        width: Get.width,
-        padding: EdgeInsets.symmetric(vertical: 14),
-        decoration: ShapeDecoration(
-          color: is24HoursAhead ? DocareTheme.apple : DocareTheme.babyApple,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-          ),
-          shadows: [
-            BoxShadow(
-              color: Color(0xff494949).withOpacity(0.25),
-              blurRadius: 4.60,
-              offset: Offset(0, 1),
-              spreadRadius: 0,
-            )
-          ],
-        ),
-        child: Text(
-          'Cancel the appointment',
-          style: GoogleFonts.rubik(
-            color: Colors.white,
-            fontSize: 18.55,
-            fontWeight: FontWeight.w500,
-            letterSpacing: -0.35,
-          ),
-        ),
-      ),
     );
   }
 

@@ -110,6 +110,29 @@ class FirebaseFirestoreService {
     }
   }
 
+  Future<bool?> cancelAppointment(String appointmentId) async {
+    try {
+      QuerySnapshot querySnapshot =
+          await _firebaseFirestore.collection('appointments').where('id', isEqualTo: appointmentId).get();
+
+      if (querySnapshot.docs.isEmpty) {
+        print('Appointment with ID $appointmentId not found.');
+        showToast('Appointment was not found.');
+        return null;
+      }
+      // Geting the reference to the document with the provided appointmentId
+      DocumentReference appointmentRef = querySnapshot.docs.first.reference;
+
+      // Updating the appointment status to "CANCELED"
+      await appointmentRef.update({'appointmentStatus': 'CANCELED'});
+
+      return true;
+    } catch (e) {
+      print('Error canceling appointment: $e');
+      return false;
+    }
+  }
+
   // Updating userModel's data whenever there is a change / trigger on the firestore collection
   void _updateUserModel(String docId) async {
     if (collectionPathFromUserType != null) {

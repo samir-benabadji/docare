@@ -88,10 +88,13 @@ class $AssetsImagesGen {
   /// File path: assets/images/Creative_panel_planner.png
   AssetGenImage get creativePanelPlanner => const AssetGenImage('assets/images/Creative_panel_planner.png');
 
+  $AssetsImagesAppointmentsGen get appointments => const $AssetsImagesAppointmentsGen();
+
   /// File path: assets/images/docareButtonLayout.svg
   SvgGenImage get docareButtonLayout => const SvgGenImage('assets/images/docareButtonLayout.svg');
 
   $AssetsImagesDoctorProfileGen get doctorProfile => const $AssetsImagesDoctorProfileGen();
+  $AssetsImagesHistoryGen get history => const $AssetsImagesHistoryGen();
 
   /// File path: assets/images/image_upload.png
   AssetGenImage get imageUpload => const AssetGenImage('assets/images/image_upload.png');
@@ -210,6 +213,16 @@ class $AssetsIconsProfileGen {
   List<SvgGenImage> get values => [eyeOpen, lock, logout, notifications, questionMark, twoUsers];
 }
 
+class $AssetsImagesAppointmentsGen {
+  const $AssetsImagesAppointmentsGen();
+
+  /// File path: assets/images/appointments/no_appointment.png
+  AssetGenImage get noAppointment => const AssetGenImage('assets/images/appointments/no_appointment.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [noAppointment];
+}
+
 class $AssetsImagesDoctorProfileGen {
   const $AssetsImagesDoctorProfileGen();
 
@@ -218,6 +231,16 @@ class $AssetsImagesDoctorProfileGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [appointmentCreated];
+}
+
+class $AssetsImagesHistoryGen {
+  const $AssetsImagesHistoryGen();
+
+  /// File path: assets/images/history/no_history.png
+  AssetGenImage get noHistory => const AssetGenImage('assets/images/history/no_history.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [noHistory];
 }
 
 class $AssetsImagesSpecialitiesGen {

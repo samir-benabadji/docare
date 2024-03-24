@@ -26,8 +26,6 @@ class AppointmentsPage extends StatelessWidget {
                 SizedBox(height: 6),
                 _appointmentsTitleComponent(),
                 SizedBox(height: 32),
-                _toggleButtonComponent(appointmentsController),
-                SizedBox(height: 22),
                 _appointmentsMainContent(appointmentsController),
               ],
             ),
@@ -370,7 +368,7 @@ class AppointmentsPage extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              appointmentsController.appointmentCategory = 'Past';
+              appointmentsController.appointmentCategory = 'Pending';
               appointmentsController.update();
             },
             child: Container(
@@ -379,7 +377,7 @@ class AppointmentsPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 8),
                 alignment: Alignment.center,
                 width: 136.17,
-                decoration: appointmentsController.appointmentCategory == 'Past'
+                decoration: appointmentsController.appointmentCategory == 'Pending'
                     ? ShapeDecoration(
                         color: Color(0xFF3BC090),
                         shape: RoundedRectangleBorder(
@@ -388,9 +386,9 @@ class AppointmentsPage extends StatelessWidget {
                       )
                     : null,
                 child: Text(
-                  'Past',
+                  'Pending',
                   style: GoogleFonts.poppins(
-                    color: appointmentsController.appointmentCategory == 'Past' ? Colors.white : Color(0xFF3BC090),
+                    color: appointmentsController.appointmentCategory == 'Pending' ? Colors.white : Color(0xFF3BC090),
                     fontSize: 17.32,
                     fontWeight: FontWeight.w600,
                     letterSpacing: -0.32,
@@ -417,20 +415,50 @@ class AppointmentsPage extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return _noAppointmentsComponent();
+          return Column(
+            children: [
+              SizedBox(height: 48),
+              _noAppointmentsComponent("Appointement Page is currently empty"),
+            ],
+          );
         } else {
           final appointments = snapshot.data!;
+
+          // Filtering appointments based on appointmentCategory
+          final filteredAppointments = appointments.where((appointment) {
+            if (appointmentsController.appointmentCategory == "Upcoming") {
+              return appointment.appointmentStatus == "UPCOMING";
+            } else {
+              return appointment.appointmentStatus == "PENDING";
+            }
+          }).toList();
+
+          if (filteredAppointments.isEmpty)
+            return Column(
+              children: [
+                _toggleButtonComponent(appointmentsController),
+                SizedBox(height: 32),
+                _noAppointmentsComponent(
+                  appointmentsController.appointmentCategory == "Upcoming"
+                      ? 'There are no upcoming'
+                      : "There are no pending",
+                ),
+              ],
+            );
+
           return Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  _toggleButtonComponent(appointmentsController),
+                  SizedBox(height: 5),
                   _searchTextField(),
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 19, vertical: 32),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        for (final appointment in appointments)
+                        for (final appointment in filteredAppointments)
                           Padding(
                             padding: EdgeInsets.only(bottom: 19),
                             child: _appointmentComponent(appointmentsController, appointment),
@@ -447,8 +475,28 @@ class AppointmentsPage extends StatelessWidget {
     );
   }
 
-  Widget _noAppointmentsComponent() {
-    return SizedBox.shrink();
+  Widget _noAppointmentsComponent(String title) {
+    return Column(
+      children: [
+        if (title.isNotEmpty)
+          Text(
+            title,
+            style: GoogleFonts.rubik(
+              color: Color(0xFF090F47),
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              letterSpacing: -0.31,
+            ),
+          ),
+        if (title.isNotEmpty) SizedBox(height: 25),
+        Image.asset(
+          Assets.images.appointments.noAppointment.path,
+          fit: BoxFit.cover,
+          cacheHeight: 250,
+          cacheWidth: 250,
+        ),
+      ],
+    );
   }
 
   Widget _topBarComponent() {

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AppointmentModel {
+  final String id;
   final String patientId;
   final String doctorId;
   final String doctorName;
@@ -15,6 +16,7 @@ class AppointmentModel {
   final Timestamp? createdAt;
 
   AppointmentModel({
+    required this.id,
     required this.patientId,
     required this.doctorId,
     required this.doctorName,
@@ -32,6 +34,7 @@ class AppointmentModel {
   factory AppointmentModel.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return AppointmentModel(
+      id: data['id'],
       patientId: data['patientId'],
       doctorId: data['doctorId'],
       doctorName: data['doctorName'],
@@ -49,6 +52,7 @@ class AppointmentModel {
 
   Map<String, dynamic> toFirestore() {
     return {
+      'id': id,
       'patientId': patientId,
       'doctorId': doctorId,
       'doctorName': doctorName,

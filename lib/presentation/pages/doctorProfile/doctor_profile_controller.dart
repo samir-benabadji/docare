@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../business_logic/models/appointment_model.dart';
 import '../../../business_logic/models/user_model.dart';
@@ -66,6 +67,7 @@ class DoctorProfileController extends GetxController {
         return;
       }
 
+      String appointmentId = Uuid().v4();
       final appointment = AppointmentModel(
         patientId: _firebaseFirestoreService.getUserModel!.uid,
         doctorId: doctorUserModel.uid,
@@ -79,6 +81,7 @@ class DoctorProfileController extends GetxController {
         doctorSpecialty: doctorUserModel.medicalSpeciality ?? "Unknown",
         appointmentStatus: "PENDING",
         patientProblem: textEditingProblemController.text,
+        id: appointmentId,
       );
 
       sessionOption = null;
