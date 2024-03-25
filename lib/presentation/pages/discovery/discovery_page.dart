@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:docare/core/constants/theme.dart';
+import 'package:docare/presentation/pages/discovery/widgets/discovery_search_results_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,7 @@ import '../../widgets/utils.dart';
 import '../doctorProfile/doctor_profile_page.dart';
 import '../favoriteDoctor/favorite_doctor_page.dart';
 import 'discovery_controller.dart';
+import 'discovery_specialist_doctors_page.dart';
 
 class DiscoveryPage extends StatelessWidget {
   @override
@@ -26,11 +28,17 @@ class DiscoveryPage extends StatelessWidget {
                 children: [
                   _topBarComponent(),
                   SizedBox(height: 10),
-                  _searchTextField(),
+                  _searchTextField(discoveryController),
                   SizedBox(height: 27),
-                  _mainSpecialistDoctorComponent(),
-                  SizedBox(height: 32),
-                  _mainTopDoctorsComponent(discoveryController),
+                  discoveryController.textEditingSearchController.text.isEmpty
+                      ? Column(
+                          children: [
+                            _mainSpecialistDoctorComponent(discoveryController),
+                            SizedBox(height: 32),
+                            _mainTopDoctorsComponent(discoveryController),
+                          ],
+                        )
+                      : DiscoverySearchResultsComponent(),
                   SizedBox(height: 27),
                 ],
               ),
@@ -79,20 +87,20 @@ class DiscoveryPage extends StatelessWidget {
     );
   }
 
-  Padding _mainSpecialistDoctorComponent() {
+  Padding _mainSpecialistDoctorComponent(DiscoveryController discoveryController) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 17),
       child: Column(
         children: [
           _specialistDoctorTitleComponent(),
           SizedBox(height: 27),
-          _specialityGrid(),
+          _specialityGrid(discoveryController),
         ],
       ),
     );
   }
 
-  Widget _specialityGrid() {
+  Widget _specialityGrid(DiscoveryController discoveryController) {
     return SizedBox(
       height: 250,
       child: GridView.builder(
@@ -105,37 +113,45 @@ class DiscoveryPage extends StatelessWidget {
         itemCount: Constants.specialityTypes.length,
         itemBuilder: (BuildContext context, int index) {
           final speciality = Constants.specialityTypes[index];
-          return Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Color(0xFFFEFCF7),
-              boxShadow: [
-                BoxShadow(
-                  offset: Offset(1, 0),
-                  blurRadius: 4,
-                  spreadRadius: 0,
-                  color: Colors.black.withOpacity(0.25),
-                ),
-              ],
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  speciality.imagePath,
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.contain,
-                ),
-                SizedBox(height: 10),
-                Text(
-                  speciality.title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+          return GestureDetector(
+            onTap: () async {
+              discoveryController.clearSpecialistDoctorsStream();
+
+              discoveryController.loadSpecialistDoctors(speciality.title);
+              Get.to(() => DiscoverySpecialistDoctorsPage());
+            },
+            child: Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Color(0xFFFEFCF7),
+                boxShadow: [
+                  BoxShadow(
+                    offset: Offset(1, 0),
+                    blurRadius: 4,
+                    spreadRadius: 0,
+                    color: Colors.black.withOpacity(0.25),
                   ),
-                ),
-              ],
+                ],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    speciality.imagePath,
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.contain,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    speciality.title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -194,7 +210,7 @@ class DiscoveryPage extends StatelessWidget {
     );
   }
 
-  Widget _searchTextField() {
+  Widget _searchTextField(DiscoveryController discoveryController) {
     return Container(
       width: Get.width,
       height: 46,
@@ -217,9 +233,11 @@ class DiscoveryPage extends StatelessWidget {
         ),
       ),
       child: TextField(
-        // controller: searchController.textEditingController,
+        controller: discoveryController.textEditingSearchController,
         onEditingComplete: () {
-          //   searchController.onSearch();
+          discoveryController.clearSearchedDoctorsStream();
+          discoveryController.loadDoctorsByName();
+          discoveryController.update();
         },
         style: TextStyle(
           color: Color(0xFF667085),
@@ -228,26 +246,31 @@ class DiscoveryPage extends StatelessWidget {
           fontWeight: FontWeight.w500,
         ),
         decoration: InputDecoration(
-          suffixIcon: /* searchController.showXButton
+          suffixIcon: discoveryController.showXButton
               ? GestureDetector(
                   onTap: () {
-                   // searchController.textEditingController.text = "";
-                  //  searchController.onSearch();
+                    discoveryController.textEditingSearchController.text = "";
+                    discoveryController.loadDoctorsByName();
+                    discoveryController.update();
                   },
-                  child: SvgPicture.asset(
-                    Assets.icons.x.path,
-                    fit: BoxFit.scaleDown,
-                    height: 30,
-                    width: 30,
-                    color: Color(0xFF667085),
+                  child: Container(
+                    color: Colors.transparent,
+                    child: SvgPicture.asset(
+                      Assets.icons.home.xClose.path,
+                      fit: BoxFit.scaleDown,
+                      height: 30,
+                      width: 30,
+                      color: Color(0xFF667085),
+                    ),
                   ),
                 )
-              :*/
-              null,
-          //  suffixIconConstraints: searchController.showXButton ? BoxConstraints(minWidth: 0, minHeight: 0) : null,
+              : null,
+          suffixIconConstraints: discoveryController.showXButton ? BoxConstraints(minWidth: 0, minHeight: 0) : null,
           prefixIcon: GestureDetector(
             onTap: () {
-              //  searchController.onSearch();
+              discoveryController.clearSearchedDoctorsStream();
+              discoveryController.loadDoctorsByName();
+              discoveryController.update();
             },
             child: Container(
               color: Colors.transparent,
@@ -278,7 +301,7 @@ class DiscoveryPage extends StatelessWidget {
 
   Widget _topDoctorsContentComponent(DiscoveryController discoveryController) {
     return StreamBuilder<List<UserModel>>(
-      stream: discoveryController.doctorsStream.stream,
+      stream: discoveryController.topDoctorsStream.stream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -349,7 +372,6 @@ class DiscoveryPage extends StatelessWidget {
                                         topRight: Radius.circular(13),
                                       ),
                                     ),
-                                    //child: CircularProgressIndicator.adaptive(),
                                   ),
                                 );
                               },

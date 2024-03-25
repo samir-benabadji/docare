@@ -133,6 +133,43 @@ class FirebaseFirestoreService {
     }
   }
 
+  Future<List<UserModel>> searchDoctorsByName(String name) async {
+    try {
+      QuerySnapshot querySnapshot = await _firebaseFirestore
+          .collection('doctors')
+          .where('name', isGreaterThanOrEqualTo: name)
+          .where('name', isLessThan: name + 'z')
+          .get();
+
+      List<UserModel> doctors = querySnapshot.docs.map((doc) {
+        return UserModel.fromFirestore(doc);
+      }).toList();
+
+      return doctors;
+    } catch (e) {
+      print('Error searching doctors by name: $e');
+      showToast('Failed to search doctors. Please try again later.');
+      return [];
+    }
+  }
+
+  Future<List<UserModel>> searchDoctorsBySpecialty(String specialty) async {
+    try {
+      QuerySnapshot querySnapshot =
+          await _firebaseFirestore.collection('doctors').where('medicalSpeciality', isEqualTo: specialty).get();
+
+      List<UserModel> doctors = querySnapshot.docs.map((doc) {
+        return UserModel.fromFirestore(doc);
+      }).toList();
+
+      return doctors;
+    } catch (e) {
+      print('Error searching doctors by specialty: $e');
+      showToast('Failed to search doctors. Please try again later.');
+      return [];
+    }
+  }
+
   // Updating userModel's data whenever there is a change / trigger on the firestore collection
   void _updateUserModel(String docId) async {
     if (collectionPathFromUserType != null) {

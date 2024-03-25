@@ -210,7 +210,7 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
                   dayName,
                   style: GoogleFonts.roboto(
                     color: isPastDay
-                        ? Colors.red
+                        ? Color(0xFF090F47)
                         : isSelected
                             ? Color(0xFF7ACDAF)
                             : Color(0xFF090F47),
@@ -223,10 +223,10 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
                   dateNumber,
                   style: GoogleFonts.roboto(
                     color: isPastDay
-                        ? Colors.red
+                        ? Colors.grey
                         : isSelected
                             ? Color(0xFF7ACDAF)
-                            : Colors.black.withOpacity(0.27),
+                            : Color(0xFF090F47),
                     fontSize: 14.28,
                     fontWeight: FontWeight.w400,
                   ),
