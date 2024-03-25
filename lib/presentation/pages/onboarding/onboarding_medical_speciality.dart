@@ -111,12 +111,11 @@ class _OnboardingMedicalSpecialityPageState extends State<OnboardingMedicalSpeci
   Widget _mainContentComponent(OnboardingController onboardingController) {
     return Expanded(
       child: GridView.builder(
-        padding: const EdgeInsets.all(8),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
+          crossAxisCount: 3,
           crossAxisSpacing: 18,
           mainAxisSpacing: 14,
-          childAspectRatio: 1.5,
+          childAspectRatio: 1,
         ),
         itemCount: Constants.specialityTypes.length,
         itemBuilder: (context, index) {
@@ -126,6 +125,7 @@ class _OnboardingMedicalSpecialityPageState extends State<OnboardingMedicalSpeci
                 onboardingController.setMedicalSpeciality(Constants.specialityTypes[index]);
               },
               child: Container(
+                padding: EdgeInsets.all(4),
                 alignment: Alignment.center,
                 decoration: ShapeDecoration(
                   color: Color(0xFFFAFFFD),
@@ -147,15 +147,17 @@ class _OnboardingMedicalSpecialityPageState extends State<OnboardingMedicalSpeci
                       onboardingController: onboardingController,
                     ),
                     SizedBox(height: 6),
-                    Text(
-                      Constants.specialityTypes[index].title,
-                      style: GoogleFonts.rubik(
-                        color: Color(0xFF090F47),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: -0.28,
+                    FittedBox(
+                      child: Text(
+                        Constants.specialityTypes[index].title,
+                        style: GoogleFonts.rubik(
+                          color: Color(0xFF090F47),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: -0.28,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
@@ -173,7 +175,7 @@ class _OnboardingMedicalSpecialityPageState extends State<OnboardingMedicalSpeci
   }) {
     return Image.asset(
       specialityType.imagePath,
-      fit: BoxFit.cover,
+      fit: BoxFit.fill,
       width: 46.35,
       height: 46.35,
     );

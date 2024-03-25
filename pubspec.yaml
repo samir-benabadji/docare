@@ -100,10 +100,10 @@ flutter:
   assets:
     - assets/images/   
     - assets/images/appointments/
-    - assets/images/history/
     - assets/images/doctorProfile/
-    - assets/images/symptoms/
+    - assets/images/history/
     - assets/images/specialities/
+    - assets/images/symptoms/
     - assets/icons/
     - assets/icons/auth/
     - assets/icons/home/

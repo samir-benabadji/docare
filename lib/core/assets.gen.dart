@@ -270,9 +270,61 @@ class $AssetsImagesSpecialitiesGen {
   /// File path: assets/images/specialities/Psychiatry.png
   AssetGenImage get psychiatry => const AssetGenImage('assets/images/specialities/Psychiatry.png');
 
+  /// File path: assets/images/specialities/cardiologist.png
+  AssetGenImage get cardiologist => const AssetGenImage('assets/images/specialities/cardiologist.png');
+
+  /// File path: assets/images/specialities/dentists.png
+  AssetGenImage get dentists => const AssetGenImage('assets/images/specialities/dentists.png');
+
+  /// File path: assets/images/specialities/heart_specialist.png
+  AssetGenImage get heartSpecialist => const AssetGenImage('assets/images/specialities/heart_specialist.png');
+
+  /// File path: assets/images/specialities/hematologist.png
+  AssetGenImage get hematologist => const AssetGenImage('assets/images/specialities/hematologist.png');
+
+  /// File path: assets/images/specialities/hepatologist.png
+  AssetGenImage get hepatologist => const AssetGenImage('assets/images/specialities/hepatologist.png');
+
+  /// File path: assets/images/specialities/nerphrology.png
+  AssetGenImage get nerphrology => const AssetGenImage('assets/images/specialities/nerphrology.png');
+
+  /// File path: assets/images/specialities/nose_specialist.png
+  AssetGenImage get noseSpecialist => const AssetGenImage('assets/images/specialities/nose_specialist.png');
+
+  /// File path: assets/images/specialities/opthalmologist.png
+  AssetGenImage get opthalmologist => const AssetGenImage('assets/images/specialities/opthalmologist.png');
+
+  /// File path: assets/images/specialities/pancreatigist.png
+  AssetGenImage get pancreatigist => const AssetGenImage('assets/images/specialities/pancreatigist.png');
+
+  /// File path: assets/images/specialities/psychologist.png
+  AssetGenImage get psychologist => const AssetGenImage('assets/images/specialities/psychologist.png');
+
+  /// File path: assets/images/specialities/pulmonologist.png
+  AssetGenImage get pulmonologist => const AssetGenImage('assets/images/specialities/pulmonologist.png');
+
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [cardiology, dermatology, gastroenterology, neurology, obstetrics, orthopedics, pediatrics, psychiatry];
+  List<AssetGenImage> get values => [
+        cardiology,
+        dermatology,
+        gastroenterology,
+        neurology,
+        obstetrics,
+        orthopedics,
+        pediatrics,
+        psychiatry,
+        cardiologist,
+        dentists,
+        heartSpecialist,
+        hematologist,
+        hepatologist,
+        nerphrology,
+        noseSpecialist,
+        opthalmologist,
+        pancreatigist,
+        psychologist,
+        pulmonologist
+      ];
 }
 
 class $AssetsImagesSymptomsGen {

@@ -135,7 +135,7 @@ class SignInPage extends StatelessWidget {
           ),
         ),
         child: Text(
-          'Login ',
+          'Login',
           style: GoogleFonts.poppins(
             color: Colors.white,
             fontSize: 17.51,
