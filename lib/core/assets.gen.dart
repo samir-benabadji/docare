@@ -165,6 +165,9 @@ class $AssetsIconsHomeGen {
   /// File path: assets/icons/home/mini_clock.svg
   SvgGenImage get miniClock => const SvgGenImage('assets/icons/home/mini_clock.svg');
 
+  /// File path: assets/icons/home/profile_avatar.svg
+  SvgGenImage get profileAvatar => const SvgGenImage('assets/icons/home/profile_avatar.svg');
+
   /// File path: assets/icons/home/tiny_left_arrow.svg
   SvgGenImage get tinyLeftArrow => const SvgGenImage('assets/icons/home/tiny_left_arrow.svg');
 
@@ -182,6 +185,7 @@ class $AssetsIconsHomeGen {
         largeSearchSign,
         miniCalendar,
         miniClock,
+        profileAvatar,
         tinyLeftArrow,
         tinyRightArrow,
         xClose

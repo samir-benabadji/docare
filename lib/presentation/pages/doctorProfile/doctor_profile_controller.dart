@@ -80,6 +80,10 @@ class DoctorProfileController extends GetxController {
         doctorProfileImageUrl: doctorUserModel.profileImageUrl ?? "",
         doctorSpecialty: doctorUserModel.medicalSpeciality ?? "Unknown",
         appointmentStatus: "PENDING",
+        patientName: _firebaseFirestoreService.getUserModel!.name,
+        patientEmail: _firebaseFirestoreService.getUserModel!.email,
+        patientPhoneNumber: _firebaseFirestoreService.getUserModel!.phoneNumber,
+        patientProfileImageUrl: _firebaseFirestoreService.getUserModel!.profileImageUrl,
         patientProblem: textEditingProblemController.text,
         id: appointmentId,
       );

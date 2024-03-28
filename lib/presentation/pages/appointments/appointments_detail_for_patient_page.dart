@@ -16,9 +16,9 @@ import '../../../core/constants/theme.dart';
 import '../../widgets/utils.dart';
 import 'appointments_controller.dart';
 
-class AppointmentsDetailPage extends StatelessWidget {
+class AppointmentsDetailForPatientPage extends StatelessWidget {
   final AppointmentModel appointment;
-  AppointmentsDetailPage({required this.appointment});
+  AppointmentsDetailForPatientPage({required this.appointment});
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AppointmentsController>(
@@ -75,7 +75,7 @@ class AppointmentsDetailPage extends StatelessWidget {
             ),
           ),
           Text(
-            "My appointment",
+            "Appointment Details",
             textAlign: TextAlign.center,
             style: GoogleFonts.plusJakartaSans(
               color: Colors.black,

@@ -7,6 +7,10 @@ class AppointmentModel {
   final String doctorName;
   final String doctorSpecialty;
   final String doctorProfileImageUrl;
+  final String? patientName;
+  final String? patientEmail;
+  final String? patientPhoneNumber;
+  final String? patientProfileImageUrl;
   final Map<String, dynamic> optionPicked;
   final String startAt;
   final String endAt;
@@ -22,6 +26,10 @@ class AppointmentModel {
     required this.doctorName,
     required this.doctorSpecialty,
     required this.doctorProfileImageUrl,
+    this.patientName,
+    this.patientEmail,
+    this.patientPhoneNumber,
+    this.patientProfileImageUrl,
     required this.optionPicked,
     required this.startAt,
     required this.endAt,
@@ -40,6 +48,10 @@ class AppointmentModel {
       doctorName: data['doctorName'],
       doctorSpecialty: data['doctorSpecialty'],
       doctorProfileImageUrl: data['doctorProfileImageUrl'],
+      patientName: data['patientName'],
+      patientEmail: data['patientEmail'],
+      patientPhoneNumber: data['patientPhoneNumber'],
+      patientProfileImageUrl: data['patientProfileImageUrl'],
       optionPicked: data['optionPicked'],
       startAt: data['startAt'],
       endAt: data['endAt'],
@@ -58,6 +70,10 @@ class AppointmentModel {
       'doctorName': doctorName,
       'doctorSpecialty': doctorSpecialty,
       'doctorProfileImageUrl': doctorProfileImageUrl,
+      'patientName': patientName,
+      'patientEmail': patientEmail,
+      'patientPhoneNumber': patientPhoneNumber,
+      'patientProfileImageUrl': patientProfileImageUrl,
       'optionPicked': optionPicked,
       'startAt': startAt,
       'endAt': endAt,

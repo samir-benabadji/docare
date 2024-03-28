@@ -48,6 +48,23 @@ class FirebaseFirestoreService {
     }
   }
 
+  Future<UserModel?> getPatientByUid(String patientUid) async {
+    try {
+      final DocumentSnapshot docSnapshot = await _firebaseFirestore.collection('patients').doc(patientUid).get();
+      if (docSnapshot.exists) {
+        return UserModel.fromFirestore(docSnapshot);
+      } else {
+        print("Patient not found with UID: $patientUid");
+        showToast('Patient not found. Please verify the UID and try again.');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching patient by UID: $e');
+      showToast('Failed to fetch patient. Please try again later.');
+      return null;
+    }
+  }
+
   Future<List<AppointmentModel>> getAppointmentsForPatient(String patientId) async {
     try {
       QuerySnapshot appointmentSnapshot =
@@ -60,6 +77,23 @@ class FirebaseFirestoreService {
       return appointments;
     } catch (e) {
       print('Error fetching appointments for patient: $e');
+      showToast('Failed to get appointments. Please try again later.');
+      return [];
+    }
+  }
+
+  Future<List<AppointmentModel>> getAppointmentsForDoctor(String doctorId) async {
+    try {
+      QuerySnapshot appointmentSnapshot =
+          await _firebaseFirestore.collection('appointments').where('doctorId', isEqualTo: doctorId).get();
+
+      List<AppointmentModel> appointments = appointmentSnapshot.docs.map((doc) {
+        return AppointmentModel.fromFirestore(doc);
+      }).toList();
+
+      return appointments;
+    } catch (e) {
+      print('Error fetching appointments for doctor: $e');
       showToast('Failed to get appointments. Please try again later.');
       return [];
     }
