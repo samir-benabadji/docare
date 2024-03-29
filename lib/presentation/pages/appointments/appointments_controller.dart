@@ -9,6 +9,8 @@ import '../../widgets/utils.dart';
 class AppointmentsController extends GetxController {
   final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
   final BehaviorSubject<List<AppointmentModel>> appointmentsStream = BehaviorSubject();
+  final BehaviorSubject<List<AppointmentModel>> canceledAppointmentsStream = BehaviorSubject();
+
   final BehaviorSubject<UserModel?> doctorUserModelStream = BehaviorSubject();
   final BehaviorSubject<UserModel?> patientUserModelStream = BehaviorSubject();
 
@@ -27,6 +29,7 @@ class AppointmentsController extends GetxController {
     appointmentsStream.close();
     doctorUserModelStream.close();
     patientUserModelStream.close();
+    canceledAppointmentsStream.close();
     super.onClose();
   }
 
@@ -57,7 +60,9 @@ class AppointmentsController extends GetxController {
     } else {
       showToast('Failed to cancel appointment. Please try again later.');
     }
-    getPatientAppointments();
+    if (_firebaseFirestoreService.getUserModel != null) {
+      _firebaseFirestoreService.getUserModel!.userType == 2 ? getPatientAppointments() : getDoctorAppointments();
+    }
     Get.back();
   }
 
@@ -86,6 +91,22 @@ class AppointmentsController extends GetxController {
           await _firebaseFirestoreService.getAppointmentsForDoctor(_firebaseFirestoreService.getUserModel!.uid);
       // Updating the appointments stream with the fetched appointments
       appointmentsStream.add(appointments);
+    } catch (e) {
+      // TODO: Handle errors
+      print('Error fetching doctor appointments: $e');
+    }
+  }
+
+  Future<void> getDoctorCanceledAppointments() async {
+    try {
+      // Fetching appointments for the doctor
+      final List<AppointmentModel> appointments =
+          await _firebaseFirestoreService.getAppointmentsForDoctor(_firebaseFirestoreService.getUserModel!.uid);
+      // Filtering out canceled appointments
+      final List<AppointmentModel> canceledAppointments =
+          appointments.where((appointment) => appointment.appointmentStatus == "CANCELED").toList();
+      // Updating the appointments stream with the canceled appointments
+      canceledAppointmentsStream.add(canceledAppointments);
     } catch (e) {
       // TODO: Handle errors
       print('Error fetching doctor appointments: $e');

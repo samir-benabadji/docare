@@ -22,15 +22,14 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AppointmentsController>(
-      init: AppointmentsController(),
       builder: (appointmentsController) {
         return Scaffold(
           body: SafeArea(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  _topBarComponent(),
-                  SizedBox(height: 6),
+                  _topBarComponent(appointmentsController),
+                  SizedBox(height: 16),
                   _appointmentDetailsTitleComponent(),
                   SizedBox(height: 22),
                   _appointmentDetailsMainContent(appointmentsController),
@@ -40,23 +39,6 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  Widget _dividerComponent() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 25),
-      height: 1,
-      width: Get.width,
-      decoration: ShapeDecoration(
-        shape: RoundedRectangleBorder(
-          side: BorderSide(
-            width: 1,
-            strokeAlign: BorderSide.strokeAlignCenter,
-            color: Color(0x26090F47),
-          ),
-        ),
-      ),
     );
   }
 
@@ -91,7 +73,7 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
 
   Widget _appointmentDetailsMainContent(AppointmentsController appointmentsController) {
     return StreamBuilder<UserModel?>(
-      stream: appointmentsController.doctorUserModelStream.stream,
+      stream: appointmentsController.patientUserModelStream.stream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Expanded(
@@ -108,40 +90,58 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
             ),
           );
         } else {
-          final doctorUserModel = snapshot.data!;
-          return _appointmentDetailsComponent(doctorUserModel, appointmentsController);
+          final patientUserModel = snapshot.data!;
+          return _appointmentDetailsComponent(patientUserModel, appointmentsController);
         }
       },
     );
   }
 
-  Widget _appointmentDetailsComponent(UserModel doctorUserModel, AppointmentsController appointmentsController) {
+  Widget _appointmentDetailsComponent(UserModel patientUserModel, AppointmentsController appointmentsController) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _patientImageWithNameComponent(doctorUserModel),
-        SizedBox(height: 21),
-        _patientSymptomsComponent(),
-        SizedBox(height: 18),
-        _dividerComponent(),
-        SizedBox(height: 11),
+        _patientImageWithNameComponent(patientUserModel),
+        SizedBox(height: 15),
+        _customDividerComponent(),
+        SizedBox(height: 8),
+        _patientDetailsContentComponent(patientUserModel),
+        SizedBox(height: 8),
+        _customDividerComponent(),
+        SizedBox(height: 8),
+        _patientContactInformationContentComponent(patientUserModel),
+        SizedBox(height: 8),
+        _customDividerComponent(),
+        SizedBox(height: 8),
         _optionContentComponent(),
-        SizedBox(height: 18),
+        SizedBox(height: 8),
         _rateContentComponent(),
-        SizedBox(height: 18),
+        SizedBox(height: 8),
         _sessionTimeContentComponent(),
-        SizedBox(height: 15),
-        _dividerComponent(),
-        SizedBox(height: 15),
+        SizedBox(height: 8),
+        _customDividerComponent(),
+        SizedBox(height: 8),
+        _patientProblemContentComponent(),
+        SizedBox(height: 8),
+        _customDividerComponent(),
+        SizedBox(height: 8),
         _visitTimeContentComponent(),
-        SizedBox(height: 28),
+        /*   SizedBox(height: 28),
         _dividerComponent(),
-        SizedBox(height: 15),
-        _patientInformationsContentComponent(),
         SizedBox(height: 32),
-        _cancelAppointmentButtonComponent(appointmentsController),
+        _cancelAppointmentButtonComponent(appointmentsController),*/
         SizedBox(height: 24)
       ],
+    );
+  }
+
+  Padding _customDividerComponent() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Divider(
+        color: Color(0xff677294).withOpacity(0.15),
+        thickness: 1.5,
+      ),
     );
   }
 
@@ -232,10 +232,9 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
     );
   }
 
-  Widget _patientInformationsContentComponent() {
-    UserModel? patientUserModel = Get.find<FirebaseFirestoreService>().getUserModel;
+  Widget _patientDetailsContentComponent(UserModel patientUserModel) {
     DateTime? birthDateTime;
-    if (patientUserModel != null && patientUserModel.birthDate != null) {
+    if (patientUserModel.birthDate != null) {
       Timestamp? birthTimestamp = patientUserModel.birthDate;
       if (birthTimestamp != null) birthDateTime = birthTimestamp.toDate();
     }
@@ -245,42 +244,127 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Patient Information',
-            style: GoogleFonts.openSans(
+            "Patient's details",
+            style: GoogleFonts.poppins(
               color: Color(0xFF090F47),
               fontSize: 15.57,
               fontWeight: FontWeight.w700,
             ),
           ),
           SizedBox(height: 10),
-          Text(
-            'Full Name: ${patientUserModel?.name ?? "Unknown"}',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.openSans(
-              color: Color(0xFF090F47),
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Age: ',
+                  style: GoogleFonts.inter(
+                    color: Color(0xFF090F47),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                TextSpan(
+                  text: '${birthDateTime != null ? calculateAge(birthDateTime) : "Unknown"}',
+                  style: GoogleFonts.openSans(
+                    color: Color(0xFF090F47),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
             ),
+            textAlign: TextAlign.center,
           ),
           SizedBox(height: 4),
-          Text(
-            'Age: ${birthDateTime != null ? calculateAge(birthDateTime) : "Unknown"}',
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Gender: ',
+                  style: GoogleFonts.inter(
+                    color: Color(0xFF090F47),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                TextSpan(
+                  text: '${patientUserModel.gender ?? "Unknown"}',
+                  style: GoogleFonts.openSans(
+                    color: Color(0xFF090F47),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
             textAlign: TextAlign.center,
-            style: GoogleFonts.openSans(
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _patientContactInformationContentComponent(UserModel patientUserModel) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 31),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Contact's Information",
+            style: GoogleFonts.poppins(
               color: Color(0xFF090F47),
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
+              fontSize: 15.57,
+              fontWeight: FontWeight.w700,
             ),
           ),
-          SizedBox(height: 4),
-          Text(
-            'Phone Number: ${patientUserModel?.phoneNumber ?? "Unknown"}',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.openSans(
-              color: Color(0xFF090F47),
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
+          SizedBox(height: 10),
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Phone Number: ',
+                  style: GoogleFonts.inter(
+                    color: Color(0xFF090F47),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                TextSpan(
+                  text: '${patientUserModel.phoneNumber ?? "Unknown"}',
+                  style: GoogleFonts.openSans(
+                    color: Color(0xFF090F47),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
             ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 4),
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Email: ',
+                  style: GoogleFonts.inter(
+                    color: Color(0xFF090F47),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                TextSpan(
+                  text: '${patientUserModel.email}',
+                  style: GoogleFonts.openSans(
+                    color: Color(0xFF090F47),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -325,31 +409,91 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
     );
   }
 
+  Widget _patientProblemContentComponent() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'The problem of the patient',
+            style: GoogleFonts.poppins(
+              color: Color(0xFF677294),
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          SizedBox(height: 8),
+          Container(
+            width: Get.width,
+            padding: EdgeInsets.all(14),
+            decoration: ShapeDecoration(
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                side: BorderSide(width: 0.50, color: Color(0xFF3BC090)),
+                borderRadius: BorderRadius.circular(17),
+              ),
+              shadows: [
+                BoxShadow(
+                  color: Color(0xD1C7C7C7),
+                  blurRadius: 6.40,
+                  offset: Offset(2, 2),
+                  spreadRadius: 0,
+                )
+              ],
+            ),
+            child: Text(
+              appointment.patientProblem,
+              style: GoogleFonts.poppins(
+                color: Color(0xFF090F47),
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   Widget _optionContentComponent() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 31),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Option',
-            style: GoogleFonts.openSans(
+            'Option selected',
+            style: GoogleFonts.poppins(
               color: Color(0xFF090F47),
               fontSize: 15.57,
               fontWeight: FontWeight.w700,
             ),
           ),
-          Expanded(
-            child: Text(
-              appointment.optionPicked["name"],
-              textAlign: TextAlign.end,
-              style: GoogleFonts.redHatDisplay(
-                color: Color(0xFF090F47),
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                letterSpacing: -0.35,
+          SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: ShapeDecoration(
+                    color: Color(0xFF3BC090),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+                  ),
+                  child: Text(
+                    appointment.optionPicked["name"],
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.rubik(
+                      color: Colors.white,
+                      fontSize: 14.96,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ],
       ),
@@ -464,68 +608,107 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
     );
   }
 
-  Container _patientImageWithNameComponent(UserModel doctorUserModel) {
+  Container _patientImageWithNameComponent(UserModel patientUserModel) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 22),
       padding: EdgeInsets.symmetric(vertical: 9, horizontal: 16),
-      decoration: ShapeDecoration(
-        shape: RoundedRectangleBorder(
-          side: BorderSide(width: 0.70, color: Color(0x26090F47)),
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Column(
             children: [
               ClipOval(
                 child: Container(
-                  width: 48,
-                  height: 48,
-                  child: CachedNetworkImage(
-                    imageUrl: doctorUserModel.profileImageUrl ?? "",
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                    placeholder: (context, url) {
-                      return SizedBox(
-                        width: 48,
-                        height: 48,
-                        child: Center(
-                          child: shimmerComponent(
-                            double.infinity,
-                            double.infinity,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(13),
-                              topRight: Radius.circular(13),
-                            ),
-                          ),
+                  width: 81,
+                  height: 81,
+                  child: (appointment.patientProfileImageUrl != null && appointment.patientProfileImageUrl!.isNotEmpty)
+                      ? CachedNetworkImage(
+                          imageUrl: patientUserModel.profileImageUrl ?? "",
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                          placeholder: (context, url) {
+                            return SizedBox(
+                              width: 48,
+                              height: 48,
+                              child: Center(
+                                child: shimmerComponent(
+                                  double.infinity,
+                                  double.infinity,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(13),
+                                    topRight: Radius.circular(13),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          errorWidget: (context, url, error) {
+                            return Center(
+                              child: CircleAvatar(
+                                backgroundColor: DocareTheme.apple,
+                                child: Icon(
+                                  Icons.broken_image,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : SvgPicture.asset(
+                          Assets.icons.home.profileAvatar.path,
                         ),
-                      );
-                    },
-                    errorWidget: (context, url, error) {
-                      return Center(
-                        child: CircleAvatar(
-                          backgroundColor: DocareTheme.apple,
-                          child: Icon(
-                            Icons.broken_image,
-                            color: Colors.white,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
                 ),
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 16),
               Text(
-                doctorUserModel.name ?? "Unknown",
+                patientUserModel.name ?? "Unknown",
                 style: GoogleFonts.poppins(
                   color: Color(0xFF090F47),
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                 ),
               ),
+              if (appointment.appointmentStatus == "CANCELED")
+                Container(
+                  margin: EdgeInsets.only(top: 28),
+                  padding: const EdgeInsets.only(top: 6, bottom: 6, left: 16, right: 16),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: ShapeDecoration(
+                    color: Color(0x0AFF4C38),
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        width: 1,
+                        strokeAlign: BorderSide.strokeAlignCenter,
+                        color: Color(0x66FF4C38),
+                      ),
+                      borderRadius: BorderRadius.circular(13),
+                    ),
+                  ),
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'The appointement was ',
+                          style: GoogleFonts.openSans(
+                            color: Color(0xFFFF4C38),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'Cancleled',
+                          style: GoogleFonts.openSans(
+                            color: Color(0xFFFF4C38),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
             ],
           ),
         ],
@@ -533,7 +716,10 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
     );
   }
 
-  Widget _topBarComponent() {
+  Widget _topBarComponent(AppointmentsController appointmentsController) {
+    DateTime appointmentDateTime = DateTime.fromMillisecondsSinceEpoch(appointment.appointmentTimeStamp);
+    DateTime currentDateTime = DateTime.now();
+    bool is24HoursAhead = appointmentDateTime.isAfter(currentDateTime.add(Duration(hours: 24)));
     return Padding(
       padding: const EdgeInsets.only(
         top: 14,
@@ -550,13 +736,32 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
             Assets.icons.dOCAREText.path,
           ),
           Spacer(),
-          Text(
-            'Cancel',
-            style: GoogleFonts.openSans(
-              color: Color(0xFFFF4C38),
-              fontSize: 14,
-              fontWeight: FontWeight.w800,
-            ),
+          GestureDetector(
+            onTap: () {
+              if (appointment.appointmentStatus == "CANCELED") return;
+              if (is24HoursAhead) {
+                appointmentsController.cancelAppointment(appointment.id);
+              } else {
+                showToast('You cannot cancel appointments within 24 hours of the scheduled time.');
+              }
+            },
+            child: appointment.appointmentStatus == "CANCELED"
+                ? Text(
+                    'Canceled',
+                    style: GoogleFonts.openSans(
+                      color: Color(0x66FF4C38),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  )
+                : Text(
+                    'Cancel',
+                    style: GoogleFonts.openSans(
+                      color: Color(0xFFFF4C38),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
           ),
         ],
       ),

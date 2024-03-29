@@ -13,6 +13,7 @@ import '../../widgets/utils.dart';
 import 'appointments_controller.dart';
 import 'appointments_detail_for_doctor_page.dart';
 import 'appointments_detail_for_patient_page.dart';
+import 'canceled_appointments_page.dart';
 
 class AppointmentsPage extends StatelessWidget {
   @override
@@ -26,7 +27,7 @@ class AppointmentsPage extends StatelessWidget {
               children: [
                 _topBarComponent(),
                 SizedBox(height: 6),
-                _appointmentsTitleComponent(),
+                _appointmentsTitleComponent(appointmentsController),
                 SizedBox(height: 32),
                 _appointmentsMainContent(appointmentsController),
               ],
@@ -38,7 +39,9 @@ class AppointmentsPage extends StatelessWidget {
   }
 
   Widget _appointmentViewForDoctorComponent(
-      AppointmentsController appointmentsController, AppointmentModel appointment) {
+    AppointmentsController appointmentsController,
+    AppointmentModel appointment,
+  ) {
     DateTime appointmentDate = DateTime.fromMillisecondsSinceEpoch(appointment.appointmentTimeStamp);
     String formattedDate = DateFormat('EEEE, d MMMM').format(appointmentDate); // TODO: also show the year?
     return Container(
@@ -217,7 +220,9 @@ class AppointmentsPage extends StatelessWidget {
   }
 
   Widget _appointmentViewForPatientComponent(
-      AppointmentsController appointmentsController, AppointmentModel appointment) {
+    AppointmentsController appointmentsController,
+    AppointmentModel appointment,
+  ) {
     DateTime appointmentDate = DateTime.fromMillisecondsSinceEpoch(appointment.appointmentTimeStamp);
     String formattedDate = DateFormat('EEEE, d MMMM').format(appointmentDate); // TODO: also show the year?
     return Container(
@@ -481,7 +486,7 @@ class AppointmentsPage extends StatelessWidget {
     );
   }
 
-  Widget _appointmentsTitleComponent() {
+  Widget _appointmentsTitleComponent(AppointmentsController appointmentsController) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
@@ -497,9 +502,42 @@ class AppointmentsPage extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-          IconButton(
+          PopupMenuButton<String>(
+            padding: EdgeInsets.all(16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(
+                value: 'Canceled appointements',
+                child: Text(
+                  'Canceled appointements',
+                  style: GoogleFonts.poppins(
+                    color: Color(0xFF202528),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              PopupMenuItem<String>(
+                value: 'Pending appointements',
+                child: Text(
+                  'Pending appointements',
+                  style: GoogleFonts.poppins(
+                    color: Color(0xFF202528),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ],
+            onSelected: (String value) async {
+              if (value == 'Canceled appointements') {
+                appointmentsController.getDoctorCanceledAppointments();
+                Get.to(() => CanceledAppointmentsPage());
+              } else if (value == 'Pending appointements') {}
+            },
             icon: Icon(Icons.more_vert, color: Colors.black),
-            onPressed: () {},
           ),
         ],
       ),
@@ -630,7 +668,9 @@ class AppointmentsPage extends StatelessWidget {
   }
 
   Widget _displayComponentForDoctor(
-      AppointmentsController appointmentsController, List<AppointmentModel> filteredAppointments) {
+    AppointmentsController appointmentsController,
+    List<AppointmentModel> filteredAppointments,
+  ) {
     return Expanded(
       child: SingleChildScrollView(
         child: Column(
@@ -658,7 +698,9 @@ class AppointmentsPage extends StatelessWidget {
   }
 
   Widget _displayComponentForPatient(
-      AppointmentsController appointmentsController, List<AppointmentModel> filteredAppointments) {
+    AppointmentsController appointmentsController,
+    List<AppointmentModel> filteredAppointments,
+  ) {
     return Expanded(
       child: SingleChildScrollView(
         child: Column(
