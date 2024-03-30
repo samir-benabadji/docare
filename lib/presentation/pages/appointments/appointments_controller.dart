@@ -10,6 +10,7 @@ class AppointmentsController extends GetxController {
   final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
   final BehaviorSubject<List<AppointmentModel>> appointmentsStream = BehaviorSubject();
   final BehaviorSubject<List<AppointmentModel>> canceledAppointmentsStream = BehaviorSubject();
+  final BehaviorSubject<List<AppointmentModel>> pendingAppointmentsStream = BehaviorSubject();
 
   final BehaviorSubject<UserModel?> doctorUserModelStream = BehaviorSubject();
   final BehaviorSubject<UserModel?> patientUserModelStream = BehaviorSubject();
@@ -30,6 +31,7 @@ class AppointmentsController extends GetxController {
     doctorUserModelStream.close();
     patientUserModelStream.close();
     canceledAppointmentsStream.close();
+    pendingAppointmentsStream.close();
     super.onClose();
   }
 
@@ -62,6 +64,32 @@ class AppointmentsController extends GetxController {
     }
     if (_firebaseFirestoreService.getUserModel != null) {
       _firebaseFirestoreService.getUserModel!.userType == 2 ? getPatientAppointments() : getDoctorAppointments();
+    }
+    Get.back();
+  }
+
+  Future<void> confirmAppointment(String appointmentId) async {
+    bool? success = await _firebaseFirestoreService.confirmAppointment(appointmentId);
+    if (success != null && success) {
+      showToast('Appointment confirmed successfully.');
+    } else {
+      showToast('Failed to confirm appointment. Please try again later.');
+    }
+    if (_firebaseFirestoreService.getUserModel != null) {
+      if (_firebaseFirestoreService.getUserModel!.userType == 1) getDoctorPendingAppointments();
+    }
+    Get.back();
+  }
+
+  Future<void> rejectAppointment(String appointmentId) async {
+    bool? success = await _firebaseFirestoreService.rejectAppointment(appointmentId);
+    if (success != null && success) {
+      showToast('Appointment rejected successfully.');
+    } else {
+      showToast('Failed to reject appointment. Please try again later.');
+    }
+    if (_firebaseFirestoreService.getUserModel != null) {
+      if (_firebaseFirestoreService.getUserModel!.userType == 1) getDoctorPendingAppointments();
     }
     Get.back();
   }
@@ -107,6 +135,22 @@ class AppointmentsController extends GetxController {
           appointments.where((appointment) => appointment.appointmentStatus == "CANCELED").toList();
       // Updating the appointments stream with the canceled appointments
       canceledAppointmentsStream.add(canceledAppointments);
+    } catch (e) {
+      // TODO: Handle errors
+      print('Error fetching doctor appointments: $e');
+    }
+  }
+
+  Future<void> getDoctorPendingAppointments() async {
+    try {
+      // Fetching appointments for the doctor
+      final List<AppointmentModel> appointments =
+          await _firebaseFirestoreService.getAppointmentsForDoctor(_firebaseFirestoreService.getUserModel!.uid);
+      // Filtering out canceled appointments
+      final List<AppointmentModel> pendingAppointments =
+          appointments.where((appointment) => appointment.appointmentStatus == "PENDING").toList();
+      // Updating the appointments stream with the canceled appointments
+      pendingAppointmentsStream.add(pendingAppointments);
     } catch (e) {
       // TODO: Handle errors
       print('Error fetching doctor appointments: $e');

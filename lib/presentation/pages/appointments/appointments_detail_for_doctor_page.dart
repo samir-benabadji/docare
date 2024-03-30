@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:docare/business_logic/models/pain_model.dart';
 import 'package:docare/business_logic/models/user_model.dart';
-import 'package:docare/business_logic/services/firebase_firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -11,10 +9,10 @@ import 'package:intl/intl.dart';
 
 import '../../../business_logic/models/appointment_model.dart';
 import '../../../core/assets.gen.dart';
-import '../../../core/constants/constants.dart';
 import '../../../core/constants/theme.dart';
 import '../../widgets/utils.dart';
 import 'appointments_controller.dart';
+import 'widgets/utils.dart';
 
 class AppointmentsDetailForDoctorPage extends StatelessWidget {
   final AppointmentModel appointment;
@@ -52,8 +50,14 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
             onTap: () {
               Get.back();
             },
-            child: SvgPicture.asset(
-              Assets.icons.leftArrow.path,
+            child: Container(
+              height: 48,
+              width: 48,
+              color: Colors.transparent,
+              child: SvgPicture.asset(
+                Assets.icons.leftArrow.path,
+                fit: BoxFit.scaleDown,
+              ),
             ),
           ),
           Text(
@@ -126,10 +130,9 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
         _customDividerComponent(),
         SizedBox(height: 8),
         _visitTimeContentComponent(),
-        /*   SizedBox(height: 28),
-        _dividerComponent(),
-        SizedBox(height: 32),
-        _cancelAppointmentButtonComponent(appointmentsController),*/
+        if (appointment.appointmentStatus == "PENDING") SizedBox(height: 28),
+        if (appointment.appointmentStatus == "PENDING")
+          _confirmRejectAppointmentButtonsComponent(appointmentsController, patientUserModel),
         SizedBox(height: 24)
       ],
     );
@@ -145,47 +148,96 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
     );
   }
 
-  Widget _cancelAppointmentButtonComponent(AppointmentsController appointmentsController) {
-    DateTime appointmentDateTime = DateTime.fromMillisecondsSinceEpoch(appointment.appointmentTimeStamp);
-    DateTime currentDateTime = DateTime.now();
-    bool is24HoursAhead = appointmentDateTime.isAfter(currentDateTime.add(Duration(hours: 24)));
-
-    return GestureDetector(
-      onTap: () {
-        if (is24HoursAhead) {
-          appointmentsController.cancelAppointment(appointment.id);
-        } else {
-          showToast('You cannot cancel appointments within 24 hours of the scheduled time.');
-        }
-      },
-      child: Container(
-        alignment: Alignment.center,
-        margin: EdgeInsets.symmetric(horizontal: 40),
-        width: Get.width,
-        padding: EdgeInsets.symmetric(vertical: 14),
-        decoration: ShapeDecoration(
-          color: is24HoursAhead ? DocareTheme.apple : DocareTheme.babyApple,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
+  Widget _confirmRejectAppointmentButtonsComponent(
+    AppointmentsController appointmentsController,
+    UserModel patientUserModel,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 13),
+      child: Row(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                if (Get.context != null)
+                  rejectDialogComponent(
+                    Get.context!,
+                    appointmentsController,
+                    appointment.id,
+                    patientUserModel,
+                  );
+              },
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(vertical: 14),
+                decoration: ShapeDecoration(
+                  color: Color(0xA8FF4C38),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  shadows: [
+                    BoxShadow(
+                      color: Color(0xff494949).withOpacity(0.25),
+                      blurRadius: 4.60,
+                      offset: Offset(0, 1),
+                      spreadRadius: 0,
+                    )
+                  ],
+                ),
+                child: Text(
+                  'Reject',
+                  style: GoogleFonts.rubik(
+                    color: Colors.white,
+                    fontSize: 16.86,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: -0.32,
+                  ),
+                ),
+              ),
+            ),
           ),
-          shadows: [
-            BoxShadow(
-              color: Color(0xff494949).withOpacity(0.25),
-              blurRadius: 4.60,
-              offset: Offset(0, 1),
-              spreadRadius: 0,
-            )
-          ],
-        ),
-        child: Text(
-          'Cancel the appointment',
-          style: GoogleFonts.rubik(
-            color: Colors.white,
-            fontSize: 18.55,
-            fontWeight: FontWeight.w500,
-            letterSpacing: -0.35,
+          SizedBox(width: 9),
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                if (Get.context != null)
+                  confirmDialogComponent(
+                    Get.context!,
+                    appointmentsController,
+                    appointment.id,
+                    patientUserModel,
+                  );
+              },
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(vertical: 14),
+                decoration: ShapeDecoration(
+                  color: Color(0xC13BC090),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  shadows: [
+                    BoxShadow(
+                      color: Color(0xff494949).withOpacity(0.25),
+                      blurRadius: 4.60,
+                      offset: Offset(0, 1),
+                      spreadRadius: 0,
+                    )
+                  ],
+                ),
+                child: Text(
+                  'Confirm',
+                  style: GoogleFonts.rubik(
+                    color: Colors.white,
+                    fontSize: 16.86,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: -0.32,
+                  ),
+                ),
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -529,187 +581,222 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
     );
   }
 
-  Padding _patientSymptomsComponent() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 31),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Patient's symptoms",
-            style: GoogleFonts.openSans(
-              color: Color(0xFF090F47),
-              fontSize: 15.57,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          SizedBox(height: 12),
-          _symptomsContentComponent(),
-        ],
-      ),
-    );
-  }
-
-  Widget _symptomsContentComponent() {
-    List<String>? symptoms = Get.find<FirebaseFirestoreService>().getUserModel?.symptoms;
-    if (symptoms == null || symptoms.isEmpty) {
-      return SizedBox.shrink();
-    }
-
-    List<Widget> symptomsWidgets = [];
-
-    for (String symptom in symptoms) {
-      final painType = Constants.painTypes.firstWhere(
-        (type) => type.title == symptom,
-        orElse: () => PainType("", ""),
-      );
-
-      if (painType.title.isNotEmpty && painType.imagePath.isNotEmpty) {
-        symptomsWidgets.add(
-          Container(
-            margin: EdgeInsets.only(right: 16),
-            child: Row(
-              children: [
-                ClipOval(
-                  child: Container(
-                    width: 35.48,
-                    height: 35.48,
-                    child: ClipOval(
-                      child: Image.asset(
-                        painType.imagePath,
-                        fit: BoxFit.cover,
-                        width: 35.48,
-                        height: 35.48,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 6),
-                Text(
-                  painType.title,
-                  style: GoogleFonts.openSans(
-                    color: Color(0xFF393938),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      }
-    }
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: symptomsWidgets,
-      ),
-    );
-  }
-
-  Container _patientImageWithNameComponent(UserModel patientUserModel) {
+  Widget _patientImageWithNameComponent(UserModel patientUserModel) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 22),
       padding: EdgeInsets.symmetric(vertical: 9, horizontal: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Column(
-            children: [
-              ClipOval(
-                child: Container(
-                  width: 81,
-                  height: 81,
-                  child: (appointment.patientProfileImageUrl != null && appointment.patientProfileImageUrl!.isNotEmpty)
-                      ? CachedNetworkImage(
-                          imageUrl: patientUserModel.profileImageUrl ?? "",
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                          placeholder: (context, url) {
-                            return SizedBox(
-                              width: 48,
-                              height: 48,
-                              child: Center(
-                                child: shimmerComponent(
-                                  double.infinity,
-                                  double.infinity,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(13),
-                                    topRight: Radius.circular(13),
-                                  ),
-                                ),
+          Expanded(
+            child: Column(
+              children: [
+                ClipOval(
+                  child: Container(
+                    width: 81,
+                    height: 81,
+                    child:
+                        (appointment.patientProfileImageUrl != null && appointment.patientProfileImageUrl!.isNotEmpty)
+                            ? CachedNetworkImage(
+                                imageUrl: patientUserModel.profileImageUrl ?? "",
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                                placeholder: (context, url) {
+                                  return SizedBox(
+                                    width: 48,
+                                    height: 48,
+                                    child: Center(
+                                      child: shimmerComponent(
+                                        double.infinity,
+                                        double.infinity,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(13),
+                                          topRight: Radius.circular(13),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                errorWidget: (context, url, error) {
+                                  return Center(
+                                    child: CircleAvatar(
+                                      backgroundColor: DocareTheme.apple,
+                                      child: Icon(
+                                        Icons.broken_image,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )
+                            : SvgPicture.asset(
+                                Assets.icons.home.profileAvatar.path,
                               ),
-                            );
-                          },
-                          errorWidget: (context, url, error) {
-                            return Center(
-                              child: CircleAvatar(
-                                backgroundColor: DocareTheme.apple,
-                                child: Icon(
-                                  Icons.broken_image,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            );
-                          },
-                        )
-                      : SvgPicture.asset(
-                          Assets.icons.home.profileAvatar.path,
+                  ),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  patientUserModel.name ?? "Unknown",
+                  style: GoogleFonts.poppins(
+                    color: Color(0xFF090F47),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                if (appointment.appointmentStatus == "REJECTED")
+                  Container(
+                    margin: EdgeInsets.only(top: 28),
+                    padding: const EdgeInsets.only(top: 6, bottom: 6, left: 8, right: 8),
+                    clipBehavior: Clip.antiAlias,
+                    decoration: ShapeDecoration(
+                      color: Color(0x0AFF4C38),
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          width: 1,
+                          strokeAlign: BorderSide.strokeAlignCenter,
+                          color: Color(0x66FF4C38),
                         ),
-                ),
-              ),
-              SizedBox(height: 16),
-              Text(
-                patientUserModel.name ?? "Unknown",
-                style: GoogleFonts.poppins(
-                  color: Color(0xFF090F47),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              if (appointment.appointmentStatus == "CANCELED")
-                Container(
-                  margin: EdgeInsets.only(top: 28),
-                  padding: const EdgeInsets.only(top: 6, bottom: 6, left: 16, right: 16),
-                  clipBehavior: Clip.antiAlias,
-                  decoration: ShapeDecoration(
-                    color: Color(0x0AFF4C38),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        width: 1,
-                        strokeAlign: BorderSide.strokeAlignCenter,
-                        color: Color(0x66FF4C38),
+                        borderRadius: BorderRadius.circular(13),
                       ),
-                      borderRadius: BorderRadius.circular(13),
+                    ),
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'The appointement was ',
+                            style: GoogleFonts.openSans(
+                              color: Color(0xFFFF4C38),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'Rejected',
+                            style: GoogleFonts.openSans(
+                              color: Color(0xFFFF4C38),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'The appointement was ',
-                          style: GoogleFonts.openSans(
-                            color: Color(0xFFFF4C38),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
+                if (appointment.appointmentStatus == "UPCOMING")
+                  Container(
+                    margin: EdgeInsets.only(top: 28),
+                    padding: const EdgeInsets.only(top: 6, bottom: 6, left: 8, right: 8),
+                    clipBehavior: Clip.antiAlias,
+                    decoration: ShapeDecoration(
+                      color: Color(0x0A34C759),
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          width: 1,
+                          strokeAlign: BorderSide.strokeAlignCenter,
+                          color: Color(0x6634C759),
                         ),
-                        TextSpan(
-                          text: 'Cancleled',
-                          style: GoogleFonts.openSans(
-                            color: Color(0xFFFF4C38),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            decoration: TextDecoration.underline,
+                        borderRadius: BorderRadius.circular(13),
+                      ),
+                    ),
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'The appointement was accepted',
+                            style: GoogleFonts.openSans(
+                              color: Color(0xFF34C759),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-            ],
+                if (appointment.appointmentStatus == "PENDING")
+                  Container(
+                    margin: EdgeInsets.only(top: 28),
+                    padding: const EdgeInsets.only(top: 6, bottom: 6, left: 16, right: 16),
+                    clipBehavior: Clip.antiAlias,
+                    decoration: ShapeDecoration(
+                      color: Color(0x0AFF9634),
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          width: 1,
+                          strokeAlign: BorderSide.strokeAlignCenter,
+                          color: Color(0x66FF9634),
+                        ),
+                        borderRadius: BorderRadius.circular(13),
+                      ),
+                    ),
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'The appointement is currently in ',
+                            style: GoogleFonts.openSans(
+                              color: Color(0xFFFF9534),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'pending status..',
+                            style: GoogleFonts.openSans(
+                              color: Color(0xFFFF9534),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                if (appointment.appointmentStatus == "CANCELED")
+                  Container(
+                    margin: EdgeInsets.only(top: 28),
+                    padding: const EdgeInsets.only(top: 6, bottom: 6, left: 16, right: 16),
+                    clipBehavior: Clip.antiAlias,
+                    decoration: ShapeDecoration(
+                      color: Color(0x0AFF4C38),
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          width: 1,
+                          strokeAlign: BorderSide.strokeAlignCenter,
+                          color: Color(0x66FF4C38),
+                        ),
+                        borderRadius: BorderRadius.circular(13),
+                      ),
+                    ),
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'The appointement was ',
+                            style: GoogleFonts.openSans(
+                              color: Color(0xFFFF4C38),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'Cancleled',
+                            style: GoogleFonts.openSans(
+                              color: Color(0xFFFF4C38),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ],
       ),
@@ -736,33 +823,34 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
             Assets.icons.dOCAREText.path,
           ),
           Spacer(),
-          GestureDetector(
-            onTap: () {
-              if (appointment.appointmentStatus == "CANCELED") return;
-              if (is24HoursAhead) {
-                appointmentsController.cancelAppointment(appointment.id);
-              } else {
-                showToast('You cannot cancel appointments within 24 hours of the scheduled time.');
-              }
-            },
-            child: appointment.appointmentStatus == "CANCELED"
-                ? Text(
-                    'Canceled',
-                    style: GoogleFonts.openSans(
-                      color: Color(0x66FF4C38),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w800,
+          if (appointment.appointmentStatus == "UPCOMING")
+            GestureDetector(
+              onTap: () {
+                if (appointment.appointmentStatus == "CANCELED") return;
+                if (is24HoursAhead) {
+                  appointmentsController.cancelAppointment(appointment.id);
+                } else {
+                  showToast('You cannot cancel appointments within 24 hours of the scheduled time.');
+                }
+              },
+              child: appointment.appointmentStatus == "CANCELED"
+                  ? Text(
+                      'Canceled',
+                      style: GoogleFonts.openSans(
+                        color: Color(0x66FF4C38),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    )
+                  : Text(
+                      'Cancel',
+                      style: GoogleFonts.openSans(
+                        color: Color(0xFFFF4C38),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
-                  )
-                : Text(
-                    'Cancel',
-                    style: GoogleFonts.openSans(
-                      color: Color(0xFFFF4C38),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-          ),
+            ),
         ],
       ),
     );

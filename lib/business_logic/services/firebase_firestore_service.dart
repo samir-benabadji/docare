@@ -167,6 +167,52 @@ class FirebaseFirestoreService {
     }
   }
 
+  Future<bool?> confirmAppointment(String appointmentId) async {
+    try {
+      QuerySnapshot querySnapshot =
+          await _firebaseFirestore.collection('appointments').where('id', isEqualTo: appointmentId).get();
+
+      if (querySnapshot.docs.isEmpty) {
+        print('Appointment with ID $appointmentId not found.');
+        showToast('Appointment was not found.');
+        return null;
+      }
+      // Geting the reference to the document with the provided appointmentId
+      DocumentReference appointmentRef = querySnapshot.docs.first.reference;
+
+      // Updating the appointment status to "CANCELED"
+      await appointmentRef.update({'appointmentStatus': 'UPCOMING'});
+
+      return true;
+    } catch (e) {
+      print('Error confirming appointment: $e');
+      return false;
+    }
+  }
+
+  Future<bool?> rejectAppointment(String appointmentId) async {
+    try {
+      QuerySnapshot querySnapshot =
+          await _firebaseFirestore.collection('appointments').where('id', isEqualTo: appointmentId).get();
+
+      if (querySnapshot.docs.isEmpty) {
+        print('Appointment with ID $appointmentId not found.');
+        showToast('Appointment was not found.');
+        return null;
+      }
+      // Geting the reference to the document with the provided appointmentId
+      DocumentReference appointmentRef = querySnapshot.docs.first.reference;
+
+      // Updating the appointment status to "CANCELED"
+      await appointmentRef.update({'appointmentStatus': 'REJECTED'});
+
+      return true;
+    } catch (e) {
+      print('Error rejecting appointment: $e');
+      return false;
+    }
+  }
+
   Future<List<UserModel>> searchDoctorsByName(String name) async {
     try {
       QuerySnapshot querySnapshot = await _firebaseFirestore

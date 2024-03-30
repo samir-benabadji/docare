@@ -13,7 +13,7 @@ import '../../widgets/utils.dart';
 import 'appointments_controller.dart';
 import 'appointments_detail_for_doctor_page.dart';
 
-class CanceledAppointmentsPage extends StatelessWidget {
+class PendingAppointmentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AppointmentsController>(
@@ -24,7 +24,7 @@ class CanceledAppointmentsPage extends StatelessWidget {
               children: [
                 _topBarComponent(),
                 SizedBox(height: 8),
-                _canceledAppointmentsTitleComponent(),
+                _pendingAppointmentsTitleComponent(),
                 SizedBox(height: 32),
                 _appointmentsMainContent(appointmentsController),
               ],
@@ -35,7 +35,7 @@ class CanceledAppointmentsPage extends StatelessWidget {
     );
   }
 
-  Widget _canceledAppointmentViewForDoctorComponent(
+  Widget _pendingAppointmentViewForDoctorComponent(
     AppointmentsController appointmentsController,
     AppointmentModel appointment,
   ) {
@@ -51,7 +51,7 @@ class CanceledAppointmentsPage extends StatelessWidget {
       decoration: ShapeDecoration(
         color: Colors.white,
         shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1, color: Color(0x38FF4C38)),
+          side: BorderSide(width: 1, color: Color(0x38FF9634)),
           borderRadius: BorderRadius.circular(12),
         ),
         shadows: [
@@ -137,9 +137,9 @@ class CanceledAppointmentsPage extends StatelessWidget {
               ),
               Spacer(),
               Text(
-                'Canceled',
+                'Pending',
                 style: GoogleFonts.poppins(
-                  color: Color(0xFFFF4C38),
+                  color: Color(0xFFFF9634),
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   letterSpacing: -0.19,
@@ -206,7 +206,7 @@ class CanceledAppointmentsPage extends StatelessWidget {
               width: Get.width,
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
               decoration: ShapeDecoration(
-                color: Color(0xA8FF4C38),
+                color: Color(0xA8FF9634),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100),
                 ),
@@ -316,7 +316,7 @@ class CanceledAppointmentsPage extends StatelessWidget {
     );
   }
 
-  Widget _canceledAppointmentsTitleComponent() {
+  Widget _pendingAppointmentsTitleComponent() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
@@ -337,7 +337,7 @@ class CanceledAppointmentsPage extends StatelessWidget {
             ),
           ),
           Text(
-            "Canceled appointments",
+            "Pending appointments",
             textAlign: TextAlign.center,
             style: GoogleFonts.plusJakartaSans(
               color: Colors.black,
@@ -354,7 +354,7 @@ class CanceledAppointmentsPage extends StatelessWidget {
   Widget _appointmentsMainContent(AppointmentsController appointmentsController) {
     final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
     return StreamBuilder<List<AppointmentModel>>(
-      stream: appointmentsController.canceledAppointmentsStream.stream,
+      stream: appointmentsController.pendingAppointmentsStream.stream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Expanded(
@@ -368,14 +368,14 @@ class CanceledAppointmentsPage extends StatelessWidget {
           return Column(
             children: [
               SizedBox(height: 48),
-              _noAppointmentsComponent("There are no canceled appointments"),
+              _noPendingAppointmentsComponent("There are no pending appointments"),
             ],
           );
         } else {
           // Filter logic between a patient and a doctor
           final filteredAppointments = snapshot.data!;
 
-          if (filteredAppointments.isEmpty) return _noAppointmentsComponent("There are no canceled appointments");
+          if (filteredAppointments.isEmpty) return _noPendingAppointmentsComponent("There are no pending appointments");
 
           if (_firebaseFirestoreService.getUserModel != null) {
             return _displayComponentForDoctor(appointmentsController, filteredAppointments);
@@ -403,7 +403,7 @@ class CanceledAppointmentsPage extends StatelessWidget {
                   for (final appointment in filteredAppointments)
                     Padding(
                       padding: EdgeInsets.only(bottom: 19),
-                      child: _canceledAppointmentViewForDoctorComponent(appointmentsController, appointment),
+                      child: _pendingAppointmentViewForDoctorComponent(appointmentsController, appointment),
                     ),
                 ],
               ),
@@ -414,7 +414,7 @@ class CanceledAppointmentsPage extends StatelessWidget {
     );
   }
 
-  Widget _noAppointmentsComponent(String title) {
+  Widget _noPendingAppointmentsComponent(String title) {
     return Column(
       children: [
         if (title.isNotEmpty)
