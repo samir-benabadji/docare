@@ -297,6 +297,22 @@ class FirebaseFirestoreService {
     }
   }
 
+  Future<bool> updateDoctorWorkingHours(String uid, Map<String, List<Map<String, dynamic>>> workingHours) async {
+    try {
+      // Getting the collection path based on the user type
+      String collectionPath = _getCollectionPathFromUserType(getUserModel!.userType);
+
+      // Updating the workingHours field of the doctor document
+      await _firebaseFirestore.collection(collectionPath).doc(uid).update({'workingHours': workingHours});
+
+      return true;
+    } catch (e) {
+      print('Error updating user working hours in Firestore: $e');
+      // Handle exceptions
+      return false;
+    }
+  }
+
   Future<UserModel?> getUserData(String uid) async {
     // If collectionPathFromUserType is not null, we use it directly
     if (collectionPathFromUserType != null) {

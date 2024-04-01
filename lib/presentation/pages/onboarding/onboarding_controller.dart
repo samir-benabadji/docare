@@ -459,6 +459,7 @@ class OnboardingController extends GetxController {
       mappedSessions[timestamp]!.add({
         'start at': start,
         'end at': end,
+        'id': session.id,
       });
     }
 

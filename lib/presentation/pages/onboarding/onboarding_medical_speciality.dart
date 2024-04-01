@@ -52,6 +52,7 @@ class _OnboardingMedicalSpecialityPageState extends State<OnboardingMedicalSpeci
                         ),
                         SizedBox(height: 36),
                         _mainContentComponent(onboardingController),
+                        SizedBox(height: 16),
                         _continueButtonComponent(onboardingController),
                         SizedBox(height: 32)
                       ],

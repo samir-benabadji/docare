@@ -7,8 +7,7 @@ class SessionModel {
   TimeOfDay? startAt;
   TimeOfDay? endAt;
 
-  SessionModel({required this.timestamp, this.startAt, this.endAt})
-      : id = DateTime.now().millisecondsSinceEpoch.toString();
+  SessionModel({required this.id, required this.timestamp, this.startAt, this.endAt});
 
   String getDayName() {
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);

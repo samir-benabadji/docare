@@ -43,6 +43,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
+      initState: (state) {
+        Get.find<HomeController>().initBotttomNav();
+      },
       builder: (homeController) {
         String greeting = "Welcome";
         switch (widget.userModel.userType) {

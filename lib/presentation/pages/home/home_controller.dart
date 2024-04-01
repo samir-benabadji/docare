@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../../business_logic/services/firebase_firestore_service.dart';
 import '../../../core/assets.gen.dart';
 import '../appointments/appointments_page.dart';
 import '../discovery/discovery_page.dart';
+import '../doctorSchedule/doctor_schedule_page.dart';
 import '../history/history_page.dart';
 import '../patientProfile/patient_profile_page.dart';
 
@@ -13,6 +15,8 @@ class HomeController extends GetxController {
   int previousIndex = 0;
 
   Widget get currentPage => socialPages[currentIndex].page;
+
+  final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
 
   final socialPages = <CustomNavigator>[];
 
@@ -34,8 +38,13 @@ class HomeController extends GetxController {
         bottomNavIconPath: Assets.icons.bottomNavBar.appointments.path,
       ),
       CustomNavigator(
-        page: HistoryPage(),
-        bottomNavIconPath: Assets.icons.bottomNavBar.history.path,
+        page: (_firebaseFirestoreService.getUserModel != null && _firebaseFirestoreService.getUserModel!.userType == 1)
+            ? DoctorSchedulePage()
+            : HistoryPage(),
+        bottomNavIconPath:
+            (_firebaseFirestoreService.getUserModel != null && _firebaseFirestoreService.getUserModel!.userType == 1)
+                ? Assets.icons.bottomNavBar.schedule.path
+                : Assets.icons.bottomNavBar.history.path,
       ),
       CustomNavigator(
         page: PatientProfilePage(),

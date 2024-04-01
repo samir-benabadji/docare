@@ -1,5 +1,5 @@
 import 'package:docare/core/constants/theme.dart';
-import 'package:docare/presentation/pages/onboarding/widgets/onboarding_session_component.dart';
+import 'package:docare/presentation/pages/doctorSchedule/widgets/doctor_schedule_session_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -8,20 +8,18 @@ import 'package:uuid/uuid.dart';
 
 import '../../../business_logic/models/session_model.dart';
 import '../../../core/assets.gen.dart';
-import 'onboarding_controller.dart';
-import 'onboarding_phone_number_page.dart';
+import 'doctor_schedule_controller.dart';
 
-class OnboardingWorkSchedulePage extends StatefulWidget {
+class DoctorSchedulePage extends StatefulWidget {
   @override
-  State<OnboardingWorkSchedulePage> createState() => _OnboardingWorkSchedulePageState();
+  State<DoctorSchedulePage> createState() => _DoctorSchedulePageState();
 }
 
-class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage> {
-  final TextEditingController _textFieldController = TextEditingController();
-
+class _DoctorSchedulePageState extends State<DoctorSchedulePage> {
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<OnboardingController>(
+    return GetBuilder<DoctorScheduleController>(
+      init: DoctorScheduleController(),
       initState: (state) {},
       builder: (onboardingController) {
         return Scaffold(
@@ -36,7 +34,6 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
                 SizedBox(height: 24),
                 _sessionContentComponent(onboardingController),
                 SizedBox(height: 16),
-                if (onboardingController.isSavedSuccessfully) _continueButtonComponent(onboardingController),
                 SizedBox(height: 32)
               ],
             ),
@@ -46,20 +43,20 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
     );
   }
 
-  Widget _sessionContentComponent(OnboardingController onboardingController) {
+  Widget _sessionContentComponent(DoctorScheduleController doctorScheduleController) {
     return Expanded(
       child: SingleChildScrollView(
         child: Column(
           children: [
-            ...onboardingController.allSessions
-                .where((element) => element.timestamp == onboardingController.currentSelectedTimeStamp)
+            ...doctorScheduleController.allSessions
+                .where((element) => element.timestamp == doctorScheduleController.currentSelectedTimeStamp)
                 .toList()
                 .asMap()
                 .entries
                 .map((entry) {
               return Column(
                 children: [
-                  SessionComponent(
+                  DoctorScheduleSessionComponent(
                     session: entry.value,
                     sessionIndex: entry.key,
                   ),
@@ -67,21 +64,21 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
                 ],
               );
             }).toList(),
-            if (onboardingController.currentSelectedTimeStamp != 0) SizedBox(height: 22),
-            if (onboardingController.currentSelectedTimeStamp != 0)
+            if (doctorScheduleController.currentSelectedTimeStamp != 0) SizedBox(height: 22),
+            if (doctorScheduleController.currentSelectedTimeStamp != 0)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
                     onTap: () {
-                      onboardingController.allSessions.add(
+                      doctorScheduleController.allSessions.add(
                         SessionModel(
                           id: Uuid().v4(),
-                          timestamp: onboardingController.currentSelectedTimeStamp,
+                          timestamp: doctorScheduleController.currentSelectedTimeStamp,
                         ),
                       );
-                      onboardingController.isSavedSuccessfully = false;
-                      onboardingController.update();
+                      doctorScheduleController.isSavedSuccessfully = false;
+                      doctorScheduleController.update();
                     },
                     child: Container(
                       width: 41,
@@ -134,7 +131,7 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
     );
   }
 
-  Widget _dayOfWeekComponent(OnboardingController onboardingController) {
+  Widget _dayOfWeekComponent(DoctorScheduleController doctorScheduleController) {
     List<String> days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
     // Getting the index of the current day
@@ -199,9 +196,9 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
                   }
                 }
 
-                onboardingController.currentSelectedTimeStamp = timestamp;
+                doctorScheduleController.currentSelectedTimeStamp = timestamp;
 
-                onboardingController.update();
+                doctorScheduleController.update();
               },
               child: Container(
                 color: Colors.transparent,
@@ -222,20 +219,20 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
                       width: 24,
                       height: 24,
                       decoration: BoxDecoration(
-                        color: onboardingController.currentSelectedTimeStamp == timestamp
+                        color: doctorScheduleController.currentSelectedTimeStamp == timestamp
                             ? Color(0x7F058155)
-                            : (onboardingController.allSessions.any(
+                            : (doctorScheduleController.allSessions.any(
                                       (element) => element.timestamp == timestamp,
                                     ) &&
-                                    onboardingController.isSavedSuccessfully)
+                                    doctorScheduleController.isSavedSuccessfully)
                                 ? Color(0xFFEFC02D)
                                 : Color(0x2B058155),
                         shape: BoxShape.circle,
                       ),
-                      child: (onboardingController.allSessions.any(
+                      child: (doctorScheduleController.allSessions.any(
                                 (element) => element.timestamp == timestamp,
                               ) &&
-                              onboardingController.isSavedSuccessfully)
+                              doctorScheduleController.isSavedSuccessfully)
                           ? SvgPicture.asset(
                               Assets.icons.check.path,
                               fit: BoxFit.scaleDown,
@@ -252,7 +249,7 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
     );
   }
 
-  Widget _topBarComponent(OnboardingController onboardingController) {
+  Widget _topBarComponent(DoctorScheduleController doctorScheduleController) {
     return Padding(
       padding: const EdgeInsets.only(
         top: 14,
@@ -271,12 +268,13 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
           Spacer(),
           GestureDetector(
             onTap: () {
-              onboardingController.onSaveClicked();
+              doctorScheduleController.onSaveClicked();
             },
             child: Text(
               'Save',
               style: GoogleFonts.montserrat(
-                color: onboardingController.isSavedSuccessfully ? DocareTheme.babyStrawberry : DocareTheme.strawberry,
+                color:
+                    doctorScheduleController.isSavedSuccessfully ? DocareTheme.babyStrawberry : DocareTheme.strawberry,
                 fontSize: 15.65,
                 fontWeight: FontWeight.w600,
               ),
@@ -285,46 +283,5 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
         ],
       ),
     );
-  }
-
-  Widget _continueButtonComponent(OnboardingController onboardingController) {
-    return GestureDetector(
-      onTap: () {
-        Get.to(() => OnboardingPhoneNumberPage());
-      },
-      child: Container(
-        width: Get.width,
-        height: 49,
-        margin: EdgeInsets.symmetric(horizontal: 44),
-        alignment: Alignment.center,
-        decoration: ShapeDecoration(
-          color: _continueButtonColor(),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-          ),
-          shadows: [
-            BoxShadow(
-              color: Color(0x3F494949),
-              blurRadius: 4.60,
-              offset: Offset(0, 1),
-              spreadRadius: 0,
-            )
-          ],
-        ),
-        child: Text(
-          'Continue',
-          style: GoogleFonts.rubik(
-            color: Colors.white,
-            fontSize: 18.55,
-            fontWeight: FontWeight.w500,
-            letterSpacing: -0.35,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Color _continueButtonColor() {
-    return DocareTheme.apple;
   }
 }

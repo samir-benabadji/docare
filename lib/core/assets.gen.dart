@@ -140,8 +140,11 @@ class $AssetsIconsBottomNavBarGen {
   /// File path: assets/icons/bottomNavBar/profile.png
   AssetGenImage get profile => const AssetGenImage('assets/icons/bottomNavBar/profile.png');
 
+  /// File path: assets/icons/bottomNavBar/schedule.png
+  AssetGenImage get schedule => const AssetGenImage('assets/icons/bottomNavBar/schedule.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [appointments, discovery, history, profile];
+  List<AssetGenImage> get values => [appointments, discovery, history, profile, schedule];
 }
 
 class $AssetsIconsHomeGen {
