@@ -244,9 +244,22 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
   List<Widget> _buildSessions(BuildContext context, DoctorProfileController doctorProfileController) {
     // Getting the current selected day
     DateTime selectedDay = doctorProfileController.highlightedDate;
-
+    int? foundTimestamp;
     // Getting the working hours for the selected day
-    List<Map<String, dynamic>>? workingHours = userModel.workingHours?[selectedDay.millisecondsSinceEpoch.toString()];
+    if (userModel.workingHours != null) {
+      userModel.workingHours!.forEach((key, value) {
+        // Converting the string timestamp to a DateTime object
+        DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(int.parse(key));
+
+        // Comparing if the dateTime matches selectedDay
+        if (dateTime.year == selectedDay.year &&
+            dateTime.month == selectedDay.month &&
+            dateTime.day == selectedDay.day) {
+          foundTimestamp = int.parse(key);
+        }
+      });
+    }
+    List<Map<String, dynamic>>? workingHours = userModel.workingHours?[foundTimestamp.toString()];
     List<Widget> sessionWidgets = [];
 
     if (workingHours != null && workingHours.isNotEmpty) {
@@ -254,7 +267,7 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
         String startAt = session['start at'].split(' ')[0];
         String endAt = session['end at'].split(' ')[0];
 
-        int? timestamp = int.tryParse(selectedDay.millisecondsSinceEpoch.toString());
+        int? timestamp = foundTimestamp;
 
         // Checking if the session is for the selected day
         if (startAt.isNotEmpty) {

@@ -12,6 +12,8 @@ class DoctorScheduleController extends GetxController {
   int currentSelectedTimeStamp = 0;
   List<SessionModel> allSessions = [];
   Map<String, List<Map<String, dynamic>>>? workingHours;
+  DateTime focusedDay = DateTime.now();
+  DateTime currentDay = DateTime.now();
 
   bool isSavedSuccessfully = false;
 
