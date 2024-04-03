@@ -107,6 +107,7 @@ flutter:
     - assets/images/symptoms/
     - assets/icons/
     - assets/icons/auth/
+    - assets/icons/notifications/
     - assets/icons/home/
     - assets/icons/profile/
     - assets/icons/bottomNavBar/

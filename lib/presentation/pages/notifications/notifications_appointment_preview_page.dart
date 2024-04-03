@@ -14,16 +14,15 @@ import '../../../core/assets.gen.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/constants/theme.dart';
 import '../../widgets/utils.dart';
-import 'history_controller.dart';
+import 'notifications_controller.dart';
 
-class HistoryAppointmentDetailsPage extends StatelessWidget {
+class NotificationsApointmentPreviewPage extends StatelessWidget {
   final AppointmentModel appointment;
-  HistoryAppointmentDetailsPage({required this.appointment});
+  NotificationsApointmentPreviewPage({required this.appointment});
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HistoryController>(
-      init: HistoryController(),
-      builder: (historyController) {
+    return GetBuilder<NotificationsController>(
+      builder: (notificationsController) {
         return Scaffold(
           body: SafeArea(
             child: SingleChildScrollView(
@@ -31,9 +30,9 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
                 children: [
                   _topBarComponent(),
                   SizedBox(height: 6),
-                  _historyAppointmentDetailsTitleComponent(),
+                  _appointmentDetailsTitleComponent(),
                   SizedBox(height: 22),
-                  _historyAppointmentDetailsMainContent(historyController),
+                  _appointmentDetailsMainContent(notificationsController),
                 ],
               ),
             ),
@@ -60,7 +59,7 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _historyAppointmentDetailsTitleComponent() {
+  Widget _appointmentDetailsTitleComponent() {
     return Padding(
       padding: const EdgeInsets.only(right: 8, left: 21),
       child: Row(
@@ -81,7 +80,7 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
             ),
           ),
           Text(
-            "My appointment",
+            "Appointment Details",
             textAlign: TextAlign.center,
             style: GoogleFonts.plusJakartaSans(
               color: Colors.black,
@@ -98,9 +97,9 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _historyAppointmentDetailsMainContent(HistoryController historyController) {
+  Widget _appointmentDetailsMainContent(NotificationsController notificationsController) {
     return StreamBuilder<UserModel?>(
-      stream: historyController.doctorUserModelStream.stream,
+      stream: notificationsController.doctorUserModelStream.stream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Expanded(
@@ -118,18 +117,25 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
           );
         } else {
           final doctorUserModel = snapshot.data!;
-          return _appointmentDetailsComponent(doctorUserModel, historyController);
+          return _appointmentDetailsComponent(doctorUserModel, notificationsController);
         }
       },
     );
   }
 
-  Widget _appointmentDetailsComponent(UserModel doctorUserModel, HistoryController historyController) {
+  Widget _appointmentDetailsComponent(UserModel doctorUserModel, NotificationsController notificationsController) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _doctorImageWithNameAndSpecialityComponent(doctorUserModel),
-        SizedBox(height: 21),
+        SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            appointmentStatusComponent(),
+          ],
+        ),
+        SizedBox(height: 18),
         _patientSymptomsComponent(),
         SizedBox(height: 18),
         _dividerComponent(),
@@ -147,9 +153,165 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
         _dividerComponent(),
         SizedBox(height: 15),
         _patientInformationsContentComponent(),
-        SizedBox(height: 24),
+        SizedBox(height: 24)
       ],
     );
+  }
+
+  Widget appointmentStatusComponent() {
+    if (appointment.appointmentStatus == "REJECTED")
+      return Container(
+        margin: EdgeInsets.only(top: 0),
+        padding: const EdgeInsets.only(top: 6, bottom: 6, left: 8, right: 8),
+        clipBehavior: Clip.antiAlias,
+        decoration: ShapeDecoration(
+          color: Color(0x0AFF4C38),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              width: 1,
+              strokeAlign: BorderSide.strokeAlignCenter,
+              color: Color(0x66FF4C38),
+            ),
+            borderRadius: BorderRadius.circular(13),
+          ),
+        ),
+        child: Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: 'The appointement was ',
+                style: GoogleFonts.openSans(
+                  color: Color(0xFFFF4C38),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              TextSpan(
+                text: 'Rejected',
+                style: GoogleFonts.openSans(
+                  color: Color(0xFFFF4C38),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    if (appointment.appointmentStatus == "UPCOMING")
+      return Container(
+        margin: EdgeInsets.only(top: 0),
+        padding: const EdgeInsets.only(top: 6, bottom: 6, left: 8, right: 8),
+        clipBehavior: Clip.antiAlias,
+        decoration: ShapeDecoration(
+          color: Color(0x0A34C759),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              width: 1,
+              strokeAlign: BorderSide.strokeAlignCenter,
+              color: Color(0x6634C759),
+            ),
+            borderRadius: BorderRadius.circular(13),
+          ),
+        ),
+        child: Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: 'The appointement was accepted',
+                style: GoogleFonts.openSans(
+                  color: Color(0xFF34C759),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    if (appointment.appointmentStatus == "PENDING")
+      return Container(
+        margin: EdgeInsets.only(top: 0),
+        padding: const EdgeInsets.only(top: 6, bottom: 6, left: 16, right: 16),
+        clipBehavior: Clip.antiAlias,
+        decoration: ShapeDecoration(
+          color: Color(0x0AFF9634),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              width: 1,
+              strokeAlign: BorderSide.strokeAlignCenter,
+              color: Color(0x66FF9634),
+            ),
+            borderRadius: BorderRadius.circular(13),
+          ),
+        ),
+        child: Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: 'The appointement is currently in ',
+                style: GoogleFonts.openSans(
+                  color: Color(0xFFFF9534),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              TextSpan(
+                text: 'pending status..',
+                style: GoogleFonts.openSans(
+                  color: Color(0xFFFF9534),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    if (appointment.appointmentStatus == "CANCELED")
+      return Container(
+        margin: EdgeInsets.only(top: 0),
+        padding: const EdgeInsets.only(top: 6, bottom: 6, left: 16, right: 16),
+        clipBehavior: Clip.antiAlias,
+        decoration: ShapeDecoration(
+          color: Color(0x0AFF4C38),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              width: 1,
+              strokeAlign: BorderSide.strokeAlignCenter,
+              color: Color(0x66FF4C38),
+            ),
+            borderRadius: BorderRadius.circular(13),
+          ),
+        ),
+        child: Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: 'The appointement was ',
+                style: GoogleFonts.openSans(
+                  color: Color(0xFFFF4C38),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              TextSpan(
+                text: 'Cancleled',
+                style: GoogleFonts.openSans(
+                  color: Color(0xFFFF4C38),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    else
+      return SizedBox.shrink();
   }
 
   Widget _visitTimeContentComponent() {

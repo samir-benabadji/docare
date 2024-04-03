@@ -258,7 +258,7 @@ class DoctorProfilePage extends StatelessWidget {
               child: ClipOval(
                 child: Image.asset(
                   specialityType.imagePath,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                   width: 35.48,
                   height: 35.48,
                 ),

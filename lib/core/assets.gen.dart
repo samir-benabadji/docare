@@ -55,6 +55,7 @@ class $AssetsIconsGen {
   /// File path: assets/icons/new_user.svg
   SvgGenImage get newUser => const SvgGenImage('assets/icons/new_user.svg');
 
+  $AssetsIconsNotificationsGen get notifications => const $AssetsIconsNotificationsGen();
   $AssetsIconsProfileGen get profile => const $AssetsIconsProfileGen();
 
   /// File path: assets/icons/syringe.png
@@ -102,11 +103,15 @@ class $AssetsImagesGen {
   /// File path: assets/images/location_tracking.png
   AssetGenImage get locationTracking => const AssetGenImage('assets/images/location_tracking.png');
 
+  /// File path: assets/images/no_notifications.png
+  AssetGenImage get noNotifications => const AssetGenImage('assets/images/no_notifications.png');
+
   $AssetsImagesSpecialitiesGen get specialities => const $AssetsImagesSpecialitiesGen();
   $AssetsImagesSymptomsGen get symptoms => const $AssetsImagesSymptomsGen();
 
   /// List of all assets
-  List<dynamic> get values => [creativePanelPlanner, docareButtonLayout, imageUpload, locationTracking];
+  List<dynamic> get values =>
+      [creativePanelPlanner, docareButtonLayout, imageUpload, locationTracking, noNotifications];
 }
 
 class $AssetsIconsAuthGen {
@@ -168,6 +173,9 @@ class $AssetsIconsHomeGen {
   /// File path: assets/icons/home/mini_clock.svg
   SvgGenImage get miniClock => const SvgGenImage('assets/icons/home/mini_clock.svg');
 
+  /// File path: assets/icons/home/notifications.svg
+  SvgGenImage get notifications => const SvgGenImage('assets/icons/home/notifications.svg');
+
   /// File path: assets/icons/home/profile_avatar.svg
   SvgGenImage get profileAvatar => const SvgGenImage('assets/icons/home/profile_avatar.svg');
 
@@ -188,11 +196,28 @@ class $AssetsIconsHomeGen {
         largeSearchSign,
         miniCalendar,
         miniClock,
+        notifications,
         profileAvatar,
         tinyLeftArrow,
         tinyRightArrow,
         xClose
       ];
+}
+
+class $AssetsIconsNotificationsGen {
+  const $AssetsIconsNotificationsGen();
+
+  /// File path: assets/icons/notifications/notification_canceled.svg
+  SvgGenImage get notificationCanceled => const SvgGenImage('assets/icons/notifications/notification_canceled.svg');
+
+  /// File path: assets/icons/notifications/notification_rejected.svg
+  SvgGenImage get notificationRejected => const SvgGenImage('assets/icons/notifications/notification_rejected.svg');
+
+  /// File path: assets/icons/notifications/notification_upcoming.svg
+  SvgGenImage get notificationUpcoming => const SvgGenImage('assets/icons/notifications/notification_upcoming.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [notificationCanceled, notificationRejected, notificationUpcoming];
 }
 
 class $AssetsIconsProfileGen {

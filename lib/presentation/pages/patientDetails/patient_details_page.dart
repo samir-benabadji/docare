@@ -111,8 +111,14 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
             onTap: () {
               Get.back();
             },
-            child: SvgPicture.asset(
-              Assets.icons.leftArrow.path,
+            child: Container(
+              height: 48,
+              width: 48,
+              color: Colors.transparent,
+              child: SvgPicture.asset(
+                Assets.icons.leftArrow.path,
+                fit: BoxFit.scaleDown,
+              ),
             ),
           ),
           Text(

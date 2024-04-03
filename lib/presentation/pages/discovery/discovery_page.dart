@@ -12,6 +12,7 @@ import '../../../core/constants/constants.dart';
 import '../../widgets/utils.dart';
 import '../doctorProfile/doctor_profile_page.dart';
 import '../favoriteDoctor/favorite_doctor_page.dart';
+import '../notifications/notifications_page.dart';
 import 'discovery_controller.dart';
 import 'discovery_specialist_doctors_page.dart';
 
@@ -193,6 +194,19 @@ class DiscoveryPage extends StatelessWidget {
           //Always getting the live stream data
           //Obx(() => Text(Get.find<FirebaseFirestoreService>().userModel?.name ?? " unknown")),
           Spacer(),
+          GestureDetector(
+            onTap: () {
+              Get.to(() => NotificationsPage());
+            },
+            child: Container(
+              padding: EdgeInsets.all(6),
+              color: Colors.transparent,
+              child: SvgPicture.asset(
+                Assets.icons.home.notifications.path,
+              ),
+            ),
+          ),
+          SizedBox(width: 4),
           GestureDetector(
             onTap: () {
               Get.to(() => FavoriteDoctorPage());
