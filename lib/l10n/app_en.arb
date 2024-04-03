@@ -1,0 +1,20 @@
+{
+    "welcomePageIntroductionMessage": "Your Health, Our Priority Connect with top doctors for personalized consultations anytime, anywhere with Your Virtual Clinic.",
+    "continueButtonText": "Continue",
+    "loginPageTitle": "Login",
+    "agreeTermsMessage": "I agree with the Terms of Service & Privacy Policy",
+    "forgotPasswordText": "Forgot password",
+    "loginButtonLabel": "Login",
+    "emailHintText": "Your email address",
+    "passwordHintText": "Password",
+    "confirmPasswordHintText": "Confirm Password",
+    "showPasswordText": "Show",
+    "hidePasswordText": "Hide",
+    "signUpPageTitle": "Sign up",
+    "patientOptionText": "Patient",
+    "doctorOptionText": "Doctor",
+    "signUpButtonText": "Sign up",
+    "alreadyHaveAccountText": "Already have an account ",
+    "loginText": "Login"
+  }
+  

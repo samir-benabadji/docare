@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../core/assets.gen.dart';
 import '../../../core/constants/theme.dart';
 import 'auth_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -30,7 +31,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Column(
                       children: [
                         Text(
-                          "Sign up",
+                          AppLocalizations.of(context)!.signUpPageTitle,
                           style: GoogleFonts.poppins(
                             fontSize: 34,
                             fontWeight: FontWeight.w600,
@@ -56,29 +57,19 @@ class _SignUpPageState extends State<SignUpPage> {
                             ),
                           ),
                         ),
-
-                        /* if (controller.invalidEmail)
-              _warningMessage(
-                message: 'Please enter a valid email address.',
-              ),
-                      if (controller.emailAlreadyInUse)
-              _warningMessage(
-                message:
-                    'Oops! This email address is already linked to a Docare account. Please use a different email address to link it to your existing account.',
-              ),*/
-
                         Text(
-                          'I agree with the Terms of Service & Privacy Policy',
+                          AppLocalizations.of(context)!.agreeTermsMessage,
                           style: GoogleFonts.rubik(
                             color: Color(0xFF090F47),
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                             letterSpacing: -0.30,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 34),
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             _signUpButtonComponent(authController),
                             SizedBox(height: 6),
@@ -88,7 +79,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Already have an account ',
+                                  AppLocalizations.of(context)!.alreadyHaveAccountText,
                                   style: GoogleFonts.poppins(
                                     color: Color(0xFFA5A5A5),
                                     fontSize: 12,
@@ -102,7 +93,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     color: Colors.transparent,
                                     padding: EdgeInsets.only(bottom: 8, right: 16),
                                     child: Text(
-                                      'Login',
+                                      AppLocalizations.of(context)!.loginText,
                                       style: GoogleFonts.poppins(
                                         color: Color(0xFF090F47),
                                         fontSize: 12,
@@ -127,7 +118,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       ],
                     ),
                   ),
-                  //   Spacer(),
                 ],
               ),
             ),
@@ -168,7 +158,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       )
                     : null,
                 child: Text(
-                  'Patient',
+                  AppLocalizations.of(context)!.patientOptionText,
                   style: GoogleFonts.poppins(
                     color: authController.selectedUserType == 2 ? Colors.white : Color(0xFF3BC090),
                     fontSize: 17.32,
@@ -199,7 +189,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       )
                     : null,
                 child: Text(
-                  'Doctor',
+                  AppLocalizations.of(context)!.doctorOptionText,
                   style: GoogleFonts.poppins(
                     color: authController.selectedUserType == 1 ? Colors.white : Color(0xFF3BC090),
                     fontSize: 17.32,
@@ -237,7 +227,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ],
           ),
-          hintText: 'Your email address',
+          hintText: AppLocalizations.of(context)!.emailHintText,
           hintStyle: GoogleFonts.openSans(
             textStyle: GoogleFonts.openSans(
               color: Color(0xFF858D9D),
@@ -259,7 +249,7 @@ class _SignUpPageState extends State<SignUpPage> {
             authController.update();
             return 'Please enter a valid E-mail';
           }
-          //TODO: Verifiy if email already exists
+          //TODO: Verify if email already exists
           return null;
         },
         onSaved: (value) {
@@ -298,7 +288,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         ),
         child: Text(
-          'Sign up',
+          AppLocalizations.of(context)!.signUpButtonText,
           style: GoogleFonts.poppins(
             color: Colors.white,
             fontSize: 17.51,
@@ -346,7 +336,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    authController.obscureText ? "Show" : "Hide",
+                    authController.obscureText
+                        ? AppLocalizations.of(context)!.showPasswordText
+                        : AppLocalizations.of(context)!.hidePasswordText,
                     style: GoogleFonts.openSans(
                       color: Color(0xFF5D6679),
                       fontSize: 12,
@@ -358,7 +350,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
           ),
-          hintText: 'Password',
+          hintText: AppLocalizations.of(context)!.passwordHintText,
           hintStyle: GoogleFonts.openSans(
             textStyle: GoogleFonts.openSans(
               color: Color(0xFF858D9D),
@@ -432,7 +424,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    authController.obscureText ? "Show" : "Hide",
+                    authController.obscureText
+                        ? AppLocalizations.of(context)!.showPasswordText
+                        : AppLocalizations.of(context)!.hidePasswordText,
                     style: GoogleFonts.openSans(
                       color: Color(0xFF5D6679),
                       fontSize: 12,
@@ -444,7 +438,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
           ),
-          hintText: 'Confirm Password',
+          hintText: AppLocalizations.of(context)!.confirmPasswordHintText,
           hintStyle: GoogleFonts.openSans(
             textStyle: GoogleFonts.openSans(
               color: Color(0xFF858D9D),

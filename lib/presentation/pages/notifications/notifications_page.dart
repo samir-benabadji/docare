@@ -72,7 +72,9 @@ class NotificationsPage extends StatelessWidget {
   }
 
   Widget _notificationMainContentComponent(
-      AppointmentModel appointment, NotificationsController notificationsController) {
+    AppointmentModel appointment,
+    NotificationsController notificationsController,
+  ) {
     if (appointment.appointmentStatus == "PENDING") return SizedBox.shrink();
     return GestureDetector(
       onTap: () {

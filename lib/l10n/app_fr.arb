@@ -1,0 +1,20 @@
+{
+    "welcomePageIntroductionMessage": "Votre santé, notre priorité Connectez-vous avec des médecins de premier plan pour des consultations personnalisées à tout moment, n'importe où avec votre clinique virtuelle.",
+    "continueButtonText": "Continuer",
+    "loginPageTitle": "Connexion",
+    "agreeTermsMessage": "J'accepte les Conditions d'utilisation et la Politique de confidentialité",
+    "forgotPasswordText": "Mot de passe oublié",
+    "loginButtonLabel": "Connexion",
+    "emailHintText": "Votre adresse e-mail",
+    "passwordHintText": "Mot de passe",
+    "confirmPasswordHintText": "Confirmer le mot de passe",
+    "showPasswordText": "Afficher",
+    "hidePasswordText": "Masquer",
+    "signUpPageTitle": "S'inscrire",
+    "patientOptionText": "Patient",
+    "doctorOptionText": "Médecin",
+    "signUpButtonText": "S'inscrire",
+    "alreadyHaveAccountText": "Vous avez déjà un compte ",
+    "loginText": "Connexion"
+  }
+  

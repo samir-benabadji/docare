@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/assets.gen.dart';
 import '../auth/signin_page.dart';
@@ -24,7 +25,7 @@ class WelcomePage extends StatelessWidget {
             ),
             SizedBox(height: 48),
             Text(
-              'Your Health, Our Priority Connect with top doctors for personalized consultations anytime, anywhere with Your Virtual Clinic.',
+              AppLocalizations.of(context)!.welcomePageIntroductionMessage,
               textAlign: TextAlign.center,
               style: GoogleFonts.itim(
                 color: Color(0xFF090F47),
@@ -47,7 +48,7 @@ class WelcomePage extends StatelessWidget {
                     height: 49,
                     alignment: Alignment.center,
                     child: Text(
-                      'Continue',
+                      AppLocalizations.of(context)!.continueButtonText,
                       style: GoogleFonts.montserrat(
                         color: Color(0xFF090F47),
                         fontSize: 18,

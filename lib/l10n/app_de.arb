@@ -1,0 +1,20 @@
+{
+    "welcomePageIntroductionMessage": "Ihre Gesundheit, unsere Priorität Verbinden Sie sich mit Top-Ärzten für personalisierte Konsultationen jederzeit und überall mit Ihrer virtuellen Klinik.",
+    "continueButtonText": "Fortsetzen",
+    "loginPageTitle": "Anmeldung",
+    "agreeTermsMessage": "Ich stimme den Nutzungsbedingungen und der Datenschutzrichtlinie zu",
+    "forgotPasswordText": "Passwort vergessen",
+    "loginButtonLabel": "Anmelden",
+    "emailHintText": "Ihre E-Mail-Adresse",
+    "passwordHintText": "Passwort",
+    "confirmPasswordHintText": "Passwort bestätigen",
+    "showPasswordText": "Anzeigen",
+    "hidePasswordText": "Ausblenden",
+    "signUpPageTitle": "Registrieren",
+    "patientOptionText": "Patient",
+    "doctorOptionText": "Arzt",
+    "signUpButtonText": "Registrieren",
+    "alreadyHaveAccountText": "Sie haben bereits ein Konto ",
+    "loginText": "Anmeldung"
+  }
+  

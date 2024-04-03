@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../core/assets.gen.dart';
 import '../../../core/constants/theme.dart';
 import 'auth_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignInPage extends StatelessWidget {
   @override
@@ -23,7 +24,7 @@ class SignInPage extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        "Login",
+                        AppLocalizations.of(context)!.loginPageTitle,
                         style: GoogleFonts.poppins(
                           fontSize: 34,
                           fontWeight: FontWeight.w600,
@@ -35,38 +36,28 @@ class SignInPage extends StatelessWidget {
                         key: authController.loginFormKey,
                         child: Column(
                           children: [
-                            _emailComponent(authController),
+                            _emailComponent(context, authController),
                             SizedBox(height: authController.invalidEmail ? 8 : 16),
-                            _passwordComponent(authController),
+                            _passwordComponent(context, authController),
                             SizedBox(height: 16),
                           ],
                         ),
                       ),
-
-                      /* if (controller.invalidEmail)
-            _warningMessage(
-              message: 'Please enter a valid email address.',
-            ),
-          if (controller.emailAlreadyInUse)
-            _warningMessage(
-              message:
-                  'Oops! This email address is already linked to a Vegpal account. Please use a different email address to link it to your existing account.',
-            ),*/
-
                       Text(
-                        'I agree with the Terms of Service & Privacy Policy',
+                        AppLocalizations.of(context)!.agreeTermsMessage,
                         style: GoogleFonts.rubik(
                           color: Color(0xFF090F47),
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                           letterSpacing: -0.30,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 67),
-                      _loginButtonComponent(authController),
+                      _loginButtonComponent(context, authController),
                       SizedBox(height: 22),
                       Text(
-                        'Forgot password',
+                        AppLocalizations.of(context)!.forgotPasswordText,
                         style: GoogleFonts.rubik(
                           color: Color(0xFF090F47),
                           fontSize: 14,
@@ -114,7 +105,7 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  Widget _loginButtonComponent(AuthController authController) {
+  Widget _loginButtonComponent(BuildContext context, AuthController authController) {
     return GestureDetector(
       onTap: () {
         if (authController.validateLoginForm()) {
@@ -135,7 +126,7 @@ class SignInPage extends StatelessWidget {
           ),
         ),
         child: Text(
-          'Login',
+          AppLocalizations.of(context)!.loginButtonLabel,
           style: GoogleFonts.poppins(
             color: Colors.white,
             fontSize: 17.51,
@@ -147,7 +138,7 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  Widget _emailComponent(AuthController authController) {
+  Widget _emailComponent(BuildContext context, AuthController authController) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: TextFormField(
@@ -169,7 +160,7 @@ class SignInPage extends StatelessWidget {
               ),
             ],
           ),
-          hintText: 'Your email address',
+          hintText: AppLocalizations.of(context)!.emailHintText,
           hintStyle: GoogleFonts.openSans(
             textStyle: GoogleFonts.openSans(
               color: Color(0xFF858D9D),
@@ -191,7 +182,7 @@ class SignInPage extends StatelessWidget {
             authController.update();
             return 'Please enter a valid E-mail';
           }
-          //TODO: Verifiy if email already exists
+          //TODO: Verify if email already exists
           return null;
         },
         onSaved: (value) {
@@ -208,7 +199,7 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  Widget _passwordComponent(AuthController authController) {
+  Widget _passwordComponent(BuildContext context, AuthController authController) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: TextFormField(
@@ -244,7 +235,9 @@ class SignInPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    authController.obscureText ? "Show" : "Hide",
+                    authController.obscureText
+                        ? AppLocalizations.of(context)!.showPasswordText
+                        : AppLocalizations.of(context)!.hidePasswordText,
                     style: GoogleFonts.openSans(
                       color: Color(0xFF5D6679),
                       fontSize: 12,
@@ -256,7 +249,7 @@ class SignInPage extends StatelessWidget {
               ),
             ),
           ),
-          hintText: 'Password',
+          hintText: AppLocalizations.of(context)!.passwordHintText,
           hintStyle: GoogleFonts.openSans(
             textStyle: GoogleFonts.openSans(
               color: Color(0xFF858D9D),
