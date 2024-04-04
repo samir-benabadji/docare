@@ -1,38 +1,51 @@
+import 'package:get/get.dart';
+
 import '../../business_logic/models/pain_model.dart';
 import '../../business_logic/models/speciality_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../assets.gen.dart';
 
 class Constants {
-  static List<SpecialityType> specialityTypes = [
-    SpecialityType('psychologist', Assets.images.specialities.psychologist.path),
-    SpecialityType('Cardiology', Assets.images.specialities.cardiology.path),
-    SpecialityType('Opthalmologist', Assets.images.specialities.opthalmologist.path),
-    SpecialityType('Nerphrology', Assets.images.specialities.nerphrology.path),
-    SpecialityType('Pulmonologist', Assets.images.specialities.pulmonologist.path),
-    SpecialityType('Hematologist', Assets.images.specialities.hematologist.path),
-    SpecialityType('Dermatology', Assets.images.specialities.dermatology.path),
-    SpecialityType('Pediatrics', Assets.images.specialities.pediatrics.path),
-    SpecialityType('Orthopedics', Assets.images.specialities.orthopedics.path),
-    SpecialityType('Neurology', Assets.images.specialities.neurology.path),
-    SpecialityType('Psychiatry', Assets.images.specialities.psychiatry.path),
-    SpecialityType('Obstetrics', Assets.images.specialities.obstetrics.path),
-    SpecialityType('Gastroenterology', Assets.images.specialities.gastroenterology.path),
-    SpecialityType('Dentists', Assets.images.specialities.dentists.path),
-    SpecialityType('Nose specialist', Assets.images.specialities.noseSpecialist.path),
-    SpecialityType('Heart specialist', Assets.images.specialities.heartSpecialist.path),
-    SpecialityType('Cardiologist', Assets.images.specialities.cardiologist.path),
-    SpecialityType('Hepatologist', Assets.images.specialities.hepatologist.path),
-    SpecialityType('Pancreatigist', Assets.images.specialities.pancreatigist.path),
-  ];
+  static List<SpecialityType> specialityTypes = Get.context != null
+      ? [
+          SpecialityType(AppLocalizations.of(Get.context!)!.psychologist, Assets.images.specialities.psychologist.path),
+          SpecialityType(AppLocalizations.of(Get.context!)!.cardiology, Assets.images.specialities.cardiology.path),
+          SpecialityType(
+              AppLocalizations.of(Get.context!)!.opthalmologist, Assets.images.specialities.opthalmologist.path),
+          SpecialityType(AppLocalizations.of(Get.context!)!.nerphrology, Assets.images.specialities.nerphrology.path),
+          SpecialityType(
+              AppLocalizations.of(Get.context!)!.pulmonologist, Assets.images.specialities.pulmonologist.path),
+          SpecialityType(AppLocalizations.of(Get.context!)!.hematologist, Assets.images.specialities.hematologist.path),
+          SpecialityType(AppLocalizations.of(Get.context!)!.dermatology, Assets.images.specialities.dermatology.path),
+          SpecialityType(AppLocalizations.of(Get.context!)!.pediatrics, Assets.images.specialities.pediatrics.path),
+          SpecialityType(AppLocalizations.of(Get.context!)!.orthopedics, Assets.images.specialities.orthopedics.path),
+          SpecialityType(AppLocalizations.of(Get.context!)!.neurology, Assets.images.specialities.neurology.path),
+          SpecialityType(AppLocalizations.of(Get.context!)!.psychiatry, Assets.images.specialities.psychiatry.path),
+          SpecialityType(AppLocalizations.of(Get.context!)!.obstetrics, Assets.images.specialities.obstetrics.path),
+          SpecialityType(
+              AppLocalizations.of(Get.context!)!.gastroenterology, Assets.images.specialities.gastroenterology.path),
+          SpecialityType(AppLocalizations.of(Get.context!)!.dentists, Assets.images.specialities.dentists.path),
+          SpecialityType(
+              AppLocalizations.of(Get.context!)!.noseSpecialist, Assets.images.specialities.noseSpecialist.path),
+          SpecialityType(
+              AppLocalizations.of(Get.context!)!.heartSpecialist, Assets.images.specialities.heartSpecialist.path),
+          SpecialityType(AppLocalizations.of(Get.context!)!.cardiologist, Assets.images.specialities.cardiologist.path),
+          SpecialityType(AppLocalizations.of(Get.context!)!.hepatologist, Assets.images.specialities.hepatologist.path),
+          SpecialityType(
+              AppLocalizations.of(Get.context!)!.pancreatigist, Assets.images.specialities.pancreatigist.path),
+        ]
+      : [];
 
-  static List<PainType> painTypes = [
-    PainType('Shoulder Pain', Assets.images.symptoms.shoulderPain.path),
-    PainType('Knee Pain', Assets.images.symptoms.kneePain.path),
-    PainType('Headache', Assets.images.symptoms.headache.path),
-    PainType('Back Pain', Assets.images.symptoms.backPain.path),
-    PainType('Finger Fracture', Assets.images.symptoms.fingerFracture.path),
-    PainType('Hip Injury', Assets.images.symptoms.hipInjury.path),
-    PainType('Foot Pain', Assets.images.symptoms.footPain.path),
-    PainType('Elbow Pain', Assets.images.symptoms.elbowPain.path),
-  ];
+  static List<PainType> painTypes = Get.context != null
+      ? [
+          PainType(AppLocalizations.of(Get.context!)!.shoulderPain, Assets.images.symptoms.shoulderPain.path),
+          PainType(AppLocalizations.of(Get.context!)!.kneePain, Assets.images.symptoms.kneePain.path),
+          PainType(AppLocalizations.of(Get.context!)!.headache, Assets.images.symptoms.headache.path),
+          PainType(AppLocalizations.of(Get.context!)!.backPain, Assets.images.symptoms.backPain.path),
+          PainType(AppLocalizations.of(Get.context!)!.fingerFracture, Assets.images.symptoms.fingerFracture.path),
+          PainType(AppLocalizations.of(Get.context!)!.hipInjury, Assets.images.symptoms.hipInjury.path),
+          PainType(AppLocalizations.of(Get.context!)!.footPain, Assets.images.symptoms.footPain.path),
+          PainType(AppLocalizations.of(Get.context!)!.elbowPain, Assets.images.symptoms.elbowPain.path),
+        ]
+      : [];
 }

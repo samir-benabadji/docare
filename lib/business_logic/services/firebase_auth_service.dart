@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:docare/presentation/widgets/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'firebase_firestore_service.dart';
 
@@ -34,7 +35,7 @@ class FirebaseAuthService {
       if (e is FirebaseAuthException) {
         showToast(_handleFirebaseAuthException(e));
       } else {
-        showToast("An unknown error occurred.");
+        showToast(AppLocalizations.of(Get.context!)!.unknownErrorOccurredText);
       }
       return null;
     }
@@ -50,7 +51,7 @@ class FirebaseAuthService {
       if (e is FirebaseAuthException) {
         showToast(_handleFirebaseAuthException(e));
       } else {
-        showToast("An unknown error occurred.");
+        showToast(AppLocalizations.of(Get.context!)!.unknownErrorOccurredText);
       }
       return null;
     }
@@ -60,18 +61,18 @@ class FirebaseAuthService {
   String _handleFirebaseAuthException(FirebaseAuthException e) {
     switch (e.code) {
       case 'invalid-email':
-        return "Email address is invalid.";
+        return AppLocalizations.of(Get.context!)!.invalidEmailText;
       case 'user-disabled':
-        return "This user has been disabled.";
+        return AppLocalizations.of(Get.context!)!.userDisabledText;
       case 'user-not-found':
       case 'wrong-password':
-        return "Incorrect email or password.";
+        return AppLocalizations.of(Get.context!)!.incorrectEmailOrPasswordText;
       case 'weak-password':
-        return "Password is too weak.";
+        return AppLocalizations.of(Get.context!)!.weakPasswordText;
       case 'email-already-in-use':
-        return "Email is already in use by another account.";
+        return AppLocalizations.of(Get.context!)!.emailAlreadyInUseText;
       default:
-        return "An error occurred, please try again later.";
+        return AppLocalizations.of(Get.context!)!.genericErrorOccurredText;
     }
   }
 

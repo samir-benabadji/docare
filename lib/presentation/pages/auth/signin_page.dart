@@ -16,67 +16,70 @@ class SignInPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: GetBuilder<AuthController>(
-            builder: (authController) => Column(
-              children: [
-                _topBarComponent(),
-                Spacer(),
-                Container(
-                  child: Column(
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.loginPageTitle,
-                        style: GoogleFonts.poppins(
-                          fontSize: 34,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff090F47),
+            builder: (authController) => SingleChildScrollView(
+              child: Column(
+                children: [
+                  _topBarComponent(),
+                  SizedBox(height: Get.height * 0.1),
+                  Container(
+                    child: Column(
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.loginPageTitle,
+                          style: GoogleFonts.poppins(
+                            fontSize: 34,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff090F47),
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 16),
-                      Form(
-                        key: authController.loginFormKey,
-                        child: Column(
-                          children: [
-                            _emailComponent(context, authController),
-                            SizedBox(height: authController.invalidEmail ? 8 : 16),
-                            _passwordComponent(context, authController),
-                            SizedBox(height: 16),
-                          ],
+                        SizedBox(height: 16),
+                        Form(
+                          key: authController.loginFormKey,
+                          child: Column(
+                            children: [
+                              _emailComponent(context, authController),
+                              SizedBox(height: authController.invalidEmail ? 8 : 16),
+                              _passwordComponent(context, authController),
+                              SizedBox(height: 16),
+                            ],
+                          ),
                         ),
-                      ),
-                      Text(
-                        AppLocalizations.of(context)!.agreeTermsMessage,
-                        style: GoogleFonts.rubik(
-                          color: Color(0xFF090F47),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: -0.30,
+                        Text(
+                          AppLocalizations.of(context)!.agreeTermsMessage,
+                          style: GoogleFonts.rubik(
+                            color: Color(0xFF090F47),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: -0.30,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 67),
-                      _loginButtonComponent(context, authController),
-                      SizedBox(height: 22),
-                      Text(
-                        AppLocalizations.of(context)!.forgotPasswordText,
-                        style: GoogleFonts.rubik(
-                          color: Color(0xFF090F47),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          decoration: TextDecoration.underline,
-                          letterSpacing: -0.30,
+                        SizedBox(height: 67),
+                        _loginButtonComponent(context, authController),
+                        SizedBox(height: 22),
+                        Text(
+                          AppLocalizations.of(context)!.forgotPasswordText,
+                          style: GoogleFonts.rubik(
+                            color: Color(0xFF090F47),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.underline,
+                            letterSpacing: -0.30,
+                          ),
                         ),
-                      ),
-                      Obx(
-                        () => Text(
-                          authController.errorMessage.value,
-                          style: TextStyle(color: Colors.red),
+                        SizedBox(height: 8),
+                        Obx(
+                          () => Text(
+                            authController.errorMessage.value,
+                            style: TextStyle(color: Colors.red),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Spacer(),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -174,13 +177,13 @@ class SignInPage extends StatelessWidget {
         controller: authController.loginEmailController,
         validator: (value) {
           if (value!.isEmpty) {
-            return 'Please enter an E-mail.';
+            return AppLocalizations.of(context)!.pleaseEnterEmailErrorMessage;
           }
 
           if (!GetUtils.isEmail(value)) {
             authController.invalidEmail = true;
             authController.update();
-            return 'Please enter a valid E-mail';
+            return AppLocalizations.of(context)!.pleaseEnterValidEmailErrorMessage;
           }
           //TODO: Verify if email already exists
           return null;
@@ -263,9 +266,8 @@ class SignInPage extends StatelessWidget {
         controller: authController.loginPasswordController,
         validator: (value) {
           if (value!.isEmpty) {
-            return 'Please enter a password.';
+            return AppLocalizations.of(context)!.pleaseEnterPasswordErrorMessage;
           }
-
           return null;
         },
         onSaved: (value) {

@@ -5,6 +5,7 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:dio/dio.dart';
 import 'dart:io';
 import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../business_logic/models/user_model.dart';
 import '../../../business_logic/services/firebase_auth_service.dart';
@@ -116,7 +117,9 @@ class AuthController extends GetxController {
     };
 
     final PhoneVerificationFailed verificationFailed = (FirebaseAuthException e) {
-      showToast("Phone number verification failed. Code: ${e.code}. Message: ${e.message}");
+      if (Get.context != null) {
+        showToast("${AppLocalizations.of(Get.context!)!.phoneVerificationFailedText} ${e.code}. ${e.message}");
+      }
     };
 
     final PhoneCodeSent codeSent = (String verId, int? resendToken) async {
@@ -139,7 +142,9 @@ class AuthController extends GetxController {
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
       );
     } catch (e) {
-      showToast("Failed to Verify Phone Number: ${e.toString()}");
+      if (Get.context != null) {
+        showToast("${AppLocalizations.of(Get.context!)!.failedToVerifyPhoneNumberText} ${e.toString()}");
+      }
     }
   }
 
@@ -147,7 +152,9 @@ class AuthController extends GetxController {
     FirebaseAuth _auth = FirebaseAuth.instance;
 
     if (verificationId == null || otp == null) {
-      showToast("Verification ID or OTP is null");
+      if (Get.context != null) {
+        showToast(AppLocalizations.of(Get.context!)!.verificationIdOrOTPNullText);
+      }
       return false; // Failure
     }
 
@@ -158,10 +165,14 @@ class AuthController extends GetxController {
 
     try {
       await _auth.signInWithCredential(credential);
-      showToast("Phone number verified successfully!");
+      if (Get.context != null) {
+        showToast(AppLocalizations.of(Get.context!)!.phoneVerifiedSuccessfullyText);
+      }
       return true; // Success
     } catch (e) {
-      showToast("Failed to Verify OTP: ${e.toString()}");
+      if (Get.context != null) {
+        showToast("${AppLocalizations.of(Get.context!)!.failedToVerifyOTPText} ${e.toString()}");
+      }
       return false; // Failure
     }
   }
@@ -169,16 +180,22 @@ class AuthController extends GetxController {
   Future<void> signUp(String email, String password, int userType) async {
     String? uid = await _firebaseAuthService.signUpWithEmailPassword(email, password, userType);
     if (uid != null) {
-      showToast("Signed up successfully");
+      if (Get.context != null) {
+        showToast(AppLocalizations.of(Get.context!)!.signUpSuccessText);
+      }
       final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
       UserModel? userModel = await _firebaseFirestoreService.getUserData(uid);
       if (userModel != null) {
         navigatingTheUserDependingOnHisStatus(userModel);
       } else {
-        showToast("User data could not be retrieved.");
+        if (Get.context != null) {
+          showToast(AppLocalizations.of(Get.context!)!.userDataRetrievalFailedText);
+        }
       }
     } else {
-      showToast("Sign up failed");
+      if (Get.context != null) {
+        showToast(AppLocalizations.of(Get.context!)!.signUpFailedText);
+      }
     }
   }
 
@@ -186,19 +203,27 @@ class AuthController extends GetxController {
     try {
       var user = await _firebaseAuthService.signInWithEmailPassword(email, password);
       if (user == null) {
-        errorMessage.value = "Sign in failed. Check your email and password.";
+        if (Get.context != null) {
+          errorMessage.value = AppLocalizations.of(Get.context!)!.signInFailedMessage;
+        }
       } else {
-        showToast("Signed in successfully");
+        if (Get.context != null) {
+          showToast(AppLocalizations.of(Get.context!)!.signInSuccessText);
+        }
         final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
         UserModel? userModel = await _firebaseFirestoreService.getUserData(user.uid);
         if (userModel != null) {
           navigatingTheUserDependingOnHisStatus(userModel);
         } else {
-          errorMessage.value = "User data could not be retrieved.";
+          if (Get.context != null) {
+            errorMessage.value = AppLocalizations.of(Get.context!)!.userDataRetrievalFailedText;
+          }
         }
       }
     } catch (e) {
-      errorMessage.value = "An error occurred during sign in.";
+      if (Get.context != null) {
+        errorMessage.value = AppLocalizations.of(Get.context!)!.signInErrorMessage;
+      }
     }
   }
 
