@@ -11,10 +11,14 @@ class Constants {
           SpecialityType(AppLocalizations.of(Get.context!)!.psychologist, Assets.images.specialities.psychologist.path),
           SpecialityType(AppLocalizations.of(Get.context!)!.cardiology, Assets.images.specialities.cardiology.path),
           SpecialityType(
-              AppLocalizations.of(Get.context!)!.opthalmologist, Assets.images.specialities.opthalmologist.path),
+            AppLocalizations.of(Get.context!)!.opthalmologist,
+            Assets.images.specialities.opthalmologist.path,
+          ),
           SpecialityType(AppLocalizations.of(Get.context!)!.nerphrology, Assets.images.specialities.nerphrology.path),
           SpecialityType(
-              AppLocalizations.of(Get.context!)!.pulmonologist, Assets.images.specialities.pulmonologist.path),
+            AppLocalizations.of(Get.context!)!.pulmonologist,
+            Assets.images.specialities.pulmonologist.path,
+          ),
           SpecialityType(AppLocalizations.of(Get.context!)!.hematologist, Assets.images.specialities.hematologist.path),
           SpecialityType(AppLocalizations.of(Get.context!)!.dermatology, Assets.images.specialities.dermatology.path),
           SpecialityType(AppLocalizations.of(Get.context!)!.pediatrics, Assets.images.specialities.pediatrics.path),
@@ -23,16 +27,24 @@ class Constants {
           SpecialityType(AppLocalizations.of(Get.context!)!.psychiatry, Assets.images.specialities.psychiatry.path),
           SpecialityType(AppLocalizations.of(Get.context!)!.obstetrics, Assets.images.specialities.obstetrics.path),
           SpecialityType(
-              AppLocalizations.of(Get.context!)!.gastroenterology, Assets.images.specialities.gastroenterology.path),
+            AppLocalizations.of(Get.context!)!.gastroenterology,
+            Assets.images.specialities.gastroenterology.path,
+          ),
           SpecialityType(AppLocalizations.of(Get.context!)!.dentists, Assets.images.specialities.dentists.path),
           SpecialityType(
-              AppLocalizations.of(Get.context!)!.noseSpecialist, Assets.images.specialities.noseSpecialist.path),
+            AppLocalizations.of(Get.context!)!.noseSpecialist,
+            Assets.images.specialities.noseSpecialist.path,
+          ),
           SpecialityType(
-              AppLocalizations.of(Get.context!)!.heartSpecialist, Assets.images.specialities.heartSpecialist.path),
+            AppLocalizations.of(Get.context!)!.heartSpecialist,
+            Assets.images.specialities.heartSpecialist.path,
+          ),
           SpecialityType(AppLocalizations.of(Get.context!)!.cardiologist, Assets.images.specialities.cardiologist.path),
           SpecialityType(AppLocalizations.of(Get.context!)!.hepatologist, Assets.images.specialities.hepatologist.path),
           SpecialityType(
-              AppLocalizations.of(Get.context!)!.pancreatigist, Assets.images.specialities.pancreatigist.path),
+            AppLocalizations.of(Get.context!)!.pancreatigist,
+            Assets.images.specialities.pancreatigist.path,
+          ),
         ]
       : [];
 

@@ -12,10 +12,6 @@ class SplashPage extends StatelessWidget {
       init: SplashController(),
       builder: (controller) {
         return Scaffold(
-          appBar: AppBar(
-            shadowColor: Colors.transparent,
-            elevation: 0,
-          ),
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
