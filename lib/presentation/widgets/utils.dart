@@ -1,4 +1,5 @@
 import 'package:docare/business_logic/services/firebase_firestore_service.dart';
+import 'package:docare/presentation/widgets/progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -140,4 +141,25 @@ Widget shimmerComponent(double width, double height, {BorderRadius? borderRadius
       ),
     ),
   );
+}
+
+bool _isProgressShowing = false;
+showProgress() {
+  // if (_isProgressShowing) return;
+  if (Get.focusScope!.hasFocus) Get.focusScope!.unfocus();
+  Get.dialog(ProgressDialog(), barrierDismissible: false);
+  _isProgressShowing = true;
+
+  Future.delayed(Duration(seconds: 15), () {
+    if (_isProgressShowing) {
+      dismissProgress(); // Dismissing the progress dialog if it's still showing after 15 seconds
+    }
+  });
+}
+
+dismissProgress() {
+  if (_isProgressShowing) {
+    Get.back();
+    _isProgressShowing = false;
+  }
 }

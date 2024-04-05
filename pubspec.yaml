@@ -89,14 +89,14 @@ flutter_icons:
   min_sdk_android: 21
   ios: "AppIcon"
   image_path_ios: "assets/DoCare_logo.png"
-  adaptive_icon_background: "#B0F5DC"
+  adaptive_icon_background: "#FFFFFF"
   adaptive_icon_foreground: "assets/DoCare_logo.png"
   remove_alpha_ios: true
 
 # use this command to execute flutter_native_splash
 # $ flutter pub run flutter_native_splash:create
 flutter_native_splash:
-  color: "#B0F5DC"
+  color: "#FFFFFF"
   image: "assets/DoCare_logo_transparent_bg.png"
   android: true
   ios: true

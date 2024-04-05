@@ -2,14 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-class LocationMapPage extends StatefulWidget {
+class SetLocationMapPage extends StatefulWidget {
+  final double? defaultLatitude;
+  final double? defaultLongitude;
+
+  SetLocationMapPage({
+    Key? key,
+    this.defaultLatitude,
+    this.defaultLongitude,
+  }) : super(key: key);
+
   @override
-  _LocationMapPageState createState() => _LocationMapPageState();
+  _SetLocationMapPageState createState() => _SetLocationMapPageState();
 }
 
-class _LocationMapPageState extends State<LocationMapPage> {
+class _SetLocationMapPageState extends State<SetLocationMapPage> {
   final MapController _mapController = MapController();
-  LatLng? _selectedLocation;
+  late LatLng _selectedLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedLocation = LatLng(widget.defaultLatitude ?? 40.71, widget.defaultLongitude ?? -74.00);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +38,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
                 ? null
                 : () {
                     // Returning the selected location back to the previous screen
-                    Navigator.of(context).pop(_selectedLocation!.toLatLngString());
+                    Navigator.of(context).pop(_selectedLocation.toLatLngString());
                   },
           ),
         ],
@@ -31,7 +46,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
       body: FlutterMap(
         mapController: _mapController,
         options: MapOptions(
-          center: LatLng(40.71, -74.00), // Default to New York City
+          center: _selectedLocation,
           zoom: 13.0,
           onTap: (_, latLng) {
             setState(() {
@@ -50,7 +65,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
                 Marker(
                   width: 80.0,
                   height: 80.0,
-                  point: _selectedLocation!,
+                  point: _selectedLocation,
                   builder: (ctx) => Icon(
                     Icons.location_pin,
                     color: Colors.red,
@@ -65,5 +80,8 @@ class _LocationMapPageState extends State<LocationMapPage> {
 }
 
 extension on LatLng {
-  String toLatLngString() => '${this.latitude}, ${this.longitude}';
+  Map<String, String> toLatLngString() => {
+        'latitude': this.latitude.toString(),
+        'longitude': this.longitude.toString(),
+      };
 }

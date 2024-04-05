@@ -47,6 +47,7 @@ class OnboardingController extends GetxController {
 
   // location access
   TextEditingController locationTextEditingController = TextEditingController();
+  Map<String, String>? locationLatLng;
   DateTime _lastApiRequestTime = DateTime.now().subtract(Duration(seconds: 1));
   Map<String, List<String>> _cache = {};
 
@@ -211,6 +212,21 @@ class OnboardingController extends GetxController {
     }
   }
 
+  Future<String> getAddressFromLatLng(double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks.first;
+        return '${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}';
+      } else {
+        throw Exception('No address found.');
+      }
+    } catch (e) {
+      throw Exception('Error fetching address: $e');
+    }
+  }
+
   // location access
   Future<void> requestLocationAccess() async {
     bool serviceEnabled;
@@ -329,6 +345,7 @@ class OnboardingController extends GetxController {
           'symptoms': selectedPainTypes.map((painType) => painType.title).toList(),
           "medicalSpeciality": selectedSpecialityType.value.title,
           "addressLocation": locationTextEditingController.text,
+          "locationLatLng": locationLatLng,
           "phoneNumber": Get.find<AuthController>().currentPhoneNumber.phoneNumber,
           "phoneNumberDialCode": Get.find<AuthController>().currentPhoneNumber.dialCode,
           "options": selectedOptions.map((option) => {'name': option.name, 'price': option.price}).toList(),

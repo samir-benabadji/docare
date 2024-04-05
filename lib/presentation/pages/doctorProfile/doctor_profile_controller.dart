@@ -29,6 +29,8 @@ class DoctorProfileController extends GetxController {
   TextEditingController textEditingProblemController = TextEditingController();
   int? timestamp;
 
+  bool isMapTouched = false;
+
   void previousMonth() {
     currentSelectedMonth = DateTime(currentSelectedMonth.year, currentSelectedMonth.month - 1, 1);
     update();

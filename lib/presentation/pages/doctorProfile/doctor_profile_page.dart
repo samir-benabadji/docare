@@ -10,6 +10,7 @@ import '../../../business_logic/models/speciality_model.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/constants/theme.dart';
 import '../../widgets/utils.dart';
+import '../location/get_location_map_page.dart';
 import 'doctor_profile_controller.dart';
 
 class DoctorProfilePage extends StatelessWidget {
@@ -25,6 +26,7 @@ class DoctorProfilePage extends StatelessWidget {
           backgroundColor: Colors.white,
           appBar: _appBarComponent(context),
           body: SingleChildScrollView(
+            physics: doctorProfileController.isMapTouched ? NeverScrollableScrollPhysics() : null,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -62,12 +64,78 @@ class DoctorProfilePage extends StatelessWidget {
                 SizedBox(height: 16),
                 if (doctorProfileController.currentSelectedDoctorExtraInformation == "Appoitement")
                   DoctorDateTimeScheduleComponent(userModel: userModel),
+                if (doctorProfileController.currentSelectedDoctorExtraInformation == "Clinic")
+                  _doctorClinicComponent(doctorProfileController),
                 SizedBox(height: 27),
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget _doctorClinicComponent(DoctorProfileController doctorProfileController) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Clinic Address',
+            style: GoogleFonts.openSans(
+              color: Color(0xFF090F47),
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(height: 16),
+          Text(
+            userModel.addressLocation ?? "Unknown",
+            style: GoogleFonts.openSans(
+              color: Color(0xFF878787),
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(height: 20),
+          GestureDetector(
+            onTapDown: (_) {
+              doctorProfileController.isMapTouched = true;
+              doctorProfileController.update();
+            },
+            onTapCancel: () {
+              doctorProfileController.isMapTouched = false;
+              doctorProfileController.update();
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(6.06),
+              child: Container(
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      width: 1.01,
+                      strokeAlign: BorderSide.strokeAlignOutside,
+                      color: Color(0x7FE5E5E5),
+                    ),
+                    borderRadius: BorderRadius.circular(6.06),
+                  ),
+                ),
+                child: GetLocationMapPage(
+                  width: Get.width,
+                  height: Get.height * 0.4,
+                  latitude: userModel.locationLatLng != null && userModel.locationLatLng!['latitude'] != null
+                      ? double.tryParse(userModel.locationLatLng!['latitude']!)
+                      : null,
+                  longitude: userModel.locationLatLng != null && userModel.locationLatLng!['longitude'] != null
+                      ? double.tryParse(userModel.locationLatLng!['longitude']!)
+                      : null,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

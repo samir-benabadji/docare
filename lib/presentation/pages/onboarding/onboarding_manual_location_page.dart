@@ -6,7 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 
 import '../../../core/assets.gen.dart';
-import '../location/location_map_page.dart';
+import '../../widgets/utils.dart';
+import '../location/set_location_map_page.dart';
 import 'onboarding_controller.dart';
 import 'onboarding_user_picture_page.dart';
 
@@ -42,7 +43,7 @@ class _OnboardingManualLocationPageState extends State<OnboardingManualLocationP
                         SizedBox(height: 15),
                         _currentLocationButtonComponent(),
                         SizedBox(height: 15),
-                        _chooseOnMapButtonComponent(context),
+                        _chooseOnMapButtonComponent(context, onboardingController),
                       ],
                     ),
                   ),
@@ -137,17 +138,43 @@ class _OnboardingManualLocationPageState extends State<OnboardingManualLocationP
     );
   }
 
-  Widget _chooseOnMapButtonComponent(BuildContext context) {
+  Widget _chooseOnMapButtonComponent(BuildContext context, OnboardingController onboardingController) {
     return Row(
       children: [
         ElevatedButton(
           onPressed: () async {
-            final String? pickedLocation = await Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => LocationMapPage()),
+            Map<String, String>? defaultLocation;
+            if (onboardingController.locationLatLng != null) {
+              defaultLocation = {
+                'latitude': onboardingController.locationLatLng!['latitude']!,
+                'longitude': onboardingController.locationLatLng!['longitude']!,
+              };
+            }
+
+            final Map<String, String>? pickedLocation = await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => SetLocationMapPage(
+                  defaultLatitude: defaultLocation != null ? double.parse(defaultLocation['latitude']!) : null,
+                  defaultLongitude: defaultLocation != null ? double.parse(defaultLocation['longitude']!) : null,
+                ),
+              ),
             );
 
             if (pickedLocation != null) {
-              print("Picked Location: $pickedLocation");
+              onboardingController.locationLatLng = pickedLocation;
+              double latitude = double.parse(pickedLocation['latitude']!);
+              double longitude = double.parse(pickedLocation['longitude']!);
+              try {
+                showProgress();
+                String address = await onboardingController.getAddressFromLatLng(latitude, longitude);
+                onboardingController.locationTextEditingController.text = address;
+                onboardingController.update();
+                print("Picked Location - Latitude: $latitude, Longitude: $longitude, Address: $address");
+                dismissProgress();
+              } catch (e) {
+                dismissProgress();
+                print("Error getting address: $e");
+              }
             }
           },
           child: Text("Choose on the map"),

@@ -19,6 +19,7 @@ class UserModel {
   Timestamp? createdAt;
   Timestamp? birthDate;
   String? gender;
+  Map<String, String>? locationLatLng;
 
   UserModel({
     required this.uid,
@@ -38,6 +39,7 @@ class UserModel {
     this.createdAt,
     this.birthDate,
     this.gender,
+    this.locationLatLng,
   });
 
   factory UserModel.fromFirestore(DocumentSnapshot doc) {
@@ -81,6 +83,7 @@ class UserModel {
       createdAt: data['createdAt'],
       birthDate: data['birthDate'],
       gender: data['gender'],
+      locationLatLng: Map<String, String>.from(data['locationLatLng'] ?? {}),
     );
   }
 
@@ -102,6 +105,7 @@ class UserModel {
       'createdAt': createdAt,
       'birthDate': birthDate,
       'gender': gender,
+      'locationLatLng': locationLatLng,
     };
   }
 }
