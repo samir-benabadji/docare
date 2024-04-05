@@ -425,7 +425,7 @@ class AppointmentsDetailForPatientPage extends StatelessWidget {
     for (String symptom in symptoms) {
       final painType = Constants.painTypes.firstWhere(
         (type) => type.title == symptom,
-        orElse: () => PainType("", ""),
+        orElse: () => PainType("-1", "", ""),
       );
 
       if (painType.title.isNotEmpty && painType.imagePath.isNotEmpty) {

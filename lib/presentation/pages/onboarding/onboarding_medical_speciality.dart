@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../business_logic/models/speciality_model.dart';
 import '../../../business_logic/models/user_model.dart';
@@ -41,7 +42,7 @@ class _OnboardingMedicalSpecialityPageState extends State<OnboardingMedicalSpeci
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          'Select Your Medical Specialty',
+                          AppLocalizations.of(context)!.selectMedicalSpecialtyText,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.rubik(
                             color: Color(0xFF090F47),
@@ -97,7 +98,7 @@ class _OnboardingMedicalSpecialityPageState extends State<OnboardingMedicalSpeci
           ],
         ),
         child: Text(
-          'Continue',
+          AppLocalizations.of(context)!.continueButtonText,
           style: GoogleFonts.rubik(
             color: Colors.white,
             fontSize: 18.55,
@@ -133,7 +134,7 @@ class _OnboardingMedicalSpecialityPageState extends State<OnboardingMedicalSpeci
                   shape: RoundedRectangleBorder(
                     side: BorderSide(
                       width: 1.50,
-                      color: onboardingController.selectedSpecialityType.value == Constants.specialityTypes[index]
+                      color: onboardingController.selectedSpecialityType.value.id == Constants.specialityTypes[index].id
                           ? Color(0xFF3BC090)
                           : Color(0xFF090F47),
                     ),

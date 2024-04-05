@@ -9,6 +9,7 @@ class UserModel {
   List<String>? symptoms;
   String? profileImageUrl;
   String? medicalSpeciality;
+  String? medicalSpecialityId;
   String? addressLocation;
   String? phoneNumber;
   List<String>? favoriteDoctors;
@@ -30,6 +31,7 @@ class UserModel {
     this.symptoms,
     this.profileImageUrl,
     this.medicalSpeciality,
+    this.medicalSpecialityId,
     this.addressLocation,
     this.phoneNumber,
     this.favoriteDoctors,
@@ -58,7 +60,7 @@ class UserModel {
     if (data['options'] != null) {
       options = List<Map<String, dynamic>>.from(
         data['options'].map(
-          (option) => {'name': option['name'], 'price': option['price']},
+          (option) => {'id': option['id'], 'name': option['name'], 'price': option['price']},
         ),
       );
     }
@@ -72,6 +74,7 @@ class UserModel {
       symptoms: symptoms,
       profileImageUrl: data['profileImageUrl'],
       medicalSpeciality: data['medicalSpeciality'],
+      medicalSpecialityId: data['medicalSpecialityId'],
       addressLocation: data['addressLocation'],
       phoneNumber: data['phoneNumber'],
       favoriteDoctors: List<String>.from(data['favoriteDoctors'] ?? []),
@@ -96,11 +99,13 @@ class UserModel {
       'symptoms': symptoms,
       'profileImageUrl': profileImageUrl,
       'medicalSpeciality': medicalSpeciality,
+      'medicalSpecialityId': medicalSpecialityId,
       'addressLocation': addressLocation,
       'phoneNumber': phoneNumber,
       'favoriteDoctors': favoriteDoctors,
       'phoneNumberDialCode': phoneNumberDialCode,
-      'options': options?.map((option) => {'name': option['name'], 'price': option['price']}).toList(),
+      'options':
+          options?.map((option) => {'id': option['id'], 'name': option['name'], 'price': option['price']}).toList(),
       'workingHours': workingHours,
       'createdAt': createdAt,
       'birthDate': birthDate,

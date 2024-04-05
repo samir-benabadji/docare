@@ -253,7 +253,7 @@ class DoctorProfilePage extends StatelessWidget {
           children: userModel.symptoms!.map((symptom) {
             final painType = Constants.painTypes.firstWhere(
               (type) => type.title == symptom,
-              orElse: () => PainType("", ""),
+              orElse: () => PainType("-1", "", ""),
             );
             if (painType.title.isNotEmpty && painType.imagePath.isNotEmpty) {
               return Container(
@@ -300,7 +300,7 @@ class DoctorProfilePage extends StatelessWidget {
 
     final specialityType = Constants.specialityTypes.firstWhere(
       (type) => type.title == userModel.medicalSpeciality,
-      orElse: () => SpecialityType("", ""),
+      orElse: () => SpecialityType("-1", "", ""),
     );
 
     if (specialityType.title.isNotEmpty && specialityType.imagePath.isNotEmpty) {

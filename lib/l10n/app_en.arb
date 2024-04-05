@@ -74,5 +74,8 @@
   "nameValidatorErrorMessage": "Please enter your name",
   "nameLengthValidatorErrorMessage": "Name should be at least 2 characters",
   "nameHintText": "Enter your name",
-  "helloMessage": "Hello! What should we call you ?"
+  "helloMessage": "Hello! What should we call you ?",
+  "selectMedicalSpecialtyText": "Select Your Medical Specialty",
+  "configureOtherEquipmentAndSpecialtiesText": "Configure Other Equipment and Specialties",
+  "otherText": "Other"
 }

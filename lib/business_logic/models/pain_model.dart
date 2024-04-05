@@ -1,6 +1,7 @@
 class PainType {
+  final String id;
   final String title;
   final String imagePath;
 
-  PainType(this.title, this.imagePath);
+  PainType(this.id, this.title, this.imagePath);
 }

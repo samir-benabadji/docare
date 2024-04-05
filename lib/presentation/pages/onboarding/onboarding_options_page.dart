@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../business_logic/models/doctor_options.dart';
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
 import 'onboarding_rates_page.dart';
@@ -70,7 +72,7 @@ class _OnboardingOptionsPageState extends State<OnboardingOptionsPage> {
               ),
               Expanded(
                 child: Text(
-                  "Configure Other Equipment and Specialties",
+                  AppLocalizations.of(context)!.configureOtherEquipmentAndSpecialtiesText,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.rubik(
                     color: Color(0xFF090F47),
@@ -145,9 +147,9 @@ class _OnboardingOptionsPageState extends State<OnboardingOptionsPage> {
       child: ListView.builder(
         itemCount: onboardingController.options.length,
         itemBuilder: (context, index) {
-          final String option = onboardingController.options[index];
+          final DoctorOption option = onboardingController.options[index];
           final bool isSelected =
-              onboardingController.selectedOptions.any((selectedOption) => selectedOption.name == option);
+              onboardingController.selectedOptions.any((selectedOption) => selectedOption.id == option.id);
           return Row(
             children: [
               Checkbox(
@@ -160,7 +162,7 @@ class _OnboardingOptionsPageState extends State<OnboardingOptionsPage> {
               ),
               Expanded(
                 child: Text(
-                  option,
+                  option.title,
                   style: GoogleFonts.rubik(
                     color: Colors.black,
                     fontSize: 14.96,
@@ -207,13 +209,13 @@ class _OnboardingOptionsPageState extends State<OnboardingOptionsPage> {
             onPressed: () async {
               SelectedOption? newOption = await Get.to(() => OnboardingSpecificOptionsPage());
               if (newOption != null && newOption.name.isNotEmpty) {
-                onboardingController.options.add(newOption.name);
+                onboardingController.options.add(DoctorOption(newOption.id, newOption.name));
                 onboardingController.selectedOptions.add(newOption);
                 onboardingController.sortOptions();
               }
             },
             child: Text(
-              'Other',
+              AppLocalizations.of(context)!.otherText,
               textAlign: TextAlign.center,
               style: GoogleFonts.rubik(
                 color: Color(0xFF090F47),

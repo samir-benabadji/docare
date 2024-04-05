@@ -13,6 +13,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 
+import '../../../business_logic/models/doctor_options.dart';
 import '../../../business_logic/models/pain_model.dart';
 import '../../../business_logic/models/user_model.dart';
 import '../../../business_logic/services/firebase_auth_service.dart';
@@ -24,20 +25,20 @@ class OnboardingController extends GetxController {
   OnboardingController({this.userModel});
 
   RxList<PainType> selectedPainTypes = <PainType>[].obs;
-  Rx<SpecialityType> selectedSpecialityType = SpecialityType("", "").obs;
+  Rx<SpecialityType> selectedSpecialityType = SpecialityType("-1", "", "").obs;
   // options
   RxList<SelectedOption> selectedOptions = <SelectedOption>[].obs;
-  List<String> options = [
-    "IRM (Imagerie par Résonance Magnétique)",
-    "Scanner (Tomodensitométrie)",
-    "Radiographie (X-ray machine)",
-    "Échographe (Échographie médicale)",
-    "Colposcope (Colposcopie)",
-    "Stéthoscope",
-    "Otoscope et Ophtalmoscope",
-    "Électrocardiographe (ECG)",
-    "Appareil de mesure de la pression artérielle",
-    "Analyseur sanguin"
+  List<DoctorOption> options = [
+    DoctorOption("1", "IRM (Imagerie par Résonance Magnétique)"),
+    DoctorOption("2", "Scanner (Tomodensitométrie)"),
+    DoctorOption("3", "Radiographie (X-ray machine)"),
+    DoctorOption("4", "Échographe (Échographie médicale)"),
+    DoctorOption("5", "Colposcope (Colposcopie)"),
+    DoctorOption("6", "Stéthoscope"),
+    DoctorOption("7", "Otoscope et Ophtalmoscope"),
+    DoctorOption("8", "Électrocardiographe (ECG)"),
+    DoctorOption("9", "Appareil de mesure de la pression artérielle"),
+    DoctorOption("10", "Analyseur sanguin")
   ];
 
   // Work Schedule
@@ -283,8 +284,8 @@ class OnboardingController extends GetxController {
 
   void sortOptions() {
     options.sort((a, b) {
-      bool aSelected = selectedOptions.any((option) => option.name == a);
-      bool bSelected = selectedOptions.any((option) => option.name == b);
+      bool aSelected = selectedOptions.any((option) => option.id == a.id);
+      bool bSelected = selectedOptions.any((option) => option.id == b.id);
 
       if (aSelected && !bSelected) {
         return -1;
@@ -344,11 +345,13 @@ class OnboardingController extends GetxController {
         userUpdatedData.addAll({
           'symptoms': selectedPainTypes.map((painType) => painType.title).toList(),
           "medicalSpeciality": selectedSpecialityType.value.title,
+          "medicalSpecialityId": selectedSpecialityType.value.id,
           "addressLocation": locationTextEditingController.text,
           "locationLatLng": locationLatLng,
           "phoneNumber": Get.find<AuthController>().currentPhoneNumber.phoneNumber,
           "phoneNumberDialCode": Get.find<AuthController>().currentPhoneNumber.dialCode,
-          "options": selectedOptions.map((option) => {'name': option.name, 'price': option.price}).toList(),
+          "options":
+              selectedOptions.map((option) => {'id': option.id, 'name': option.name, 'price': option.price}).toList(),
           'workingHours': workingHours,
         });
       } else if (userModel?.userType == 2) {
@@ -365,13 +368,13 @@ class OnboardingController extends GetxController {
     }
   }
 
-  void toggleOptionSelection(String option) {
-    bool alreadySelected = selectedOptions.any((element) => element.name == option);
+  void toggleOptionSelection(DoctorOption option) {
+    bool alreadySelected = selectedOptions.any((element) => element.id == option.id);
 
     if (alreadySelected) {
-      selectedOptions.removeWhere((element) => element.name == option);
+      selectedOptions.removeWhere((element) => element.id == option.id);
     } else {
-      SelectedOption newOption = SelectedOption(option);
+      SelectedOption newOption = SelectedOption(option.title, id: option.id);
       selectedOptions.add(newOption);
     }
     sortOptions();
@@ -498,8 +501,13 @@ class OnboardingController extends GetxController {
 }
 
 class SelectedOption {
+  final String id;
   String name;
   double price;
 
-  SelectedOption(this.name, {this.price = 0});
+  SelectedOption(
+    this.name, {
+    this.price = 0,
+    required this.id,
+  });
 }

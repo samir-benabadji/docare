@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
@@ -152,7 +153,11 @@ class _OnboardingSpecificOptionsPageState extends State<OnboardingSpecificOption
     return GestureDetector(
       onTap: () {
         if (_textFieldController.text.isNotEmpty) {
-          Get.back(result: SelectedOption(_textFieldController.text));
+          Get.back(
+              result: SelectedOption(
+            _textFieldController.text,
+            id: Uuid().v4(),
+          ));
         } else {}
       },
       child: Container(
