@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../business_logic/models/session_model.dart';
 import '../../../../core/assets.gen.dart';
@@ -25,17 +26,17 @@ class _SessionComponentState extends State<SessionComponent> {
 
   String _ordinalSuffix(int number) {
     if (number % 100 >= 11 && number % 100 <= 13) {
-      return "$number" + "th";
+      return "$number" + AppLocalizations.of(context)!.ordinalSuffixDefault;
     }
     switch (number % 10) {
       case 1:
-        return "$number" + "st";
+        return "$number" + AppLocalizations.of(context)!.ordinalSuffix1;
       case 2:
-        return "$number" + "nd";
+        return "$number" + AppLocalizations.of(context)!.ordinalSuffix2;
       case 3:
-        return "$number" + "rd";
+        return "$number" + AppLocalizations.of(context)!.ordinalSuffix3;
       default:
-        return "$number" + "th";
+        return "$number" + AppLocalizations.of(context)!.ordinalSuffixDefault;
     }
   }
 
@@ -47,7 +48,7 @@ class _SessionComponentState extends State<SessionComponent> {
         return Column(
           children: [
             Text(
-              "Time of the ${_ordinalSuffix(widget.sessionIndex + 1)} session",
+              AppLocalizations.of(context)!.timeOfSession(_ordinalSuffix(widget.sessionIndex + 1)),
               textAlign: TextAlign.center,
               style: GoogleFonts.inter(
                 color: Color(0xFF090F47),
@@ -85,7 +86,7 @@ class _SessionComponentState extends State<SessionComponent> {
                         children: [
                           SizedBox(height: 6),
                           Text(
-                            "Starts",
+                            AppLocalizations.of(context)!.startSession,
                             style: GoogleFonts.radioCanada(
                               color: Color(0xFF090F47),
                               fontSize: 15.12,
@@ -95,7 +96,7 @@ class _SessionComponentState extends State<SessionComponent> {
                           ),
                           SizedBox(height: 36),
                           Text(
-                            "Ends",
+                            AppLocalizations.of(context)!.endSession,
                             style: GoogleFonts.radioCanada(
                               color: Color(0xFF090F47),
                               fontSize: 15.12,

@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../business_logic/models/doctor_options.dart';
 import '../../../business_logic/models/pain_model.dart';
@@ -28,18 +29,20 @@ class OnboardingController extends GetxController {
   Rx<SpecialityType> selectedSpecialityType = SpecialityType("-1", "", "").obs;
   // options
   RxList<SelectedOption> selectedOptions = <SelectedOption>[].obs;
-  List<DoctorOption> options = [
-    DoctorOption("1", "IRM (Imagerie par Résonance Magnétique)"),
-    DoctorOption("2", "Scanner (Tomodensitométrie)"),
-    DoctorOption("3", "Radiographie (X-ray machine)"),
-    DoctorOption("4", "Échographe (Échographie médicale)"),
-    DoctorOption("5", "Colposcope (Colposcopie)"),
-    DoctorOption("6", "Stéthoscope"),
-    DoctorOption("7", "Otoscope et Ophtalmoscope"),
-    DoctorOption("8", "Électrocardiographe (ECG)"),
-    DoctorOption("9", "Appareil de mesure de la pression artérielle"),
-    DoctorOption("10", "Analyseur sanguin")
-  ];
+  List<DoctorOption> options = Get.context != null
+      ? [
+          DoctorOption("1", AppLocalizations.of(Get.context!)!.mri),
+          DoctorOption("2", AppLocalizations.of(Get.context!)!.ctScan),
+          DoctorOption("3", AppLocalizations.of(Get.context!)!.xRay),
+          DoctorOption("4", AppLocalizations.of(Get.context!)!.ultrasound),
+          DoctorOption("5", AppLocalizations.of(Get.context!)!.colposcope),
+          DoctorOption("6", AppLocalizations.of(Get.context!)!.stethoscope),
+          DoctorOption("7", AppLocalizations.of(Get.context!)!.otoscopeAndOphthalmoscope),
+          DoctorOption("8", AppLocalizations.of(Get.context!)!.electrocardiograph),
+          DoctorOption("9", AppLocalizations.of(Get.context!)!.bloodPressureMonitor),
+          DoctorOption("10", AppLocalizations.of(Get.context!)!.bloodAnalyzer),
+        ]
+      : [];
 
   // Work Schedule
   int currentSelectedTimeStamp = 0;

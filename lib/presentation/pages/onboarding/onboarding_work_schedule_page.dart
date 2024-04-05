@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../business_logic/models/session_model.dart';
 import '../../../core/assets.gen.dart';
@@ -118,7 +119,7 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
           ),
           Expanded(
             child: Text(
-              "Day of work",
+              AppLocalizations.of(context)!.workDayText,
               textAlign: TextAlign.center,
               style: GoogleFonts.rubik(
                 color: Color(0xFF090F47),
@@ -135,7 +136,15 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
   }
 
   Widget _dayOfWeekComponent(OnboardingController onboardingController) {
-    List<String> days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    List<String> days = [
+      AppLocalizations.of(context)!.sun,
+      AppLocalizations.of(context)!.mon,
+      AppLocalizations.of(context)!.tue,
+      AppLocalizations.of(context)!.wed,
+      AppLocalizations.of(context)!.thu,
+      AppLocalizations.of(context)!.fri,
+      AppLocalizations.of(context)!.sat,
+    ];
 
     // Getting the index of the current day
     DateTime now = DateTime.now();
@@ -274,7 +283,7 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
               onboardingController.onSaveClicked();
             },
             child: Text(
-              'Save',
+              AppLocalizations.of(context)!.saveText,
               style: GoogleFonts.montserrat(
                 color: onboardingController.isSavedSuccessfully ? DocareTheme.babyStrawberry : DocareTheme.strawberry,
                 fontSize: 15.65,
@@ -312,7 +321,7 @@ class _OnboardingWorkSchedulePageState extends State<OnboardingWorkSchedulePage>
           ],
         ),
         child: Text(
-          'Continue',
+          AppLocalizations.of(context)!.continueButtonText,
           style: GoogleFonts.rubik(
             color: Colors.white,
             fontSize: 18.55,

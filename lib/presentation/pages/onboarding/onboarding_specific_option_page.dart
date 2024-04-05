@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
@@ -51,7 +52,7 @@ class _OnboardingSpecificOptionsPageState extends State<OnboardingSpecificOption
               ),
               Expanded(
                 child: Text(
-                  "Configure Other Equipment and Specialties",
+                  AppLocalizations.of(context)!.configureOtherEquipmentAndSpecialtiesText,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.rubik(
                     color: Color(0xFF090F47),
@@ -103,7 +104,7 @@ class _OnboardingSpecificOptionsPageState extends State<OnboardingSpecificOption
               ),
             ],
           ),
-          hintText: 'Optimize your equipment and specialties',
+          hintText: AppLocalizations.of(context)!.optimizeEquipmentAndSpecialtiesText,
           hintStyle: GoogleFonts.rubik(
             color: Color(0xFFB3B3B3),
             fontSize: 15,
@@ -116,7 +117,7 @@ class _OnboardingSpecificOptionsPageState extends State<OnboardingSpecificOption
         controller: _textFieldController,
         validator: (value) {
           if (value!.isEmpty) {
-            return 'Please enter a specific option.';
+            return AppLocalizations.of(context)!.pleaseEnterSpecificOptionErrorMessage;
           }
 
           return null;
@@ -154,10 +155,11 @@ class _OnboardingSpecificOptionsPageState extends State<OnboardingSpecificOption
       onTap: () {
         if (_textFieldController.text.isNotEmpty) {
           Get.back(
-              result: SelectedOption(
-            _textFieldController.text,
-            id: Uuid().v4(),
-          ));
+            result: SelectedOption(
+              _textFieldController.text,
+              id: Uuid().v4(),
+            ),
+          );
         } else {}
       },
       child: Container(
@@ -180,7 +182,7 @@ class _OnboardingSpecificOptionsPageState extends State<OnboardingSpecificOption
           ],
         ),
         child: Text(
-          'Continue',
+          AppLocalizations.of(context)!.continueButtonText,
           style: GoogleFonts.rubik(
             color: Colors.white,
             fontSize: 18.55,

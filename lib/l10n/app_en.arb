@@ -77,5 +77,41 @@
   "helloMessage": "Hello! What should we call you ?",
   "selectMedicalSpecialtyText": "Select Your Medical Specialty",
   "configureOtherEquipmentAndSpecialtiesText": "Configure Other Equipment and Specialties",
-  "otherText": "Other"
+  "otherText": "Other",
+  "mri": "MRI (Magnetic Resonance Imaging)",
+  "ctScan": "CT Scan (Computed Tomography)",
+  "xRay": "X-ray (Radiography)",
+  "ultrasound": "Ultrasound (Medical Sonography)",
+  "colposcope": "Colposcope (Colposcopy)",
+  "stethoscope": "Stethoscope",
+  "otoscopeAndOphthalmoscope": "Otoscope and Ophthalmoscope",
+  "electrocardiograph": "Electrocardiograph (ECG)",
+  "bloodPressureMonitor": "Blood Pressure Monitor",
+  "bloodAnalyzer": "Blood Analyzer",
+  "optimizeEquipmentAndSpecialtiesText": "Optimize your equipment and specialties",
+  "pleaseEnterSpecificOptionErrorMessage": "Please enter a specific option.",
+  "enterRatesText": "Enter the rates",
+  "validateText": "Validate",
+  "addEquipmentsText": "Add Equipments",
+  "workDayText": "Day of work",
+  "sun": "Sun",
+  "mon": "Mon",
+  "tue": "Tue",
+  "wed": "Wed",
+  "thu": "Thu",
+  "fri": "Fri",
+  "sat": "Sat",
+  "saveText": "Save",
+  "ordinalSuffix1": "st",
+  "ordinalSuffix2": "nd",
+  "ordinalSuffix3": "rd",
+  "ordinalSuffixDefault": "th",
+  "timeOfSession": "Time of the {ordinalSuffix} session",
+  "@timeOfSession": {
+    "placeholders": {
+      "ordinalSuffix": {"type": "String"}
+    }
+  },
+  "startSession": "Starts",
+"endSession": "Ends"
 }
