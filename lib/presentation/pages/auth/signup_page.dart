@@ -241,13 +241,13 @@ class _SignUpPageState extends State<SignUpPage> {
         controller: authController.signUpEmailController,
         validator: (value) {
           if (value!.isEmpty) {
-            return 'Please enter an E-mail.';
+            return AppLocalizations.of(context)!.pleaseEnterEmailErrorMessage;
           }
 
           if (!GetUtils.isEmail(value)) {
             authController.invalidEmail = true;
             authController.update();
-            return 'Please enter a valid E-mail';
+            return AppLocalizations.of(context)!.pleaseEnterValidEmailErrorMessage;
           }
           //TODO: Verify if email already exists
           return null;
@@ -364,13 +364,13 @@ class _SignUpPageState extends State<SignUpPage> {
         controller: authController.signUpPasswordController,
         validator: (value) {
           if (value!.isEmpty) {
-            return 'Please enter a password.';
+            return AppLocalizations.of(context)!.pleaseEnterPasswordErrorMessage;
           }
           if (value.length < 6) {
-            return 'Password must be at least 6 characters long.';
+            return AppLocalizations.of(context)!.passwordLengthErrorMessage;
           }
           if (!RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*(),.?":{}|<>]).{6,}$').hasMatch(value)) {
-            return 'Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.';
+            return AppLocalizations.of(context)!.passwordComplexityErrorMessage;
           }
           return null;
         },
@@ -452,10 +452,10 @@ class _SignUpPageState extends State<SignUpPage> {
         controller: authController.signUpConfirmPasswordController,
         validator: (value) {
           if (value!.isEmpty) {
-            return 'Please enter a confirmation password.';
+            return AppLocalizations.of(context)!.pleaseEnterConfirmationPasswordErrorMessage;
           }
           if (value != authController.signUpPasswordController.text) {
-            return 'Passwords do not match.';
+            return AppLocalizations.of(context)!.passwordsDoNotMatchErrorMessage;
           }
           return null;
         },

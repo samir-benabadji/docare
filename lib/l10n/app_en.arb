@@ -63,5 +63,16 @@
   "fingerFracture": "Finger Fracture",
   "hipInjury": "Hip Injury",
   "footPain": "Foot Pain",
-  "elbowPain": "Elbow Pain"
+  "elbowPain": "Elbow Pain",
+  "passwordLengthErrorMessage": "Password must be at least 6 characters long.",
+  "passwordComplexityErrorMessage": "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.",
+  "passwordsDoNotMatchErrorMessage": "Passwords do not match.",
+  "pleaseEnterConfirmationPasswordErrorMessage": "Please enter a confirmation password.",
+  "helpText": "What can you help us with ?",
+  "selectSymptomsText": "Select your Symptoms",
+  "skipButtonText": "Skip",
+  "nameValidatorErrorMessage": "Please enter your name",
+  "nameLengthValidatorErrorMessage": "Name should be at least 2 characters",
+  "nameHintText": "Enter your name",
+  "helloMessage": "Hello! What should we call you ?"
 }

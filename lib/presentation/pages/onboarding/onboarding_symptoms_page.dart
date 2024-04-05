@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../business_logic/models/pain_model.dart';
 import '../../../business_logic/models/user_model.dart';
@@ -43,8 +43,8 @@ class _OnboardingSymptomsPageState extends State<OnboardingSymptomsPage> {
                       children: [
                         Text(
                           onboardingController.userModel?.userType == 1
-                              ? "What can you help us with ?"
-                              : 'Select your Symptoms',
+                              ? AppLocalizations.of(context)!.helpText
+                              : AppLocalizations.of(context)!.selectSymptomsText,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.plusJakartaSans(
                             color: Color(0xFF090F47),
@@ -98,7 +98,7 @@ class _OnboardingSymptomsPageState extends State<OnboardingSymptomsPage> {
           ],
         ),
         child: Text(
-          'Continue',
+          AppLocalizations.of(context)!.continueButtonText,
           style: GoogleFonts.rubik(
             color: Colors.white,
             fontSize: 18.55,
@@ -174,18 +174,6 @@ class _OnboardingSymptomsPageState extends State<OnboardingSymptomsPage> {
     );
   }
 
-  Widget _buildShimmerPlaceholder() {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
-      child: Container(
-        width: 46.35,
-        height: 46.35,
-        color: Colors.white,
-      ),
-    );
-  }
-
   Widget _topBarComponent() {
     return Padding(
       padding: const EdgeInsets.only(
@@ -205,7 +193,7 @@ class _OnboardingSymptomsPageState extends State<OnboardingSymptomsPage> {
           Spacer(),
           GestureDetector(
             child: Text(
-              'Skip',
+              AppLocalizations.of(context)!.skipButtonText,
               style: GoogleFonts.montserrat(
                 color: Color(0xFFFF0472),
                 fontSize: 15.65,

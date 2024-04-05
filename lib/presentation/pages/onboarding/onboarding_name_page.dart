@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
@@ -51,16 +52,16 @@ class _OnboardingNamePageState extends State<OnboardingNamePage> {
                             },
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter your name';
+                                return AppLocalizations.of(context)!.pleaseEnterEmailErrorMessage;
                               }
                               if (value.length < 2) {
-                                return 'Name should be at least 2 characters';
+                                return AppLocalizations.of(context)!.nameLengthValidatorErrorMessage;
                               }
                               return null;
                             },
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(top: 8),
-                              hintText: 'Enter your name',
+                              hintText: AppLocalizations.of(context)!.nameHintText,
                               hintStyle: GoogleFonts.openSans(
                                 textStyle: GoogleFonts.openSans(
                                   color: Color(0xFF858D9D),
@@ -109,7 +110,7 @@ class _OnboardingNamePageState extends State<OnboardingNamePage> {
             ),
             Expanded(
               child: Text(
-                "Hello! What should we call you ?",
+                AppLocalizations.of(context)!.helpText,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.rubik(
                   color: Color(0xFF090F47),
@@ -179,7 +180,7 @@ class _OnboardingNamePageState extends State<OnboardingNamePage> {
           ],
         ),
         child: Text(
-          'Continue',
+          AppLocalizations.of(context)!.continueButtonText,
           style: GoogleFonts.rubik(
             color: Colors.white,
             fontSize: 18.55,
