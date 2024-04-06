@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
 import '../../../core/assets.gen.dart';
@@ -84,7 +85,7 @@ class _OnboardingManualLocationPageState extends State<OnboardingManualLocationP
           ],
         ),
         child: Text(
-          'Continue',
+          AppLocalizations.of(context)!.continueButtonText,
           style: GoogleFonts.rubik(
             color: Colors.white,
             fontSize: 18.55,
@@ -110,8 +111,8 @@ class _OnboardingManualLocationPageState extends State<OnboardingManualLocationP
           print(currentPosition); // Just for confirmation
         } catch (e) {
           Get.snackbar(
-            'Location Error',
-            'Failed to get current location: $e',
+            AppLocalizations.of(context)!.locationError,
+            AppLocalizations.of(context)!.failedToGetCurrentLocation(e.toString()),
             backgroundColor: Colors.red,
             colorText: Colors.white,
           );
@@ -124,7 +125,7 @@ class _OnboardingManualLocationPageState extends State<OnboardingManualLocationP
           ),
           SizedBox(width: 5),
           Text(
-            'Use my current location',
+            AppLocalizations.of(context)!.useCurrentLocation,
             textAlign: TextAlign.center,
             style: GoogleFonts.inter(
               color: Color(0xFF090F47),
@@ -173,11 +174,15 @@ class _OnboardingManualLocationPageState extends State<OnboardingManualLocationP
                 dismissProgress();
               } catch (e) {
                 dismissProgress();
-                print("Error getting address: $e");
+                print(
+                  AppLocalizations.of(context)!.errorGettingAddress(e.toString()),
+                );
               }
             }
           },
-          child: Text("Choose on the map"),
+          child: Text(
+            AppLocalizations.of(context)!.chooseOnTheMap,
+          ),
         ),
       ],
     );
@@ -188,7 +193,7 @@ class _OnboardingManualLocationPageState extends State<OnboardingManualLocationP
       textFieldConfiguration: TextFieldConfiguration(
         controller: onboardingController.locationTextEditingController,
         decoration: InputDecoration(
-          hintText: 'Set your location...',
+          hintText: AppLocalizations.of(context)!.setLocation,
           contentPadding: EdgeInsets.only(left: 11, right: 7),
           border: OutlineInputBorder(
             borderSide: BorderSide(width: 0.30, color: Color(0xFF090F47)),
@@ -242,7 +247,7 @@ class _OnboardingManualLocationPageState extends State<OnboardingManualLocationP
               ),
               Expanded(
                 child: Text(
-                  "What's your location ?",
+                  AppLocalizations.of(context)!.locationQuestion,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.rubik(
                     color: Color(0xFF090F47),

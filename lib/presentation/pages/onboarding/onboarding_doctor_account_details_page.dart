@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/assets.gen.dart';
 import '../../widgets/utils.dart';
@@ -31,11 +32,16 @@ class _OnboardingDoctorAccountDetailsPageState extends State<OnboardingDoctorAcc
                   _titleComponent(),
                   SizedBox(height: 16),
                   _imagePlusNameComponents(onboardingController),
-                  _detailComponent('Speciality', 'Cardiology'),
-                  _detailComponent('Options', onboardingController.getSelectedOptionsAsString()),
-                  _detailComponent('Working Days', formatWorkingDays(onboardingController.workingHours ?? {})),
-                  _detailComponent('Phone Number', formatPhoneNumber(Get.find<AuthController>().currentPhoneNumber)),
-                  _detailComponent('Address', onboardingController.locationTextEditingController.text),
+                  _detailComponent(AppLocalizations.of(context)!.speciality,
+                      onboardingController.selectedSpecialityType.value.title),
+                  _detailComponent(
+                      AppLocalizations.of(context)!.options, onboardingController.getSelectedOptionsAsString()),
+                  _detailComponent(AppLocalizations.of(context)!.workingDays,
+                      formatWorkingDays(onboardingController.workingHours ?? {})),
+                  _detailComponent(AppLocalizations.of(context)!.phoneNumber,
+                      formatPhoneNumber(Get.find<AuthController>().currentPhoneNumber)),
+                  _detailComponent(
+                      AppLocalizations.of(context)!.address, onboardingController.locationTextEditingController.text),
                   SizedBox(height: 32),
                   Container(
                     width: double.infinity,
@@ -125,7 +131,7 @@ class _OnboardingDoctorAccountDetailsPageState extends State<OnboardingDoctorAcc
       TextSpan(
         children: [
           TextSpan(
-            text: 'Hello, Dr. ',
+            text: AppLocalizations.of(context)!.helloDoctor,
             style: GoogleFonts.rubik(
               color: Color(0xFF090F47),
               fontSize: 14.33,
@@ -179,7 +185,7 @@ class _OnboardingDoctorAccountDetailsPageState extends State<OnboardingDoctorAcc
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "My Account Details",
+          AppLocalizations.of(context)!.myAccountDetails,
           textAlign: TextAlign.center,
           style: GoogleFonts.rubik(
             color: Color(0xFF090F47),
@@ -199,8 +205,8 @@ class _OnboardingDoctorAccountDetailsPageState extends State<OnboardingDoctorAcc
         bool success = await onboardingController.updateUserInfo();
         if (success) {
           Get.snackbar(
-            'Success',
-            'Your information has been saved successfully!',
+            AppLocalizations.of(context)!.success,
+            AppLocalizations.of(context)!.informationSavedSuccessfully,
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white,
@@ -213,8 +219,8 @@ class _OnboardingDoctorAccountDetailsPageState extends State<OnboardingDoctorAcc
             );
         } else {
           Get.snackbar(
-            'Error',
-            'Failed to save your information. Please try again.',
+            AppLocalizations.of(context)!.error,
+            AppLocalizations.of(context)!.failedToSaveInformation,
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.red,
             colorText: Colors.white,
@@ -241,7 +247,7 @@ class _OnboardingDoctorAccountDetailsPageState extends State<OnboardingDoctorAcc
           ],
         ),
         child: Text(
-          'Validate',
+          AppLocalizations.of(context)!.validate,
           style: GoogleFonts.rubik(
             color: Colors.white,
             fontSize: 18.55,

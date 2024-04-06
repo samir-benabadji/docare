@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SetLocationMapPage extends StatefulWidget {
   final double? defaultLatitude;
@@ -30,7 +31,7 @@ class _SetLocationMapPageState extends State<SetLocationMapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pick Your Location'),
+        title: Text(AppLocalizations.of(context)!.pickYourLocation),
         actions: [
           IconButton(
             icon: Icon(Icons.check),

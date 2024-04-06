@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/assets.gen.dart';
 import 'onboarding_address_location_page.dart';
@@ -62,7 +63,7 @@ class _OnboardingPhoneNumberPageState extends State<OnboardingPhoneNumberPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 36),
       child: Text(
-        'We’ll send a text with a verification code. Message and data rates may apply.',
+        AppLocalizations.of(context)!.verificationText,
         textAlign: TextAlign.center,
         style: GoogleFonts.openSans(
           color: Color(0xFF5D6679),
@@ -90,7 +91,7 @@ class _OnboardingPhoneNumberPageState extends State<OnboardingPhoneNumberPage> {
               ),
               Expanded(
                 child: Text(
-                  "Enter your phone number",
+                  AppLocalizations.of(context)!.enterPhoneNumber,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.rubik(
                     color: Color(0xFF090F47),
@@ -140,7 +141,7 @@ class _OnboardingPhoneNumberPageState extends State<OnboardingPhoneNumberPage> {
           ],
         ),
         child: Text(
-          'Send code',
+          AppLocalizations.of(context)!.sendCode,
           style: GoogleFonts.rubik(
             color: Colors.white,
             fontSize: 18.55,
@@ -204,7 +205,7 @@ class _OnboardingPhoneNumberPageState extends State<OnboardingPhoneNumberPage> {
                 disabledBorder: InputBorder.none,
                 contentPadding: EdgeInsets.only(bottom: 10, left: 0),
                 border: InputBorder.none,
-                hintText: 'Phone number',
+                hintText: AppLocalizations.of(context)!.phoneNumber,
                 hintStyle: GoogleFonts.openSans(
                   color: Color(0xFF858D9D),
                   fontSize: 20,
@@ -262,7 +263,7 @@ class _OnboardingPhoneNumberPageState extends State<OnboardingPhoneNumberPage> {
               Get.to(() => OnboardingAddressLocationPage());
             },
             child: Text(
-              'Skip',
+              AppLocalizations.of(context)!.skipButtonText,
               style: GoogleFonts.montserrat(
                 color: Color(0xFFFF0472),
                 fontSize: 15.65,

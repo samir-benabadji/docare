@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:docare/presentation/pages/onboarding/onboarding_address_location_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:get/get.dart';
@@ -104,7 +105,7 @@ class _OnboardingPhoneNumberVerificationPageState extends State<OnboardingPhoneN
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Sent to ' + authController.currentPhoneNumber.phoneNumber!,
+          AppLocalizations.of(context)!.sentTo(authController.currentPhoneNumber.phoneNumber!),
           style: GoogleFonts.openSans(
             textStyle: TextStyle(
               color: Color(0xFF5D6679),
@@ -129,7 +130,7 @@ class _OnboardingPhoneNumberVerificationPageState extends State<OnboardingPhoneN
             Get.back();
           },
           child: Text(
-            "Change number",
+            AppLocalizations.of(context)!.changeNumber,
             style: GoogleFonts.openSans(
               textStyle: TextStyle(
                 color: Color(0xFF3BC090),
@@ -189,7 +190,7 @@ class _OnboardingPhoneNumberVerificationPageState extends State<OnboardingPhoneN
                     size: 30,
                   )
                 : Text(
-                    "Continue",
+                    AppLocalizations.of(context)!.continueButtonText,
                     style: GoogleFonts.raleway(
                       textStyle: TextStyle(
                         color: Color(0xFFFDFBF9),
@@ -209,7 +210,7 @@ class _OnboardingPhoneNumberVerificationPageState extends State<OnboardingPhoneN
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Didn't get code?",
+          AppLocalizations.of(context)!.didntGetCode,
           style: GoogleFonts.openSans(
             textStyle: TextStyle(
               color: Color(0xFF1F382F),
@@ -229,7 +230,7 @@ class _OnboardingPhoneNumberVerificationPageState extends State<OnboardingPhoneN
                   resend(authController);
                 },
           child: Text(
-            "Resend code",
+            AppLocalizations.of(context)!.resendCode,
             style: GoogleFonts.openSans(
               textStyle: TextStyle(
                 color: Color(0xFF1F986C),
@@ -282,7 +283,7 @@ class _OnboardingPhoneNumberVerificationPageState extends State<OnboardingPhoneN
                 SizedBox(
                   width: Get.width,
                   child: Text(
-                    "The code you entered is incorrect",
+                    AppLocalizations.of(context)!.incorrectCode,
                     style: GoogleFonts.openSans(
                       textStyle: TextStyle(
                         color: Color(0xFFF04437),
@@ -310,7 +311,7 @@ class _OnboardingPhoneNumberVerificationPageState extends State<OnboardingPhoneN
         SizedBox(
           width: double.infinity,
           child: Text(
-            "Enter your verification code",
+            AppLocalizations.of(context)!.enterVerificationCode,
             textAlign: TextAlign.center,
             style: GoogleFonts.rubik(
               color: Color(0xFF090F47),

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
@@ -86,7 +87,7 @@ class _OnboardingUserPreviewImagePageState extends State<OnboardingUserPreviewIm
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Get a photo for your profile",
+                    AppLocalizations.of(context)!.getAPhotoForYourProfile,
                     style: GoogleFonts.openSans(
                       textStyle: TextStyle(
                         color: Color(0xFF5D6679),
@@ -166,7 +167,7 @@ class _OnboardingUserPreviewImagePageState extends State<OnboardingUserPreviewIm
           ],
         ),
         child: Text(
-          'Save',
+          AppLocalizations.of(context)!.saveText,
           style: GoogleFonts.rubik(
             color: Colors.white,
             fontSize: 18.55,
@@ -192,7 +193,7 @@ class _OnboardingUserPreviewImagePageState extends State<OnboardingUserPreviewIm
             ),
             Expanded(
               child: Text(
-                "Preview Profile image",
+                AppLocalizations.of(context)!.previewProfileImage,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.rubik(
                   color: Color(0xFF090F47),
@@ -274,7 +275,7 @@ class _OnboardingUserPreviewImagePageState extends State<OnboardingUserPreviewIm
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Upload photo',
+                        AppLocalizations.of(context)!.uploadPhoto,
                         style: GoogleFonts.poppins(
                           color: Color(0xFF100C08),
                           fontSize: 14,
@@ -298,13 +299,17 @@ class _OnboardingUserPreviewImagePageState extends State<OnboardingUserPreviewIm
                   if (cameraStatus.isGranted) {
                     controller.getFromCamera();
                   } else if (cameraStatus.isPermanentlyDenied) {
-                    showToast('Camera permission is permanently denied. Please enable it in your device settings.');
+                    showToast(
+                      AppLocalizations.of(context)!.cameraPermissionPermanentlyDenied,
+                    );
                   } else {
                     final cameraPermissionStatus = await Permission.camera.request();
                     if (cameraPermissionStatus.isGranted) {
                       controller.getFromCamera();
                     } else {
-                      showToast('Camera permission denied. Please enable it in your device settings.');
+                      showToast(
+                        AppLocalizations.of(context)!.cameraPermissionDeniedPleaseEnableItInYourDeviceSettings,
+                      );
                     }
                   }
                   controller.update();
@@ -329,7 +334,7 @@ class _OnboardingUserPreviewImagePageState extends State<OnboardingUserPreviewIm
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Take photo',
+                        AppLocalizations.of(context)!.takePhoto,
                         style: GoogleFonts.poppins(
                           color: Color(0xFF100C08),
                           fontSize: 14,

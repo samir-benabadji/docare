@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../business_logic/models/pain_model.dart';
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
 import 'onboarding_manual_location_page.dart';
@@ -62,7 +61,7 @@ class _OnboardingAddressLocationPageState extends State<OnboardingAddressLocatio
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "What's your location ?",
+          AppLocalizations.of(context)!.locationQuestion,
           textAlign: TextAlign.center,
           style: GoogleFonts.plusJakartaSans(
             color: Color(0xFF090F47),
@@ -81,7 +80,7 @@ class _OnboardingAddressLocationPageState extends State<OnboardingAddressLocatio
       children: [
         Expanded(
           child: Text(
-            "We require your location to recommend nearby services",
+            AppLocalizations.of(context)!.locationRecommendation,
             textAlign: TextAlign.center,
             style: GoogleFonts.rubik(
               color: Color(0xFF878787),
@@ -115,7 +114,7 @@ class _OnboardingAddressLocationPageState extends State<OnboardingAddressLocatio
             padding: EdgeInsets.symmetric(vertical: 8),
             color: Colors.transparent,
             child: Text(
-              'Enter location Manually',
+              AppLocalizations.of(context)!.enterLocationManually,
               style: GoogleFonts.rubik(
                 color: Color(0xFF7ACDAF),
                 fontSize: 18.55,
@@ -154,7 +153,7 @@ class _OnboardingAddressLocationPageState extends State<OnboardingAddressLocatio
           ],
         ),
         child: Text(
-          'Allow location access',
+          AppLocalizations.of(context)!.allowLocationAccess,
           style: GoogleFonts.rubik(
             color: Colors.white,
             fontSize: 18.55,
@@ -162,46 +161,6 @@ class _OnboardingAddressLocationPageState extends State<OnboardingAddressLocatio
             letterSpacing: -0.35,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildImageWithPlaceholder(PainType painType, {required OnboardingController onboardingController}) {
-    return GestureDetector(
-      onTap: () {
-        onboardingController.togglePainTypeSelection(painType);
-      },
-      child: Stack(
-        children: [
-          Image.asset(
-            painType.imagePath,
-            fit: BoxFit.cover,
-            width: 46.35,
-            height: 46.35,
-          ),
-          if (onboardingController.selectedPainTypes.contains(painType))
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: Image.asset(
-                Assets.icons.checkGreen.path,
-                height: 22,
-                width: 22,
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildShimmerPlaceholder() {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
-      child: Container(
-        width: 46.35,
-        height: 46.35,
-        color: Colors.white,
       ),
     );
   }

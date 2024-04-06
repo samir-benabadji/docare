@@ -113,5 +113,104 @@
     }
   },
   "startSession": "Starts",
-"endSession": "Ends"
+  "endSession": "Ends",
+  "cropImage": "Crop Image",
+  "failedToLoadSuggestions": "Failed to load suggestions",
+  "locationServicesDisabled": "Location services are disabled.",
+  "locationPermissionsDenied": "Location permissions are denied",
+  "locationPermissionsPermanentlyDenied": "Location permissions are permanently denied",
+  "noAddressFound": "No address found.",
+  "errorFetchingAddress": "Error fetching address: {e}",
+  "@errorFetchingAddress": {
+    "placeholders": {
+      "e": {"type": "String"}
+    }
+  },
+  "locationServiceDisabled": "Location Service Disabled",
+  "pleaseEnableLocationServices": "Please enable your location services.",
+  "locationPermission": "Location Permission",
+  "locationPermissionsPermanentlyDeniedRequest": "Location permissions are permanently denied, we cannot request permissions.",
+  "locationText" : "Location",
+  "locationDetails": "Location: {latitude}, {longitude}",
+  "@locationDetails": {
+    "placeholders": {
+      "latitude": {"type": "String"},
+      "longitude": {"type": "String"}
+    }
+  },
+  "errorUpdatingUserInfoInFirestore": "Error updating user info in Firestore: {e}",
+  "@errorUpdatingUserInfoInFirestore": {
+    "placeholders": {
+      "e": {"type": "String"}
+    
+    }
+  },
+  "noSessionsAdded": "No Sessions Added",
+  "pleaseAddAtLeastOneSession": "Please add at least one session to save your schedule",
+  "incompleteSessions": "Incomplete Sessions",
+  "pleaseFinishFillingSessions": "Please finish filling the sessions that you added",
+  "timeConflict": "Time Conflict",
+  "pleaseFixTimeConflicts": "Please fix the time conflicts between sessions",
+  "success": "Success",
+  "allSessionsSavedSuccessfully": "All sessions are saved successfully",
+  "verificationText": "We’ll send a text with a verification code. Message and data rates may apply.",
+  "enterPhoneNumber": "Enter your phone number",
+  "sendCode": "Send code",
+  "phoneNumber": "Phone number",
+  "sentTo": "Sent to {phoneNumber}",
+  "@sentTo": {
+    "placeholders": {
+      "phoneNumber": {"type": "String"}
+    
+    }
+  },
+  "changeNumber": "Change number",
+  "didntGetCode": "Didn't get code?",
+  "resendCode": "Resend code",
+  "incorrectCode": "The code you entered is incorrect",
+  "enterVerificationCode": "Enter your verification code",
+  "locationQuestion": "What's your location ?",
+  "locationRecommendation": "We require your location to recommend nearby services",
+  "enterLocationManually": "Enter location Manually",
+  "allowLocationAccess": "Allow location access",
+  "locationError": "Location Error",
+  "failedToGetCurrentLocation": "Failed to get current location: {e}",
+  "@failedToGetCurrentLocation": {
+    "placeholders": {
+      "e": {"type": "String"}
+    }
+  },
+  "useCurrentLocation": "Use my current location",
+  "errorGettingAddress": "Error getting address: {e}",
+  "@errorGettingAddress": {
+    "placeholders": {
+      "e": {"type": "String"}
+    }
+  },
+  "chooseOnTheMap": "Choose on the map",
+  "setLocation": "Set your location...",
+  "pickYourLocation":"Pick Your Location",
+  "timeForAPicture": "Time for a Picture!",
+  "boostVisibilityMessage": "Boost Your Visibility! Users with profile pictures are more likely to ",
+  "attract": "attract",
+  "clientsUploadYourImageNowTo": " clients. Upload your image now to",
+ "increaseYourChances" :" increase your chances",
+  "ofConnectingWithMorePatients":" of connecting with more patients",
+  "uploadProfilePicture": "Upload Profile Picture",
+  "getAPhotoForYourProfile": "Get a photo for your profile",
+  "previewProfileImage": "Preview Profile image",
+  "uploadPhoto": "Upload photo",
+  "cameraPermissionPermanentlyDenied": "Camera permission is permanently denied. Please enable it in your device settings.",
+  "takePhoto": "Take photo",
+  "myAccountDetails": "My Account Details",
+  "speciality": "Speciality",
+  "options": "Options",
+  "cameraPermissionDeniedPleaseEnableItInYourDeviceSettings":"Camera permission denied. Please enable it in your device settings.",
+  "workingDays": "Working Days",
+  "address": "Address",
+  "helloDoctor": "Hello, Dr. ",
+  "informationSavedSuccessfully": "Your information has been saved successfully!",
+  "error": "Error",
+  "failedToSaveInformation": "Failed to save your information. Please try again.",
+  "validate": "Validate"
 }

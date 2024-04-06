@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/assets.gen.dart';
 import 'onboarding_controller.dart';
@@ -60,17 +61,16 @@ class _OnboardingUserPicturePageState extends State<OnboardingUserPicturePage> {
         TextSpan(
           children: [
             TextSpan(
-              text: 'Boost Your Visibility! Users with profile pictures are more likely to ',
-              style: TextStyle(
+              text: AppLocalizations.of(context)!.boostVisibilityMessage,
+              style: GoogleFonts.rubik(
                 color: Color(0xFF090F47),
                 fontSize: 13,
-                fontFamily: 'Rubik',
                 fontWeight: FontWeight.w400,
                 letterSpacing: -0.22,
               ),
             ),
             TextSpan(
-              text: 'attract',
+              text: AppLocalizations.of(context)!.attract,
               style: GoogleFonts.rubik(
                 color: Color(0xFF090F47),
                 fontSize: 13,
@@ -80,7 +80,7 @@ class _OnboardingUserPicturePageState extends State<OnboardingUserPicturePage> {
               ),
             ),
             TextSpan(
-              text: ' clients. Upload your image now to',
+              text: AppLocalizations.of(context)!.clientsUploadYourImageNowTo,
               style: GoogleFonts.rubik(
                 color: Color(0xFF090F47),
                 fontSize: 13,
@@ -89,7 +89,7 @@ class _OnboardingUserPicturePageState extends State<OnboardingUserPicturePage> {
               ),
             ),
             TextSpan(
-              text: ' increase your chances',
+              text: AppLocalizations.of(context)!.increaseYourChances,
               style: GoogleFonts.rubik(
                 color: Color(0xFF090F47),
                 fontSize: 13,
@@ -99,7 +99,7 @@ class _OnboardingUserPicturePageState extends State<OnboardingUserPicturePage> {
               ),
             ),
             TextSpan(
-              text: ' of connecting with more patients',
+              text: AppLocalizations.of(context)!.ofConnectingWithMorePatients,
               style: GoogleFonts.rubik(
                 color: Color(0xFF090F47),
                 fontSize: 13,
@@ -156,7 +156,7 @@ class _OnboardingUserPicturePageState extends State<OnboardingUserPicturePage> {
           ],
         ),
         child: Text(
-          'Upload Profile Picture',
+          AppLocalizations.of(context)!.uploadProfilePicture,
           style: GoogleFonts.rubik(
             color: Colors.white,
             fontSize: 18.55,
@@ -182,7 +182,7 @@ class _OnboardingUserPicturePageState extends State<OnboardingUserPicturePage> {
             ),
             Expanded(
               child: Text(
-                "Time for a Picture!",
+                AppLocalizations.of(context)!.timeForAPicture,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.rubik(
                   color: Color(0xFF090F47),

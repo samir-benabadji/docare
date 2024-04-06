@@ -63,6 +63,8 @@ class OnboardingController extends GetxController {
 
   bool isSavedSuccessfully = false;
 
+  final AppLocalizations? _localizations = Get.context != null ? AppLocalizations.of(Get.context!) : null;
+
   @override
   void onInit() {
     if (userModel == null) getUserDataModel();
@@ -132,14 +134,14 @@ class OnboardingController extends GetxController {
               CropAspectRatioPreset.ratio16x9
             ],
       androidUiSettings: AndroidUiSettings(
-        toolbarTitle: 'Crop Image',
+        toolbarTitle: _localizations?.cropImage ?? 'Crop Image',
         toolbarColor: Colors.black,
         toolbarWidgetColor: Colors.white,
         activeControlsWidgetColor: Colors.blue,
         // initAspectRatio: CropAspectRatioPreset.original,
         lockAspectRatio: true,
       ),
-      iosUiSettings: IOSUiSettings(title: 'Crop Image'),
+      iosUiSettings: IOSUiSettings(title: _localizations?.cropImage ?? 'Crop Image'),
     );
 
     return _cf;
@@ -175,7 +177,7 @@ class OnboardingController extends GetxController {
 
       return suggestions;
     } else {
-      throw Exception('Failed to load suggestions');
+      throw Exception(_localizations?.failedToLoadSuggestions ?? 'Failed to load suggestions');
     }
   }
 
@@ -186,23 +188,28 @@ class OnboardingController extends GetxController {
     // Checking if location services are enabled
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      throw Exception('Location services are disabled.');
+      throw Exception(_localizations?.locationServicesDisabled ?? 'Location services are disabled.');
     }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        throw Exception('Location permissions are denied');
+        throw Exception(_localizations?.locationPermissionsDenied ?? 'Location permissions are denied');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      throw Exception('Location permissions are permanently denied');
+      throw Exception(
+          _localizations?.locationPermissionsPermanentlyDenied ?? 'Location permissions are permanently denied');
     }
 
     // When permissions are granted, we get the current position
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    locationLatLng = {
+      'latitude': position.latitude.toString(),
+      'longitude': position.longitude.toString(),
+    };
     List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
 
     if (placemarks.isNotEmpty) {
@@ -212,7 +219,7 @@ class OnboardingController extends GetxController {
       String address = '${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}';
       return address;
     } else {
-      throw Exception('No address found.');
+      throw Exception(_localizations?.noAddressFound ?? 'No address found.');
     }
   }
 
@@ -224,10 +231,10 @@ class OnboardingController extends GetxController {
         Placemark place = placemarks.first;
         return '${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}';
       } else {
-        throw Exception('No address found.');
+        throw Exception(_localizations?.noAddressFound ?? 'No address found.');
       }
     } catch (e) {
-      throw Exception('Error fetching address: $e');
+      throw Exception(_localizations?.errorFetchingAddress(e.toString()) ?? 'Error fetching address: $e');
     }
   }
 
@@ -241,8 +248,8 @@ class OnboardingController extends GetxController {
     if (!serviceEnabled) {
       // Location services are not enabled, we cannot request permission.
       Get.snackbar(
-        'Location Service Disabled',
-        'Please enable your location services.',
+        _localizations?.locationServiceDisabled ?? 'Location Service Disabled',
+        _localizations?.pleaseEnableLocationServices ?? 'Please enable your location services.',
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
@@ -255,8 +262,8 @@ class OnboardingController extends GetxController {
       if (permission == LocationPermission.denied) {
         // Permissions are denied, next time we could try requesting permissions again (this is also where Android's shouldShowRequestPermissionRationale returns true).
         Get.snackbar(
-          'Location Permission',
-          'Location permissions are denied',
+          _localizations?.locationPermission ?? 'Location Permission',
+          _localizations?.locationPermissionsDenied ?? 'Location permissions are denied',
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
@@ -267,8 +274,9 @@ class OnboardingController extends GetxController {
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever.
       Get.snackbar(
-        'Location Permission',
-        'Location permissions are permanently denied, we cannot request permissions.',
+        _localizations?.locationPermission ?? 'Location Permission',
+        _localizations?.locationPermissionsPermanentlyDeniedRequest ??
+            'Location permissions are permanently denied, we cannot request permissions.',
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
@@ -278,8 +286,9 @@ class OnboardingController extends GetxController {
     // When we reach here, permissions are granted and we can continue accessing the device's location.
     Position position = await Geolocator.getCurrentPosition();
     Get.snackbar(
-      'Location',
-      'Location: ${position.latitude}, ${position.longitude}',
+      _localizations?.locationText ?? 'Location',
+      _localizations?.locationDetails(position.latitude.toString(), position.longitude.toString()) ??
+          'Location: ${position.latitude}, ${position.longitude}',
       backgroundColor: Colors.green,
       colorText: Colors.white,
     );
@@ -366,7 +375,8 @@ class OnboardingController extends GetxController {
       await _firebaseFirestoreService.addOrUpdateUser(uid, userUpdatedData, isUpdatingUser: true);
       return true;
     } catch (e) {
-      print('Error updating user info in Firestore: $e');
+      print(_localizations?.errorUpdatingUserInfoInFirestore(e.toString()) ??
+          'Error updating user info in Firestore: $e');
       return false;
     }
   }
@@ -394,8 +404,8 @@ class OnboardingController extends GetxController {
   void onSaveClicked() {
     if (allSessions.isEmpty) {
       Get.snackbar(
-        'No Sessions Added',
-        'Please add at least one session to save your schedule',
+        _localizations?.noSessionsAdded ?? 'No Sessions Added',
+        _localizations?.pleaseAddAtLeastOneSession ?? 'Please add at least one session to save your schedule',
         snackPosition: SnackPosition.TOP,
         duration: Duration(seconds: 5),
         backgroundColor: DocareTheme.tomato,
@@ -409,8 +419,8 @@ class OnboardingController extends GetxController {
 
     if (hasIncompleteSessions) {
       Get.snackbar(
-        'Incomplete Sessions',
-        'Please finish filling the sessions that you added',
+        _localizations?.incompleteSessions ?? 'Incomplete Sessions',
+        _localizations?.pleaseFinishFillingSessions ?? 'Please finish filling the sessions that you added',
         snackPosition: SnackPosition.TOP,
         duration: Duration(seconds: 5),
         backgroundColor: DocareTheme.tomato,
@@ -444,8 +454,8 @@ class OnboardingController extends GetxController {
 
     if (hasConflict) {
       Get.snackbar(
-        'Time Conflict',
-        'Please fix the time conflicts between sessions',
+        _localizations?.timeConflict ?? 'Time Conflict',
+        _localizations?.pleaseFixTimeConflicts ?? 'Please fix the time conflicts between sessions',
         snackPosition: SnackPosition.TOP,
         duration: Duration(seconds: 5),
         backgroundColor: DocareTheme.tomato,
@@ -455,8 +465,8 @@ class OnboardingController extends GetxController {
     }
 
     Get.snackbar(
-      'Success',
-      'All sessions are saved successfully',
+      _localizations?.success ?? 'Success',
+      _localizations?.allSessionsSavedSuccessfully ?? 'All sessions are saved successfully',
       snackPosition: SnackPosition.TOP,
       duration: Duration(seconds: 5),
       backgroundColor: DocareTheme.apple,
