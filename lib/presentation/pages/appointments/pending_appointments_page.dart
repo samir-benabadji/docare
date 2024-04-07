@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../business_logic/models/appointment_model.dart';
 import '../../../business_logic/services/firebase_firestore_service.dart';
@@ -117,7 +118,8 @@ class PendingAppointmentsPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    appointment.patientName ?? "Unknown",
+                    appointment.patientName ??
+                        (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : 'Unknown'),
                     style: GoogleFonts.poppins(
                       color: Color(0xFF0D1B34),
                       fontSize: 16,
@@ -126,7 +128,9 @@ class PendingAppointmentsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    appointment.patientPhoneNumber ?? appointment.patientEmail ?? "Unknown",
+                    appointment.patientPhoneNumber ??
+                        appointment.patientEmail ??
+                        (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : 'Unknown'),
                     style: GoogleFonts.poppins(
                       color: Color(0xFF8696BB),
                       fontSize: 14,
@@ -137,7 +141,7 @@ class PendingAppointmentsPage extends StatelessWidget {
               ),
               Spacer(),
               Text(
-                'Pending',
+                Get.context != null ? AppLocalizations.of(Get.context!)!.pending : 'Pending',
                 style: GoogleFonts.poppins(
                   color: Color(0xFFFF9634),
                   fontSize: 14,
@@ -212,7 +216,7 @@ class PendingAppointmentsPage extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Detail',
+                Get.context != null ? AppLocalizations.of(Get.context!)!.detail : 'Detail',
                 style: GoogleFonts.poppins(
                   color: Colors.white,
                   fontSize: 14,
@@ -303,7 +307,7 @@ class PendingAppointmentsPage extends StatelessWidget {
             ),
           ),
           prefixIconConstraints: BoxConstraints(minWidth: 0, minHeight: 0),
-          hintText: 'Search...',
+          hintText: Get.context != null ? AppLocalizations.of(Get.context!)!.search : 'Search...',
           hintStyle: GoogleFonts.openSans(
             color: Color(0xFF858D9D),
             fontSize: 16,
@@ -337,7 +341,7 @@ class PendingAppointmentsPage extends StatelessWidget {
             ),
           ),
           Text(
-            "Pending appointments",
+            Get.context != null ? AppLocalizations.of(Get.context!)!.pendingAppointments : "Pending appointments",
             textAlign: TextAlign.center,
             style: GoogleFonts.plusJakartaSans(
               color: Colors.black,
@@ -363,19 +367,26 @@ class PendingAppointmentsPage extends StatelessWidget {
             ),
           );
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return Text(Get.context != null
+              ? AppLocalizations.of(Get.context!)!.pendingAppointmentsStreamError(snapshot.error.toString())
+              : 'Error: ${snapshot.error}');
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Column(
             children: [
               SizedBox(height: 48),
-              _noPendingAppointmentsComponent("There are no pending appointments"),
+              _noPendingAppointmentsComponent(Get.context != null
+                  ? AppLocalizations.of(Get.context!)!.noPendingAppointments
+                  : "There are no pending appointments"),
             ],
           );
         } else {
           // Filter logic between a patient and a doctor
           final filteredAppointments = snapshot.data!;
 
-          if (filteredAppointments.isEmpty) return _noPendingAppointmentsComponent("There are no pending appointments");
+          if (filteredAppointments.isEmpty)
+            return _noPendingAppointmentsComponent(Get.context != null
+                ? AppLocalizations.of(Get.context!)!.noPendingAppointments
+                : "There are no pending appointments");
 
           if (_firebaseFirestoreService.getUserModel != null) {
             return _displayComponentForDoctor(appointmentsController, filteredAppointments);

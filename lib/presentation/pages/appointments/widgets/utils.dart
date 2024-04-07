@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../business_logic/models/user_model.dart';
 import '../../../../core/assets.gen.dart';
@@ -100,7 +101,8 @@ void confirmDialogComponent(
                   ),
                   SizedBox(height: 16),
                   Text(
-                    patientUserModel.name ?? "Unknown",
+                    patientUserModel.name ??
+                        (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : "Unknown"),
                     style: GoogleFonts.poppins(
                       color: Color(0xFF090F47),
                       fontSize: 14,
@@ -109,7 +111,9 @@ void confirmDialogComponent(
                   ),
                   SizedBox(height: 25),
                   Text(
-                    'Are you sure you want to Confirm this appointment for this patient',
+                    Get.context != null
+                        ? AppLocalizations.of(Get.context!)!.areYouSureConfirmAppointment
+                        : 'Are you sure you want to Confirm this appointment for this patient',
                     style: GoogleFonts.openSans(
                       color: Color(0xFF090F47),
                       fontSize: 14,
@@ -145,7 +149,7 @@ void confirmDialogComponent(
                               ],
                             ),
                             child: Text(
-                              'Cancel',
+                              Get.context != null ? AppLocalizations.of(Get.context!)!.cancel : 'Cancel',
                               style: GoogleFonts.rubik(
                                 color: Colors.white,
                                 fontSize: 18.55,
@@ -183,7 +187,7 @@ void confirmDialogComponent(
                               ],
                             ),
                             child: Text(
-                              'Yes, Confirm',
+                              Get.context != null ? AppLocalizations.of(Get.context!)!.yesConfirm : 'Yes, Confirm',
                               style: GoogleFonts.rubik(
                                 color: Color(0xFF3BC090),
                                 fontSize: 18.55,
@@ -296,7 +300,8 @@ void rejectDialogComponent(
                   ),
                   SizedBox(height: 16),
                   Text(
-                    patientUserModel.name ?? "Unknown",
+                    patientUserModel.name ??
+                        (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : "Unknown"),
                     style: GoogleFonts.poppins(
                       color: Color(0xFF090F47),
                       fontSize: 14,
@@ -305,7 +310,9 @@ void rejectDialogComponent(
                   ),
                   SizedBox(height: 25),
                   Text(
-                    'Are you sure you want to Reject this appointment for this patient',
+                    Get.context != null
+                        ? AppLocalizations.of(Get.context!)!.areYouSureRejectAppointment
+                        : 'Are you sure you want to Reject this appointment for this patient',
                     style: GoogleFonts.openSans(
                       color: Color(0xFF090F47),
                       fontSize: 14,
@@ -342,7 +349,7 @@ void rejectDialogComponent(
                               ],
                             ),
                             child: Text(
-                              'Cancel',
+                              Get.context != null ? AppLocalizations.of(Get.context!)!.cancel : 'Cancel',
                               style: GoogleFonts.rubik(
                                 color: Color(0xFF3BC090),
                                 fontSize: 18.55,
@@ -379,7 +386,7 @@ void rejectDialogComponent(
                               ],
                             ),
                             child: Text(
-                              'Yes, Reject',
+                              Get.context != null ? AppLocalizations.of(Get.context!)!.yesReject : 'Yes, Reject',
                               style: GoogleFonts.rubik(
                                 color: Colors.white,
                                 fontSize: 18.55,

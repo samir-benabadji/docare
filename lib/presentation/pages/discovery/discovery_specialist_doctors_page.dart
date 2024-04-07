@@ -3,6 +3,7 @@ import 'package:docare/core/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../business_logic/models/user_model.dart';
 import '../../widgets/utils.dart';
@@ -50,7 +51,7 @@ class DiscoverySpecialistDoctorsPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Specialist Doctors',
+          Get.context != null ? AppLocalizations.of(Get.context!)!.specialistDoctors : 'Specialist Doctors',
           style: GoogleFonts.inter(
             color: Color(0xFF090F47),
             fontSize: 15.45,
@@ -97,9 +98,17 @@ class DiscoverySpecialistDoctorsPage extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return Text(
+            Get.context != null
+                ? AppLocalizations.of(Get.context!)!.specialistDoctorsErrorMessage(snapshot.error.toString())
+                : 'Error: ${snapshot.error}',
+          );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Text('No doctors found with this speciality');
+          return Text(
+            Get.context != null
+                ? AppLocalizations.of(Get.context!)!.noDoctorsFoundWithThisSpeciality
+                : 'No doctors found with this speciality',
+          );
         } else {
           final doctors = snapshot.data!;
           return Container(
@@ -189,7 +198,10 @@ class DiscoverySpecialistDoctorsPage extends StatelessWidget {
                           child: Column(
                             children: [
                               Text(
-                                doctor.name ?? 'No name provided',
+                                doctor.name ??
+                                    (Get.context != null
+                                        ? AppLocalizations.of(Get.context!)!.noNameProvided
+                                        : 'No name provided'),
                                 style: GoogleFonts.inter(
                                   color: Color(0xFF090F47),
                                   fontSize: 16,
@@ -198,7 +210,8 @@ class DiscoverySpecialistDoctorsPage extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                doctor.medicalSpeciality ?? 'Unknown',
+                                doctor.medicalSpeciality ??
+                                    (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : 'Unknown'),
                                 style: GoogleFonts.rubik(
                                   color: Color(0xFF090F47),
                                   fontSize: 14,

@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../business_logic/models/appointment_model.dart';
 import '../../../core/assets.gen.dart';
@@ -61,7 +62,7 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
             ),
           ),
           Text(
-            "Appointment Details",
+            Get.context != null ? AppLocalizations.of(Get.context!)!.appointmentDetails : "Appointment Details",
             textAlign: TextAlign.center,
             style: GoogleFonts.plusJakartaSans(
               color: Colors.black,
@@ -86,11 +87,19 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
             ),
           );
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}'); // TODO: Show a proper message to the user
+          return Text(
+            Get.context != null
+                ? AppLocalizations.of(Get.context!)!.patientUserModelStreamError(snapshot.error.toString())
+                : 'Error: ${snapshot.error}',
+          ); // TODO: Show a proper message to the user
         } else if (snapshot.data == null) {
           return Expanded(
             child: Center(
-              child: Text('Sorry, we couldn\'t load the doctor\'s information.'),
+              child: Text(
+                Get.context != null
+                    ? AppLocalizations.of(Get.context!)!.failedToLoadDoctorInformation
+                    : 'Sorry, we couldn\'t load the doctor\'s information.',
+              ),
             ),
           );
         } else {
@@ -185,7 +194,7 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
                   ],
                 ),
                 child: Text(
-                  'Reject',
+                  Get.context != null ? AppLocalizations.of(Get.context!)!.reject : 'Reject',
                   style: GoogleFonts.rubik(
                     color: Colors.white,
                     fontSize: 16.86,
@@ -226,7 +235,7 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
                   ],
                 ),
                 child: Text(
-                  'Confirm',
+                  Get.context != null ? AppLocalizations.of(Get.context!)!.confirm : 'Confirm',
                   style: GoogleFonts.rubik(
                     color: Colors.white,
                     fontSize: 16.86,
@@ -252,7 +261,7 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Visit Time',
+            Get.context != null ? AppLocalizations.of(Get.context!)!.visitTime : 'Visit Time',
             style: GoogleFonts.openSans(
               color: Color(0xFF090F47),
               fontSize: 15.57,
@@ -296,7 +305,7 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Patient's details",
+            Get.context != null ? AppLocalizations.of(Get.context!)!.patientsDetails : "Patient's details",
             style: GoogleFonts.poppins(
               color: Color(0xFF090F47),
               fontSize: 15.57,
@@ -308,7 +317,7 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
             TextSpan(
               children: [
                 TextSpan(
-                  text: 'Age: ',
+                  text: Get.context != null ? AppLocalizations.of(Get.context!)!.age : 'Age: ',
                   style: GoogleFonts.inter(
                     color: Color(0xFF090F47),
                     fontSize: 14,
@@ -316,7 +325,8 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: '${birthDateTime != null ? calculateAge(birthDateTime) : "Unknown"}',
+                  text:
+                      '${birthDateTime != null ? calculateAge(birthDateTime) : (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : "Unknown")}',
                   style: GoogleFonts.openSans(
                     color: Color(0xFF090F47),
                     fontSize: 14,
@@ -332,7 +342,7 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
             TextSpan(
               children: [
                 TextSpan(
-                  text: 'Gender: ',
+                  text: Get.context != null ? AppLocalizations.of(Get.context!)!.gender : 'Gender: ',
                   style: GoogleFonts.inter(
                     color: Color(0xFF090F47),
                     fontSize: 14,
@@ -340,7 +350,8 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: '${patientUserModel.gender ?? "Unknown"}',
+                  text:
+                      '${patientUserModel.gender ?? (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : "Unknown")}',
                   style: GoogleFonts.openSans(
                     color: Color(0xFF090F47),
                     fontSize: 14,
@@ -363,7 +374,7 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Contact's Information",
+            Get.context != null ? AppLocalizations.of(Get.context!)!.contactsInformation : "Contact's Information",
             style: GoogleFonts.poppins(
               color: Color(0xFF090F47),
               fontSize: 15.57,
@@ -375,7 +386,8 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
             TextSpan(
               children: [
                 TextSpan(
-                  text: 'Phone Number: ',
+                  text:
+                      Get.context != null ? AppLocalizations.of(Get.context!)!.phoneNumberWithColon : 'Phone Number: ',
                   style: GoogleFonts.inter(
                     color: Color(0xFF090F47),
                     fontSize: 14,
@@ -383,7 +395,8 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: '${patientUserModel.phoneNumber ?? "Unknown"}',
+                  text:
+                      '${patientUserModel.phoneNumber ?? (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : "Unknown")}',
                   style: GoogleFonts.openSans(
                     color: Color(0xFF090F47),
                     fontSize: 14,
@@ -399,7 +412,7 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
             TextSpan(
               children: [
                 TextSpan(
-                  text: 'Email: ',
+                  text: Get.context != null ? AppLocalizations.of(Get.context!)!.email : 'Email: ',
                   style: GoogleFonts.inter(
                     color: Color(0xFF090F47),
                     fontSize: 14,
@@ -439,7 +452,7 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Session time',
+            Get.context != null ? AppLocalizations.of(Get.context!)!.sessionTime : 'Session time',
             style: GoogleFonts.openSans(
               color: Color(0xFF090F47),
               fontSize: 15.57,
@@ -468,7 +481,7 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'The problem of the patient',
+            Get.context != null ? AppLocalizations.of(Get.context!)!.patientsProblem : 'The problem of the patient',
             style: GoogleFonts.poppins(
               color: Color(0xFF677294),
               fontSize: 14,
@@ -515,7 +528,7 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Option selected',
+            Get.context != null ? AppLocalizations.of(Get.context!)!.optionSelected : 'Option selected',
             style: GoogleFonts.poppins(
               color: Color(0xFF090F47),
               fontSize: 15.57,
@@ -559,7 +572,7 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Rate',
+            Get.context != null ? AppLocalizations.of(Get.context!)!.rate : 'Rate',
             style: GoogleFonts.openSans(
               color: Color(0xFF090F47),
               fontSize: 15.57,
@@ -637,7 +650,8 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 Text(
-                  patientUserModel.name ?? "Unknown",
+                  patientUserModel.name ??
+                      (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : "Unknown"),
                   style: GoogleFonts.poppins(
                     color: Color(0xFF090F47),
                     fontSize: 14,
@@ -664,7 +678,9 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: 'The appointement was ',
+                            text: Get.context != null
+                                ? AppLocalizations.of(Get.context!)!.theAppointementWas
+                                : 'The appointement was ',
                             style: GoogleFonts.openSans(
                               color: Color(0xFFFF4C38),
                               fontSize: 14,
@@ -672,7 +688,7 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: 'Rejected',
+                            text: Get.context != null ? AppLocalizations.of(Get.context!)!.rejected : 'Rejected',
                             style: GoogleFonts.openSans(
                               color: Color(0xFFFF4C38),
                               fontSize: 14,
@@ -704,7 +720,9 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: 'The appointement was accepted',
+                            text: Get.context != null
+                                ? AppLocalizations.of(Get.context!)!.theAppointementWasAccepted
+                                : 'The appointement was accepted',
                             style: GoogleFonts.openSans(
                               color: Color(0xFF34C759),
                               fontSize: 14,
@@ -735,7 +753,9 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: 'The appointement is currently in ',
+                            text: Get.context != null
+                                ? AppLocalizations.of(Get.context!)!.theAppointementIsCurrentlyIn
+                                : 'The appointement is currently in ',
                             style: GoogleFonts.openSans(
                               color: Color(0xFFFF9534),
                               fontSize: 14,
@@ -743,7 +763,9 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: 'pending status..',
+                            text: Get.context != null
+                                ? AppLocalizations.of(Get.context!)!.pendingStatus
+                                : 'pending status..',
                             style: GoogleFonts.openSans(
                               color: Color(0xFFFF9534),
                               fontSize: 14,
@@ -775,7 +797,9 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: 'The appointement was ',
+                            text: Get.context != null
+                                ? AppLocalizations.of(Get.context!)!.theAppointementWas
+                                : 'The appointement was ',
                             style: GoogleFonts.openSans(
                               color: Color(0xFFFF4C38),
                               fontSize: 14,
@@ -783,7 +807,9 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: 'Cancleled',
+                            text: Get.context != null
+                                ? AppLocalizations.of(Get.context!)!.appointmentCancelled
+                                : 'Canceled',
                             style: GoogleFonts.openSans(
                               color: Color(0xFFFF4C38),
                               fontSize: 14,
@@ -830,12 +856,16 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
                 if (is24HoursAhead) {
                   appointmentsController.cancelAppointment(appointment.id);
                 } else {
-                  showToast('You cannot cancel appointments within 24 hours of the scheduled time.');
+                  showToast(
+                    Get.context != null
+                        ? AppLocalizations.of(Get.context!)!.cannotCancelWithin24Hours
+                        : 'You cannot cancel appointments within 24 hours of the scheduled time.',
+                  );
                 }
               },
               child: appointment.appointmentStatus == "CANCELED"
                   ? Text(
-                      'Canceled',
+                      Get.context != null ? AppLocalizations.of(Get.context!)!.appointmentCancelled : 'Canceled',
                       style: GoogleFonts.openSans(
                         color: Color(0x66FF4C38),
                         fontSize: 14,
@@ -843,7 +873,7 @@ class AppointmentsDetailForDoctorPage extends StatelessWidget {
                       ),
                     )
                   : Text(
-                      'Cancel',
+                      Get.context != null ? AppLocalizations.of(Get.context!)!.cancel : 'Cancel',
                       style: GoogleFonts.openSans(
                         color: Color(0xFFFF4C38),
                         fontSize: 14,

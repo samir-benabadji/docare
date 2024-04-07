@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import '../../../business_logic/models/user_model.dart';
 import '../../../business_logic/services/firebase_firestore_service.dart';
+import '../../widgets/utils.dart';
 
 class DiscoveryController extends GetxController {
   final FirebaseFirestoreService _firebaseFirestoreService = FirebaseFirestoreService();
@@ -28,7 +31,11 @@ class DiscoveryController extends GetxController {
       },
       onError: (error) {
         print("Error loading doctors: $error");
-        // TODO: Handle possible errors
+        showToast(
+          Get.context != null
+              ? AppLocalizations.of(Get.context!)!.failedToLoadDoctorsPleaseTryAgainLater
+              : "Failed to load doctors. Please try again later.",
+        );
       },
     );
   }
@@ -41,7 +48,11 @@ class DiscoveryController extends GetxController {
         if (searchedDoctorsStream.isClosed == false) searchedDoctorsStream.add(data);
       } catch (e) {
         print("Error loading doctors by name: $e");
-        // TODO: Handle possible errors
+        showToast(
+          Get.context != null
+              ? AppLocalizations.of(Get.context!)!.failedToSearchDoctorsByNamePleaseTryAgainLater
+              : "Failed to search doctors by name. Please try again later.",
+        );
       }
       update();
     }
@@ -61,7 +72,11 @@ class DiscoveryController extends GetxController {
       if (specialistDoctorsStream.isClosed == false) specialistDoctorsStream.add(data);
     } catch (e) {
       print("Error loading specialist doctors: $e");
-      // TODO: Handle possible errors
+      showToast(
+        Get.context != null
+            ? AppLocalizations.of(Get.context!)!.failedToLoadSpecialistDoctorsPleaseTryAgainLater
+            : "Failed to load specialist doctors. Please try again later.",
+      );
     }
   }
 

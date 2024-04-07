@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../business_logic/models/user_model.dart';
 import '../../../core/assets.gen.dart';
@@ -68,7 +69,7 @@ class DiscoveryPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Top Doctors',
+          Get.context != null ? AppLocalizations.of(Get.context!)!.topDoctors : 'Top Doctors',
           style: GoogleFonts.inter(
             color: Color(0xFF090F47),
             fontSize: 15.45,
@@ -76,7 +77,7 @@ class DiscoveryPage extends StatelessWidget {
           ),
         ),
         Text(
-          'See all',
+          Get.context != null ? AppLocalizations.of(Get.context!)!.seeAll : 'See all',
           style: GoogleFonts.inter(
             color: DocareTheme.apple,
             fontSize: 13.52,
@@ -164,7 +165,7 @@ class DiscoveryPage extends StatelessWidget {
     return Row(
       children: [
         Text(
-          'Specialist Doctor',
+          Get.context != null ? AppLocalizations.of(Get.context!)!.specialistDoctor : 'Specialist Doctor',
           style: GoogleFonts.inter(
             color: Color(0xFF090F47),
             fontSize: 15.45,
@@ -300,7 +301,8 @@ class DiscoveryPage extends StatelessWidget {
             ),
           ),
           prefixIconConstraints: BoxConstraints(minWidth: 0, minHeight: 0),
-          hintText: 'Search for a doctor...',
+          hintText:
+              Get.context != null ? AppLocalizations.of(Get.context!)!.searchForADoctor : 'Search for a doctor...',
           hintStyle: GoogleFonts.openSans(
             color: Color(0xFF858D9D),
             fontSize: 16,
@@ -320,9 +322,13 @@ class DiscoveryPage extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return Text(
+            Get.context != null
+                ? AppLocalizations.of(Get.context!)!.topDoctorsErrorMessage(snapshot.error.toString())
+                : 'Error: ${snapshot.error}',
+          );
         } else if (!snapshot.hasData) {
-          return Text('No doctors found');
+          return Text(Get.context != null ? AppLocalizations.of(Get.context!)!.noDoctorsFound : 'No doctors found');
         } else {
           final doctors = snapshot.data!;
           return Container(
@@ -418,7 +424,10 @@ class DiscoveryPage extends StatelessWidget {
                           child: Column(
                             children: [
                               Text(
-                                doctor.name ?? 'No name provided',
+                                doctor.name ??
+                                    (Get.context != null
+                                        ? AppLocalizations.of(Get.context!)!.noNameProvided
+                                        : 'No name provided'),
                                 style: GoogleFonts.inter(
                                   color: Color(0xFF090F47),
                                   fontSize: 16,
@@ -427,7 +436,8 @@ class DiscoveryPage extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                doctor.medicalSpeciality ?? 'Unknown',
+                                doctor.medicalSpeciality ??
+                                    (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : 'Unknown'),
                                 style: GoogleFonts.rubik(
                                   color: Color(0xFF090F47),
                                   fontSize: 14,

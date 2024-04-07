@@ -212,5 +212,152 @@
   "informationSavedSuccessfully": "Your information has been saved successfully!",
   "error": "Error",
   "failedToSaveInformation": "Failed to save your information. Please try again.",
-  "validate": "Validate"
+  "validate": "Validate",
+  "specialistDoctor": "Specialist Doctor",
+  "searchForADoctor":"Search for a doctor...",
+  "topDoctors":"Top Doctors",
+  "seeAll":"See all",
+  "specialistDoctors":"Specialist Doctors",
+"noDoctorsFoundWithThisSpeciality":"No doctors found with this speciality",
+"specialistDoctorsErrorMessage":"Error: {error}",
+"@specialistDoctorsErrorMessage": {
+  "placeholders": {
+    "error": {"type": "String"}
+  }
+},
+"noNameProvided":"No name provided",
+"unknown":"Unknown",
+"noDoctorsFound":"No doctors found",
+"topDoctorsErrorMessage":"Error: {error}",
+"@topDoctorsErrorMessage": {
+  "placeholders": {
+    "error": {"type": "String"}
+  }
+},
+"searchedDoctorsErrorMessage":"Error: {error}",
+"@searchedDoctorsErrorMessage": {
+  "placeholders": {
+    "error": {"type": "String"}
+  }
+},
+"noDoctorsFoundWithThatName":"No doctors found with that name",
+"failedToLoadDoctorsPleaseTryAgainLater":"Failed to load doctors. Please try again later.",
+"failedToSearchDoctorsByNamePleaseTryAgainLater":"Failed to search doctors by name. Please try again later.",
+"failedToLoadSpecialistDoctorsPleaseTryAgainLater":"Failed to load specialist doctors. Please try again later.",
+"areYouSureConfirmAppointment": "Are you sure you want to Confirm this appointment for this patient",
+"cancel": "Cancel",
+"yesConfirm": "Yes, Confirm",
+"areYouSureRejectAppointment": "Are you sure you want to Reject this appointment for this patient",
+"yesReject": "Yes, Reject",
+"appointmentDetails": "Appointment Details",
+"failedToLoadDoctorInformation": "Sorry, we couldn't load the doctor's information.",
+"visitTime": "Visit Time",
+"patientsDetails": "Patient's details",
+"age": "Age: ",
+"gender": "Gender: ",
+"contactsInformation": "Contact's Information",
+"phoneNumberWithColon": "Phone Number: ",
+"email": "Email: ",
+"sessionTime": "Session time",
+"patientsProblem": "The problem of the patient",
+"optionSelected": "Option selected",
+"rate": "Rate",
+"appointmentRejected": "The appointment was Rejected",
+"appointmentAccepted": "The appointment was accepted",
+"appointmentPendingStatus": "The appointment is currently in pending status..",
+"appointmentCanceled": "The appointment was Canceled",
+"cannotCancelWithin24Hours": "You cannot cancel appointments within 24 hours of the scheduled time.",
+"appointmentCancelled": "Canceled",
+"cancelAppointment": "Cancel the appointment",
+"patientInformation": "Patient Information",
+"patientsSymptoms": "Patient's symptoms",
+"detail": "Detail",
+  "search": "Search...",
+  "myAppointments": "My appointments",
+  "canceledAppointments": "Canceled appointments",
+  "pendingAppointments": "Pending appointments",
+  "pending": "Pending",
+  "history": "History",
+  "upcoming": "Upcoming",
+  "appointmentPageEmpty": "Appointment Page is currently empty",
+  "noUpcomingAppointments": "There are no upcoming appointments",
+  "noHistoryYet": "No history yet",
+  "noPendingAppointments": "There are no pending appointments",
+  "noCanceledAppointments": "There are no canceled appointments",
+  "failedToFetchDoctorInformation": "Failed to fetch doctor information. Please try again later.",
+  "failedToFetchPatientInformation": "Failed to fetch patient information. Please try again later.",
+  "failedToFetchAppointments": "Failed to fetch appointments. Please try again later.",
+  "failedToFetchDoctorAppointments": "Failed to fetch doctor appointments. Please try again later.",
+  "failedToFetchCanceledAppointments": "Failed to fetch canceled appointments. Please try again later.",
+  "failedToFetchPendingAppointments": "Failed to fetch pending appointments. Please try again later.",
+  "appointmentCanceledSuccessfully":"Appointment canceled successfully.",
+  "failedToCancelAppointmentPleaseTryAgainLater":"Failed to cancel appointment. Please try again later.",
+  "appointmentConfirmedSuccessfully":"Appointment confirmed successfully.",
+  "failedToConfirmAppointmentPleaseTryAgainLater":"Failed to confirm appointment. Please try again later.",
+  "appointmentRejectedSuccessfully":"Appointment rejected successfully.",
+  "failedToRejectAppointmentPleaseTryAgainLater":"Failed to reject appointment. Please try again later.",
+  "userInformationIsNotAvailable":"User's information is not available.",
+  "thereAreNoUpcoming":"There are no upcoming",
+  "reject":"Reject",
+  "confirm":"Confirm",
+  "patientUserModelStreamError":"Error: {error}",
+  "@patientUserModelStreamError": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "theAppointementWas":"The appointement was ",
+  "rejected":"Rejected",
+  "theAppointementWasAccepted":"The appointement was accepted",
+  "theAppointementIsCurrentlyIn":"The appointement is currently in ",
+  "pendingStatus":"pending status..",
+  "doctorUserModelStreamError":"Error: {error}",
+  "@doctorUserModelStreamError": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+
+  "fullNameWithColon":"Full Name: {name}",
+  "@fullNameWithColon": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+
+  "ageWithColon":"Full Name: {age}",
+  "@ageWithColon": {
+    "placeholders": {
+      "age": {"type": "String"}
+    }
+  },
+
+  "phoneNumberWithColonAndValue":"Phone Number: ${phoneNumber}",
+  "@phoneNumberWithColonAndValue": {
+    "placeholders": {
+      "phoneNumber": {"type": "String"}
+    }
+  },
+"option":"Option",
+"canceledAppointements":"Canceled appointements",
+"pendingAppointements":"Pending appointements",
+
+"appointmentsStreamError":"Error: {error}",
+  "@appointmentsStreamError": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "canceledAppointmentsStreamError":"Error: {error}",
+  "@canceledAppointmentsStreamError": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "pendingAppointmentsStreamError":"Error: {error}",
+  "@pendingAppointmentsStreamError": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  }
 }

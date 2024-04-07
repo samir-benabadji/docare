@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../business_logic/models/appointment_model.dart';
 import '../../../business_logic/services/firebase_firestore_service.dart';
@@ -120,7 +121,8 @@ class AppointmentsPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    appointment.patientName ?? "Unknown",
+                    appointment.patientName ??
+                        (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : "Unknown"),
                     style: GoogleFonts.poppins(
                       color: Color(0xFF0D1B34),
                       fontSize: 16,
@@ -129,7 +131,9 @@ class AppointmentsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    appointment.patientPhoneNumber ?? appointment.patientEmail ?? "Unknown",
+                    appointment.patientPhoneNumber ??
+                        appointment.patientEmail ??
+                        (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : "Unknown"),
                     style: GoogleFonts.poppins(
                       color: Color(0xFF8696BB),
                       fontSize: 14,
@@ -205,7 +209,7 @@ class AppointmentsPage extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Detail',
+                Get.context != null ? AppLocalizations.of(Get.context!)!.detail : 'Detail',
                 style: GoogleFonts.poppins(
                   color: Color(0xFF2AD495),
                   fontSize: 14,
@@ -382,7 +386,7 @@ class AppointmentsPage extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Detail',
+                Get.context != null ? AppLocalizations.of(Get.context!)!.detail : 'Detail',
                 style: GoogleFonts.poppins(
                   color: Color(0xFF2AD495),
                   fontSize: 14,
@@ -474,7 +478,7 @@ class AppointmentsPage extends StatelessWidget {
             ),
           ),
           prefixIconConstraints: BoxConstraints(minWidth: 0, minHeight: 0),
-          hintText: 'Search...',
+          hintText: Get.context != null ? AppLocalizations.of(Get.context!)!.search : 'Search...',
           hintStyle: GoogleFonts.openSans(
             color: Color(0xFF858D9D),
             fontSize: 16,
@@ -495,7 +499,7 @@ class AppointmentsPage extends StatelessWidget {
         children: [
           SizedBox(),
           Text(
-            "My appointments",
+            Get.context != null ? AppLocalizations.of(Get.context!)!.myAppointments : "My appointments",
             textAlign: TextAlign.center,
             style: GoogleFonts.plusJakartaSans(
               color: Colors.black,
@@ -512,7 +516,9 @@ class AppointmentsPage extends StatelessWidget {
               PopupMenuItem<String>(
                 value: 'Canceled appointements',
                 child: Text(
-                  'Canceled appointements',
+                  Get.context != null
+                      ? AppLocalizations.of(Get.context!)!.canceledAppointements
+                      : 'Canceled appointements',
                   style: GoogleFonts.poppins(
                     color: Color(0xFF202528),
                     fontSize: 14,
@@ -523,7 +529,9 @@ class AppointmentsPage extends StatelessWidget {
               PopupMenuItem<String>(
                 value: 'Pending appointements',
                 child: Text(
-                  'Pending appointements',
+                  Get.context != null
+                      ? AppLocalizations.of(Get.context!)!.pendingAppointements
+                      : 'Pending appointements',
                   style: GoogleFonts.poppins(
                     color: Color(0xFF202528),
                     fontSize: 14,
@@ -584,7 +592,7 @@ class AppointmentsPage extends StatelessWidget {
                       )
                     : null,
                 child: Text(
-                  'Upcoming',
+                  Get.context != null ? AppLocalizations.of(Get.context!)!.upcoming : 'Upcoming',
                   style: GoogleFonts.poppins(
                     color: appointmentsController.appointmentCategory == "Upcoming" ? Colors.white : Color(0xFF3BC090),
                     fontSize: 17.32,
@@ -615,7 +623,9 @@ class AppointmentsPage extends StatelessWidget {
                       )
                     : null,
                 child: Text(
-                  historyOrPendingCategory,
+                  historyOrPendingCategory == 'Pending'
+                      ? (Get.context != null ? AppLocalizations.of(Get.context!)!.pending : 'Pending')
+                      : (Get.context != null ? AppLocalizations.of(Get.context!)!.history : 'history'),
                   style: GoogleFonts.poppins(
                     color: appointmentsController.appointmentCategory == historyOrPendingCategory
                         ? Colors.white
@@ -645,12 +655,18 @@ class AppointmentsPage extends StatelessWidget {
             ),
           );
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return Text(
+            Get.context != null
+                ? AppLocalizations.of(Get.context!)!.appointmentsStreamError(snapshot.error.toString())
+                : 'Error: ${snapshot.error}',
+          );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Column(
             children: [
               SizedBox(height: 48),
-              _noAppointmentsComponent("Appointment Page is currently empty"),
+              _noAppointmentsComponent(Get.context != null
+                  ? AppLocalizations.of(Get.context!)!.appointmentPageEmpty
+                  : "Appointment Page is currently empty"),
             ],
           );
         } else {
@@ -738,10 +754,14 @@ class AppointmentsPage extends StatelessWidget {
         SizedBox(height: 32),
         _noAppointmentsComponent(
           appointmentsController.appointmentCategory == "Upcoming"
-              ? 'There are no upcoming'
+              ? (Get.context != null
+                  ? AppLocalizations.of(Get.context!)!.thereAreNoUpcoming
+                  : 'There are no upcoming appointments')
               : appointmentsController.appointmentCategory == "History"
-                  ? "No history yet"
-                  : "There are no pending",
+                  ? (Get.context != null ? AppLocalizations.of(Get.context!)!.noHistoryYet : "No history yet")
+                  : (Get.context != null
+                      ? AppLocalizations.of(Get.context!)!.noPendingAppointments
+                      : "There are no pending appointments"),
         ),
       ],
     );

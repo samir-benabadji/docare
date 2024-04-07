@@ -32,16 +32,26 @@ class _OnboardingDoctorAccountDetailsPageState extends State<OnboardingDoctorAcc
                   _titleComponent(),
                   SizedBox(height: 16),
                   _imagePlusNameComponents(onboardingController),
-                  _detailComponent(AppLocalizations.of(context)!.speciality,
-                      onboardingController.selectedSpecialityType.value.title),
                   _detailComponent(
-                      AppLocalizations.of(context)!.options, onboardingController.getSelectedOptionsAsString()),
-                  _detailComponent(AppLocalizations.of(context)!.workingDays,
-                      formatWorkingDays(onboardingController.workingHours ?? {})),
-                  _detailComponent(AppLocalizations.of(context)!.phoneNumber,
-                      formatPhoneNumber(Get.find<AuthController>().currentPhoneNumber)),
+                    AppLocalizations.of(context)!.speciality,
+                    onboardingController.selectedSpecialityType.value.title,
+                  ),
                   _detailComponent(
-                      AppLocalizations.of(context)!.address, onboardingController.locationTextEditingController.text),
+                    AppLocalizations.of(context)!.options,
+                    onboardingController.getSelectedOptionsAsString(),
+                  ),
+                  _detailComponent(
+                    AppLocalizations.of(context)!.workingDays,
+                    formatWorkingDays(onboardingController.workingHours ?? {}),
+                  ),
+                  _detailComponent(
+                    AppLocalizations.of(context)!.phoneNumber,
+                    formatPhoneNumber(Get.find<AuthController>().currentPhoneNumber),
+                  ),
+                  _detailComponent(
+                    AppLocalizations.of(context)!.address,
+                    onboardingController.locationTextEditingController.text,
+                  ),
                   SizedBox(height: 32),
                   Container(
                     width: double.infinity,

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../business_logic/models/appointment_model.dart';
 import '../../../business_logic/models/user_model.dart';
@@ -40,7 +41,9 @@ class AppointmentsController extends GetxController {
       final UserModel? doctorUserModel = await _firebaseFirestoreService.getDoctorByUid(doctorUid);
       doctorUserModelStream.add(doctorUserModel);
     } catch (e) {
-      // TODO: Handle errors
+      showToast(Get.context != null
+          ? AppLocalizations.of(Get.context!)!.failedToFetchDoctorInformation
+          : 'Failed to fetch doctor information. Please try again later.');
       print('Error fetching doctor user model: $e');
     }
   }
@@ -50,7 +53,9 @@ class AppointmentsController extends GetxController {
       final UserModel? patientUserModel = await _firebaseFirestoreService.getPatientByUid(patientUid);
       patientUserModelStream.add(patientUserModel);
     } catch (e) {
-      // TODO: Handle errors
+      showToast(Get.context != null
+          ? AppLocalizations.of(Get.context!)!.failedToFetchPatientInformation
+          : 'Failed to fetch patient information. Please try again later.');
       print('Error fetching patient user model: $e');
     }
   }
@@ -58,9 +63,13 @@ class AppointmentsController extends GetxController {
   Future<void> cancelAppointment(String appointmentId) async {
     bool? success = await _firebaseFirestoreService.cancelAppointment(appointmentId);
     if (success != null && success) {
-      showToast('Appointment canceled successfully.');
+      showToast(Get.context != null
+          ? AppLocalizations.of(Get.context!)!.appointmentCanceledSuccessfully
+          : 'Appointment canceled successfully.');
     } else {
-      showToast('Failed to cancel appointment. Please try again later.');
+      showToast(Get.context != null
+          ? AppLocalizations.of(Get.context!)!.failedToCancelAppointmentPleaseTryAgainLater
+          : 'Failed to cancel appointment. Please try again later.');
     }
     if (_firebaseFirestoreService.getUserModel != null) {
       _firebaseFirestoreService.getUserModel!.userType == 2 ? getPatientAppointments() : getDoctorAppointments();
@@ -71,9 +80,13 @@ class AppointmentsController extends GetxController {
   Future<void> confirmAppointment(String appointmentId) async {
     bool? success = await _firebaseFirestoreService.confirmAppointment(appointmentId);
     if (success != null && success) {
-      showToast('Appointment confirmed successfully.');
+      showToast(Get.context != null
+          ? AppLocalizations.of(Get.context!)!.appointmentConfirmedSuccessfully
+          : 'Appointment confirmed successfully.');
     } else {
-      showToast('Failed to confirm appointment. Please try again later.');
+      showToast(Get.context != null
+          ? AppLocalizations.of(Get.context!)!.failedToConfirmAppointmentPleaseTryAgainLater
+          : 'Failed to confirm appointment. Please try again later.');
     }
     if (_firebaseFirestoreService.getUserModel != null) {
       if (_firebaseFirestoreService.getUserModel!.userType == 1) getDoctorPendingAppointments();
@@ -84,9 +97,13 @@ class AppointmentsController extends GetxController {
   Future<void> rejectAppointment(String appointmentId) async {
     bool? success = await _firebaseFirestoreService.rejectAppointment(appointmentId);
     if (success != null && success) {
-      showToast('Appointment rejected successfully.');
+      showToast(Get.context != null
+          ? AppLocalizations.of(Get.context!)!.appointmentRejectedSuccessfully
+          : 'Appointment rejected successfully.');
     } else {
-      showToast('Failed to reject appointment. Please try again later.');
+      showToast(Get.context != null
+          ? AppLocalizations.of(Get.context!)!.failedToRejectAppointmentPleaseTryAgainLater
+          : 'Failed to reject appointment. Please try again later.');
     }
     if (_firebaseFirestoreService.getUserModel != null) {
       if (_firebaseFirestoreService.getUserModel!.userType == 1) getDoctorPendingAppointments();
@@ -96,7 +113,9 @@ class AppointmentsController extends GetxController {
 
   Future<void> getPatientAppointments() async {
     if (_firebaseFirestoreService.getUserModel == null) {
-      showToast("User's information is not available.");
+      showToast(Get.context != null
+          ? AppLocalizations.of(Get.context!)!.userInformationIsNotAvailable
+          : "User's information is not available.");
       return;
     }
     if (_firebaseFirestoreService.getUserModel!.userType != 2) return;
@@ -107,7 +126,9 @@ class AppointmentsController extends GetxController {
       // Updating the appointments stream with the fetched appointments
       appointmentsStream.add(appointments);
     } catch (e) {
-      // TODO: Handle errors
+      showToast(Get.context != null
+          ? AppLocalizations.of(Get.context!)!.failedToFetchAppointments
+          : 'Failed to fetch appointments. Please try again later.');
       print('Error fetching appointments: $e');
     }
   }
@@ -120,7 +141,9 @@ class AppointmentsController extends GetxController {
       // Updating the appointments stream with the fetched appointments
       appointmentsStream.add(appointments);
     } catch (e) {
-      // TODO: Handle errors
+      showToast(Get.context != null
+          ? AppLocalizations.of(Get.context!)!.failedToFetchDoctorAppointments
+          : 'Failed to fetch doctor appointments. Please try again later.');
       print('Error fetching doctor appointments: $e');
     }
   }
@@ -136,7 +159,9 @@ class AppointmentsController extends GetxController {
       // Updating the appointments stream with the canceled appointments
       canceledAppointmentsStream.add(canceledAppointments);
     } catch (e) {
-      // TODO: Handle errors
+      showToast(Get.context != null
+          ? AppLocalizations.of(Get.context!)!.failedToFetchCanceledAppointments
+          : 'Failed to fetch canceled appointments. Please try again later.');
       print('Error fetching doctor appointments: $e');
     }
   }
@@ -152,7 +177,9 @@ class AppointmentsController extends GetxController {
       // Updating the appointments stream with the canceled appointments
       pendingAppointmentsStream.add(pendingAppointments);
     } catch (e) {
-      // TODO: Handle errors
+      showToast(Get.context != null
+          ? AppLocalizations.of(Get.context!)!.failedToFetchPendingAppointments
+          : 'Failed to fetch pending appointments. Please try again later.');
       print('Error fetching doctor appointments: $e');
     }
   }

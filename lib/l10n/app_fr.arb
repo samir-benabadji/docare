@@ -1,42 +1,42 @@
 {
-  "welcomePageIntroductionMessage": "Votre santé, notre priorité. Connectez-vous avec les meilleurs médecins pour des consultations personnalisées à tout moment, où que vous soyez, avec Votre Clinique Virtuelle.",
+  "welcomePageIntroductionMessage": "Votre santé, notre priorité. Connectez-vous avec les meilleurs médecins pour des consultations personnalisées à tout moment, n'importe où avec votre clinique virtuelle.",
   "continueButtonText": "Continuer",
   "loginPageTitle": "Connexion",
-  "agreeTermsMessage": "J'accepte les Conditions d'utilisation et la Politique de confidentialité",
+  "agreeTermsMessage": "J'accepte les conditions d'utilisation et la politique de confidentialité",
   "forgotPasswordText": "Mot de passe oublié",
   "loginButtonLabel": "Connexion",
   "emailHintText": "Votre adresse e-mail",
   "passwordHintText": "Mot de passe",
-  "confirmPasswordHintText": "Confirmer le mot de passe",
+  "confirmPasswordHintText": "Confirmez le mot de passe",
   "showPasswordText": "Afficher",
   "hidePasswordText": "Masquer",
-  "signUpPageTitle": "Inscription",
+  "signUpPageTitle": "S'inscrire",
   "patientOptionText": "Patient",
   "doctorOptionText": "Médecin",
   "signUpButtonText": "S'inscrire",
   "alreadyHaveAccountText": "Vous avez déjà un compte ",
   "loginText": "Connexion",
-  "phoneVerificationFailedText": "La vérification du numéro de téléphone a échoué. Code :",
+  "phoneVerificationFailedText": "Échec de la vérification du numéro de téléphone. Code :",
   "failedToVerifyPhoneNumberText": "Échec de la vérification du numéro de téléphone :",
   "failedToVerifyOTPText": "Échec de la vérification de l'OTP :",
   "verificationIdOrOTPNullText": "L'identifiant de vérification ou l'OTP est nul",
   "phoneVerifiedSuccessfullyText": "Numéro de téléphone vérifié avec succès !",
   "signInFailedMessage": "Échec de la connexion. Vérifiez votre e-mail et votre mot de passe.",
-  "signInErrorMessage": "Une erreur est survenue lors de la connexion.",
-  "userDataRetrievalFailedText": "Les données utilisateur n'ont pas pu être récupérées.",
+  "signInErrorMessage": "Une erreur s'est produite lors de la connexion.",
+  "userDataRetrievalFailedText": "Les données de l'utilisateur n'ont pas pu être récupérées.",
   "signUpSuccessText": "Inscription réussie",
   "signUpFailedText": "Échec de l'inscription",
   "signInSuccessText": "Connexion réussie",
   "pleaseEnterEmailErrorMessage": "Veuillez saisir une adresse e-mail.",
   "pleaseEnterValidEmailErrorMessage": "Veuillez saisir une adresse e-mail valide",
   "pleaseEnterPasswordErrorMessage": "Veuillez saisir un mot de passe.",
-  "unknownErrorOccurredText": "Une erreur inconnue est survenue.",
+  "unknownErrorOccurredText": "Une erreur inconnue s'est produite.",
   "invalidEmailText": "L'adresse e-mail est invalide.",
   "userDisabledText": "Cet utilisateur a été désactivé.",
   "incorrectEmailOrPasswordText": "E-mail ou mot de passe incorrect.",
   "weakPasswordText": "Le mot de passe est trop faible.",
   "emailAlreadyInUseText": "L'e-mail est déjà utilisé par un autre compte.",
-  "genericErrorOccurredText": "Une erreur s'est produite, veuillez réessayer plus tard.",
+  "genericErrorOccurredText": "Une erreur est survenue, veuillez réessayer plus tard.",
   "psychologist": "Psychologue",
   "cardiology": "Cardiologie",
   "opthalmologist": "Ophtalmologue",
@@ -55,7 +55,7 @@
   "heartSpecialist": "Spécialiste du cœur",
   "cardiologist": "Cardiologue",
   "hepatologist": "Hépatologue",
-  "pancreatigist": "Pancreatigiste",
+  "pancreatigist": "Pancreatigist",
   "shoulderPain": "Douleur à l'épaule",
   "kneePain": "Douleur au genou",
   "headache": "Mal de tête",
@@ -74,20 +74,20 @@
   "nameValidatorErrorMessage": "Veuillez saisir votre nom",
   "nameLengthValidatorErrorMessage": "Le nom doit comporter au moins 2 caractères",
   "nameHintText": "Entrez votre nom",
-  "helloMessage": "Bonjour ! Comment devrions-nous vous appeler ?",
+  "helloMessage": "Bonjour ! Comment devons-nous vous appeler ?",
   "selectMedicalSpecialtyText": "Sélectionnez votre spécialité médicale",
-  "configureOtherEquipmentAndSpecialtiesText": "Configurer d'autres équipements et spécialités",
+  "configureOtherEquipmentAndSpecialtiesText": "Configurez d'autres équipements et spécialités",
   "otherText": "Autre",
-  "mri": "IRM (Imagerie par Résonance Magnétique)",
-  "ctScan": "Scanner CT (Tomographie Computérisée)",
-  "xRay": "Radiographie (Rayon X)",
-  "ultrasound": "Échographie (Échographie Médicale)",
+  "mri": "IRM (Imagerie par résonance magnétique)",
+  "ctScan": "Scanner CT (Tomodensitométrie)",
+  "xRay": "Radiographie (Radiographie)",
+  "ultrasound": "Échographie (Échographie médicale)",
   "colposcope": "Colposcope (Colposcopie)",
   "stethoscope": "Stéthoscope",
-  "otoscopeAndOphthalmoscope": "Otoscope et Ophtalmoscope",
+  "otoscopeAndOphthalmoscope": "Otoscope et ophtalmoscope",
   "electrocardiograph": "Électrocardiographe (ECG)",
-  "bloodPressureMonitor": "Moniteur de Pression Artérielle",
-  "bloodAnalyzer": "Analyseur de Sang",
+  "bloodPressureMonitor": "Moniteur de pression sanguine",
+  "bloodAnalyzer": "Analyseur de sang",
   "optimizeEquipmentAndSpecialtiesText": "Optimisez vos équipements et spécialités",
   "pleaseEnterSpecificOptionErrorMessage": "Veuillez saisir une option spécifique.",
   "enterRatesText": "Saisissez les tarifs",
@@ -103,10 +103,10 @@
   "sat": "Sam",
   "saveText": "Enregistrer",
   "ordinalSuffix1": "er",
-  "ordinalSuffix2": "ème",
-  "ordinalSuffix3": "ème",
-  "ordinalSuffixDefault": "ème",
-  "timeOfSession": "Heure de la session {ordinalSuffix}",
+  "ordinalSuffix2": "e",
+  "ordinalSuffix3": "e",
+  "ordinalSuffixDefault": "e",
+  "timeOfSession": "Heure de la {ordinalSuffix} session",
   "@timeOfSession": {
     "placeholders": {
       "ordinalSuffix": {"type": "String"}
@@ -115,9 +115,9 @@
   "startSession": "Débute",
   "endSession": "Se termine",
   "cropImage": "Recadrer l'image",
-  "failedToLoadSuggestions": "Impossible de charger les suggestions",
+  "failedToLoadSuggestions": "Échec du chargement des suggestions",
   "locationServicesDisabled": "Les services de localisation sont désactivés.",
-  "locationPermissionsDenied": "Les autorisations de localisation sont refusées",
+  "locationPermissionsDenied": "Autorisations de localisation refusées",
   "locationPermissionsPermanentlyDenied": "Les autorisations de localisation sont définitivement refusées",
   "noAddressFound": "Aucune adresse trouvée.",
   "errorFetchingAddress": "Erreur lors de la récupération de l'adresse : {e}",
@@ -129,7 +129,7 @@
   "locationServiceDisabled": "Service de localisation désactivé",
   "pleaseEnableLocationServices": "Veuillez activer vos services de localisation.",
   "locationPermission": "Autorisation de localisation",
-  "locationPermissionsPermanentlyDeniedRequest": "Les autorisations de localisation sont définitivement refusées, nous ne pouvons pas demander les autorisations.",
+  "locationPermissionsPermanentlyDeniedRequest": "Les autorisations de localisation sont définitivement refusées, nous ne pouvons pas demander d'autorisations.",
   "locationText" : "Emplacement",
   "locationDetails": "Emplacement : {latitude}, {longitude}",
   "@locationDetails": {
@@ -150,10 +150,10 @@
   "incompleteSessions": "Sessions incomplètes",
   "pleaseFinishFillingSessions": "Veuillez terminer de remplir les sessions que vous avez ajoutées",
   "timeConflict": "Conflit horaire",
-  "pleaseFixTimeConflicts": "Veuillez résoudre les conflits horaires entre les sessions",
+  "pleaseFixTimeConflicts": "Veuillez corriger les conflits horaires entre les sessions",
   "success": "Succès",
   "allSessionsSavedSuccessfully": "Toutes les sessions sont enregistrées avec succès",
-  "verificationText": "Nous enverrons un SMS avec un code de vérification. Des frais de messagerie et de données peuvent s'appliquer.",
+  "verificationText": "Nous vous enverrons un SMS avec un code de vérification. Des frais de messagerie et de données peuvent s'appliquer.",
   "enterPhoneNumber": "Entrez votre numéro de téléphone",
   "sendCode": "Envoyer le code",
   "phoneNumber": "Numéro de téléphone",
@@ -172,7 +172,7 @@
   "locationQuestion": "Quel est votre emplacement ?",
   "locationRecommendation": "Nous avons besoin de votre emplacement pour recommander des services à proximité",
   "enterLocationManually": "Saisir l'emplacement manuellement",
-  "allowLocationAccess": "Autoriser l'accès à la localisation",
+  "allowLocationAccess": "Autoriser l'accès à l'emplacement",
   "locationError": "Erreur de localisation",
   "failedToGetCurrentLocation": "Impossible d'obtenir l'emplacement actuel : {e}",
   "@failedToGetCurrentLocation": {
@@ -181,7 +181,7 @@
     }
   },
   "useCurrentLocation": "Utiliser mon emplacement actuel",
-  "errorGettingAddress": "Erreur lors de la récupération de l'adresse : {e}",
+  "errorGettingAddress": "Erreur lors de l'obtention de l'adresse : {e}",
   "@errorGettingAddress": {
     "placeholders": {
       "e": {"type": "String"}
@@ -190,27 +190,170 @@
   "chooseOnTheMap": "Choisir sur la carte",
   "setLocation": "Définir votre emplacement...",
   "pickYourLocation":"Choisissez votre emplacement",
-  "timeForAPicture": "Le temps d'une photo !",
-  "boostVisibilityMessage": "Augmentez votre visibilité ! Les utilisateurs avec des photos de profil sont plus susceptibles d'",
+  "timeForAPicture": "Le moment d'une photo !",
+  "boostVisibilityMessage": "Augmentez votre visibilité ! Les utilisateurs avec des photos de profil ont plus de chances de ",
   "attract": "attirer",
   "clientsUploadYourImageNowTo": " les clients. Téléchargez votre image maintenant pour",
  "increaseYourChances" :" augmenter vos chances",
-  "ofConnectingWithMorePatients":" de vous connecter avec plus de patients",
+  "ofConnectingWithMorePatients":" de se connecter avec plus de patients",
   "uploadProfilePicture": "Télécharger une photo de profil",
   "getAPhotoForYourProfile": "Obtenez une photo pour votre profil",
   "previewProfileImage": "Aperçu de l'image de profil",
   "uploadPhoto": "Télécharger une photo",
-  "cameraPermissionPermanentlyDenied": "La permission de l'appareil photo est définitivement refusée. Veuillez l'activer dans les paramètres de votre appareil.",
+  "cameraPermissionPermanentlyDenied": "L'autorisation de la caméra est définitivement refusée. Veuillez l'activer dans les paramètres de votre appareil.",
   "takePhoto": "Prendre une photo",
   "myAccountDetails": "Détails de mon compte",
   "speciality": "Spécialité",
   "options": "Options",
-  "cameraPermissionDeniedPleaseEnableItInYourDeviceSettings":"La permission de l'appareil photo est refusée. Veuillez l'activer dans les paramètres de votre appareil.",
+  "cameraPermissionDeniedPleaseEnableItInYourDeviceSettings":"Autorisation de la caméra refusée. Veuillez l'activer dans les paramètres de votre appareil.",
   "workingDays": "Jours de travail",
   "address": "Adresse",
   "helloDoctor": "Bonjour, Dr. ",
   "informationSavedSuccessfully": "Vos informations ont été enregistrées avec succès !",
   "error": "Erreur",
   "failedToSaveInformation": "Échec de l'enregistrement de vos informations. Veuillez réessayer.",
-  "validate": "Valider"
+  "validate": "Valider",
+  "specialistDoctor": "Médecin spécialiste",
+  "searchForADoctor":"Rechercher un médecin...",
+  "topDoctors":"Meilleurs médecins",
+  "seeAll":"Voir tout",
+  "specialistDoctors":"Médecins spécialistes",
+"noDoctorsFoundWithThisSpeciality":"Aucun médecin trouvé avec cette spécialité",
+"specialistDoctorsErrorMessage":"Erreur : {error}",
+"@specialistDoctorsErrorMessage": {
+  "placeholders": {
+    "error": {"type": "String"}
+  }
+},
+"noNameProvided":"Aucun nom fourni",
+"unknown":"Inconnu",
+"noDoctorsFound":"Aucun médecin trouvé",
+"topDoctorsErrorMessage":"Erreur : {error}",
+"@topDoctorsErrorMessage": {
+  "placeholders": {
+    "error": {"type": "String"}
+  }
+},
+"searchedDoctorsErrorMessage":"Erreur : {error}",
+"@searchedDoctorsErrorMessage": {
+  "placeholders": {
+    "error": {"type": "String"}
+  }
+},
+"noDoctorsFoundWithThatName":"Aucun médecin trouvé avec ce nom",
+"failedToLoadDoctorsPleaseTryAgainLater":"Échec du chargement des médecins. Veuillez réessayer plus tard.",
+"failedToSearchDoctorsByNamePleaseTryAgainLater":"Échec de la recherche des médecins par nom. Veuillez réessayer plus tard.",
+"failedToLoadSpecialistDoctorsPleaseTryAgainLater":"Échec du chargement des médecins spécialistes. Veuillez réessayer plus tard.",
+"areYouSureConfirmAppointment": "Êtes-vous sûr de vouloir confirmer ce rendez-vous pour ce patient",
+  "cancel": "Annuler",
+  "yesConfirm": "Oui, confirmer",
+  "areYouSureRejectAppointment": "Êtes-vous sûr de vouloir rejeter ce rendez-vous pour ce patient",
+  "yesReject": "Oui, rejeter",
+  "appointmentDetails": "Détails du rendez-vous",
+  "failedToLoadDoctorInformation": "Désolé, nous n'avons pas pu charger les informations du médecin.",
+  "visitTime": "Heure de la visite",
+  "patientsDetails": "Détails du patient",
+  "age": "Âge : ",
+  "gender": "Genre : ",
+  "contactsInformation": "Informations de contact",
+  "phoneNumberWithColon": "Numéro de téléphone : ",
+  "email": "Email : ",
+  "sessionTime": "Durée de la session",
+  "patientsProblem": "Problème du patient",
+  "optionSelected": "Option sélectionnée",
+  "rate": "Taux",
+  "appointmentRejected": "Le rendez-vous a été rejeté",
+  "appointmentAccepted": "Le rendez-vous a été accepté",
+  "appointmentPendingStatus": "Le rendez-vous est actuellement en attente.",
+  "appointmentCanceled": "Le rendez-vous a été annulé",
+  "cannotCancelWithin24Hours": "Vous ne pouvez pas annuler les rendez-vous dans les 24 heures précédant l'heure prévue.",
+  "appointmentCancelled": "Annulé",
+  "cancelAppointment": "Annuler le rendez-vous",
+  "patientInformation": "Informations sur le patient",
+  "patientsSymptoms": "Symptômes du patient",
+  "detail": "Détail",
+  "search": "Recherche...",
+  "myAppointments": "Mes rendez-vous",
+  "canceledAppointments": "Rendez-vous annulés",
+  "pendingAppointments": "Rendez-vous en attente",
+  "pending": "En attente",
+  "history": "Historique",
+  "upcoming": "À venir",
+  "appointmentPageEmpty": "La page des rendez-vous est actuellement vide",
+  "noUpcomingAppointments": "Il n'y a aucun rendez-vous à venir",
+  "noHistoryYet": "Aucun historique pour le moment",
+  "noPendingAppointments": "Il n'y a aucun rendez-vous en attente",
+  "noCanceledAppointments": "Il n'y a aucun rendez-vous annulé",
+  "failedToFetchDoctorInformation": "Impossible de récupérer les informations du médecin. Veuillez réessayer plus tard.",
+  "failedToFetchPatientInformation": "Impossible de récupérer les informations du patient. Veuillez réessayer plus tard.",
+  "failedToFetchAppointments": "Impossible de récupérer les rendez-vous. Veuillez réessayer plus tard.",
+  "failedToFetchDoctorAppointments": "Impossible de récupérer les rendez-vous du médecin. Veuillez réessayer plus tard.",
+  "failedToFetchCanceledAppointments": "Impossible de récupérer les rendez-vous annulés. Veuillez réessayer plus tard.",
+  "failedToFetchPendingAppointments": "Impossible de récupérer les rendez-vous en attente. Veuillez réessayer plus tard.",
+  "appointmentCanceledSuccessfully": "Rendez-vous annulé avec succès.",
+  "failedToCancelAppointmentPleaseTryAgainLater": "Impossible d'annuler le rendez-vous. Veuillez réessayer plus tard.",
+  "appointmentConfirmedSuccessfully": "Rendez-vous confirmé avec succès.",
+  "failedToConfirmAppointmentPleaseTryAgainLater": "Impossible de confirmer le rendez-vous. Veuillez réessayer plus tard.",
+  "appointmentRejectedSuccessfully": "Rendez-vous rejeté avec succès.",
+  "failedToRejectAppointmentPleaseTryAgainLater": "Impossible de rejeter le rendez-vous. Veuillez réessayer plus tard.",
+  "userInformationIsNotAvailable": "Les informations de l'utilisateur ne sont pas disponibles.",
+  "thereAreNoUpcoming": "Il n'y a pas de",
+  "reject": "Rejeter",
+  "confirm": "Confirmer",
+  "patientUserModelStreamError": "Erreur : {error}",
+  "@patientUserModelStreamError": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "theAppointementWas": "Le rendez-vous était ",
+  "rejected": "rejeté",
+  "theAppointementWasAccepted": "Le rendez-vous a été accepté",
+  "theAppointementIsCurrentlyIn": "Le rendez-vous est actuellement en ",
+  "pendingStatus": "statut en attente..",
+  "doctorUserModelStreamError": "Erreur : {error}",
+  "@doctorUserModelStreamError": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "fullNameWithColon": "Nom complet : {name}",
+  "@fullNameWithColon": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "ageWithColon": "Âge : {age}",
+  "@ageWithColon": {
+    "placeholders": {
+      "age": {"type": "String"}
+    }
+  },
+  "phoneNumberWithColonAndValue": "Numéro de téléphone : ${phoneNumber}",
+  "@phoneNumberWithColonAndValue": {
+    "placeholders": {
+      "phoneNumber": {"type": "String"}
+    }
+  },
+  "option": "Option",
+  "canceledAppointements": "Rendez-vous annulés",
+  "pendingAppointements": "Rendez-vous en attente",
+  "appointmentsStreamError": "Erreur : {error}",
+  "@appointmentsStreamError": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "canceledAppointmentsStreamError": "Erreur : {error}",
+  "@canceledAppointmentsStreamError": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "pendingAppointmentsStreamError": "Erreur : {error}",
+  "@pendingAppointmentsStreamError": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  }
 }

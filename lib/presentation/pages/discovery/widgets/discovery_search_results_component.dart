@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../business_logic/models/user_model.dart';
 import '../../../../core/constants/constants.dart';
@@ -24,9 +25,15 @@ class DiscoverySearchResultsComponent extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
+              return Text(
+                Get.context != null
+                    ? AppLocalizations.of(Get.context!)!.searchedDoctorsErrorMessage(snapshot.error.toString())
+                    : 'Error: ${snapshot.error}',
+              );
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Text('No doctors found with that name');
+              return Text(Get.context != null
+                  ? AppLocalizations.of(Get.context!)!.noDoctorsFoundWithThatName
+                  : 'No doctors found with that name');
             } else {
               final doctors = discoveryController.currentSelectedSpeciality.isNotEmpty
                   ? snapshot.data!
@@ -41,7 +48,12 @@ class DiscoverySearchResultsComponent extends StatelessWidget {
                     color: Colors.black.withOpacity(0.15),
                     thickness: 1.5,
                   ),
-                  if (doctors.isEmpty) Text("No doctors found with this speciality"),
+                  if (doctors.isEmpty)
+                    Text(
+                      Get.context != null
+                          ? AppLocalizations.of(Get.context!)!.noDoctorsFoundWithThisSpeciality
+                          : "No doctors found with this speciality",
+                    ),
                   if (doctors.isNotEmpty)
                     Container(
                       height: 180,
@@ -136,7 +148,10 @@ class DiscoverySearchResultsComponent extends StatelessWidget {
                                     child: Column(
                                       children: [
                                         Text(
-                                          doctor.name ?? 'No name provided',
+                                          doctor.name ??
+                                              (Get.context != null
+                                                  ? AppLocalizations.of(Get.context!)!.noNameProvided
+                                                  : 'No name provided'),
                                           style: GoogleFonts.inter(
                                             color: Color(0xFF090F47),
                                             fontSize: 16,
@@ -145,7 +160,10 @@ class DiscoverySearchResultsComponent extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          doctor.medicalSpeciality ?? 'Unknown',
+                                          doctor.medicalSpeciality ??
+                                              (Get.context != null
+                                                  ? AppLocalizations.of(Get.context!)!.unknown
+                                                  : 'Unknown'),
                                           style: GoogleFonts.rubik(
                                             color: Color(0xFF090F47),
                                             fontSize: 14,

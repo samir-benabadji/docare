@@ -201,7 +201,8 @@ class OnboardingController extends GetxController {
 
     if (permission == LocationPermission.deniedForever) {
       throw Exception(
-          _localizations?.locationPermissionsPermanentlyDenied ?? 'Location permissions are permanently denied');
+        _localizations?.locationPermissionsPermanentlyDenied ?? 'Location permissions are permanently denied',
+      );
     }
 
     // When permissions are granted, we get the current position
@@ -375,8 +376,9 @@ class OnboardingController extends GetxController {
       await _firebaseFirestoreService.addOrUpdateUser(uid, userUpdatedData, isUpdatingUser: true);
       return true;
     } catch (e) {
-      print(_localizations?.errorUpdatingUserInfoInFirestore(e.toString()) ??
-          'Error updating user info in Firestore: $e');
+      print(
+        _localizations?.errorUpdatingUserInfoInFirestore(e.toString()) ?? 'Error updating user info in Firestore: $e',
+      );
       return false;
     }
   }
