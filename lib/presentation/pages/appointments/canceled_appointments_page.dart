@@ -367,16 +367,20 @@ class CanceledAppointmentsPage extends StatelessWidget {
             ),
           );
         } else if (snapshot.hasError) {
-          return Text(Get.context != null
-              ? AppLocalizations.of(Get.context!)!.canceledAppointmentsStreamError(snapshot.error.toString())
-              : 'Error: ${snapshot.error}');
+          return Text(
+            Get.context != null
+                ? AppLocalizations.of(Get.context!)!.canceledAppointmentsStreamError(snapshot.error.toString())
+                : 'Error: ${snapshot.error}',
+          );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Column(
             children: [
               SizedBox(height: 48),
-              _noAppointmentsComponent(Get.context != null
-                  ? AppLocalizations.of(Get.context!)!.noCanceledAppointments
-                  : "There are no canceled appointments"),
+              _noAppointmentsComponent(
+                Get.context != null
+                    ? AppLocalizations.of(Get.context!)!.noCanceledAppointments
+                    : "There are no canceled appointments",
+              ),
             ],
           );
         } else {
@@ -384,9 +388,11 @@ class CanceledAppointmentsPage extends StatelessWidget {
           final filteredAppointments = snapshot.data!;
 
           if (filteredAppointments.isEmpty)
-            return _noAppointmentsComponent(Get.context != null
-                ? AppLocalizations.of(Get.context!)!.noCanceledAppointments
-                : "There are no canceled appointments");
+            return _noAppointmentsComponent(
+              Get.context != null
+                  ? AppLocalizations.of(Get.context!)!.noCanceledAppointments
+                  : "There are no canceled appointments",
+            );
 
           if (_firebaseFirestoreService.getUserModel != null) {
             return _displayComponentForDoctor(appointmentsController, filteredAppointments);

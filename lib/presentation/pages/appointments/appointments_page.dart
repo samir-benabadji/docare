@@ -664,9 +664,11 @@ class AppointmentsPage extends StatelessWidget {
           return Column(
             children: [
               SizedBox(height: 48),
-              _noAppointmentsComponent(Get.context != null
-                  ? AppLocalizations.of(Get.context!)!.appointmentPageEmpty
-                  : "Appointment Page is currently empty"),
+              _noAppointmentsComponent(
+                Get.context != null
+                    ? AppLocalizations.of(Get.context!)!.appointmentPageEmpty
+                    : "Appointment Page is currently empty",
+              ),
             ],
           );
         } else {

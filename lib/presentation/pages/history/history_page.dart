@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../business_logic/models/appointment_model.dart';
 import '../../../core/assets.gen.dart';
@@ -241,7 +242,7 @@ class HistoryPage extends StatelessWidget {
             ),
           ),
           prefixIconConstraints: BoxConstraints(minWidth: 0, minHeight: 0),
-          hintText: 'Search...',
+          hintText: Get.context != null ? AppLocalizations.of(Get.context!)!.search : 'Search...',
           hintStyle: GoogleFonts.openSans(
             color: Color(0xFF858D9D),
             fontSize: 16,
@@ -262,7 +263,7 @@ class HistoryPage extends StatelessWidget {
         children: [
           SizedBox(),
           Text(
-            "History",
+            Get.context != null ? AppLocalizations.of(Get.context!)!.history : "History",
             textAlign: TextAlign.center,
             style: GoogleFonts.plusJakartaSans(
               color: Colors.black,
@@ -290,9 +291,15 @@ class HistoryPage extends StatelessWidget {
             ),
           );
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return Text(
+            Get.context != null
+                ? AppLocalizations.of(Get.context!)!.historyAppointmentsStreamError(snapshot.error.toString())
+                : 'Error: ${snapshot.error}',
+          );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return _noHistoryAppointmentsComponent("There are no History yet");
+          return _noHistoryAppointmentsComponent(Get.context != null
+              ? AppLocalizations.of(Get.context!)!.thereIsNoHistoryYet
+              : "There is no history yet.");
         } else {
           final appointments = snapshot.data!;
           final currentTimestamp = DateTime.now().millisecondsSinceEpoch;
@@ -304,7 +311,7 @@ class HistoryPage extends StatelessWidget {
 
           if (filteredAppointments.isEmpty)
             return _noHistoryAppointmentsComponent(
-              "There are no History yet",
+              Get.context != null ? AppLocalizations.of(Get.context!)!.thereIsNoHistoryYet : "There is no history yet.",
             );
 
           return Expanded(

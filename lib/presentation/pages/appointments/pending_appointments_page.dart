@@ -367,16 +367,20 @@ class PendingAppointmentsPage extends StatelessWidget {
             ),
           );
         } else if (snapshot.hasError) {
-          return Text(Get.context != null
-              ? AppLocalizations.of(Get.context!)!.pendingAppointmentsStreamError(snapshot.error.toString())
-              : 'Error: ${snapshot.error}');
+          return Text(
+            Get.context != null
+                ? AppLocalizations.of(Get.context!)!.pendingAppointmentsStreamError(snapshot.error.toString())
+                : 'Error: ${snapshot.error}',
+          );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Column(
             children: [
               SizedBox(height: 48),
-              _noPendingAppointmentsComponent(Get.context != null
-                  ? AppLocalizations.of(Get.context!)!.noPendingAppointments
-                  : "There are no pending appointments"),
+              _noPendingAppointmentsComponent(
+                Get.context != null
+                    ? AppLocalizations.of(Get.context!)!.noPendingAppointments
+                    : "There are no pending appointments",
+              ),
             ],
           );
         } else {
@@ -384,9 +388,11 @@ class PendingAppointmentsPage extends StatelessWidget {
           final filteredAppointments = snapshot.data!;
 
           if (filteredAppointments.isEmpty)
-            return _noPendingAppointmentsComponent(Get.context != null
-                ? AppLocalizations.of(Get.context!)!.noPendingAppointments
-                : "There are no pending appointments");
+            return _noPendingAppointmentsComponent(
+              Get.context != null
+                  ? AppLocalizations.of(Get.context!)!.noPendingAppointments
+                  : "There are no pending appointments",
+            );
 
           if (_firebaseFirestoreService.getUserModel != null) {
             return _displayComponentForDoctor(appointmentsController, filteredAppointments);

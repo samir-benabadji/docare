@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../business_logic/models/appointment_model.dart';
 import '../../../core/assets.gen.dart';
@@ -81,7 +82,7 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
             ),
           ),
           Text(
-            "My appointment",
+            Get.context != null ? AppLocalizations.of(Get.context!)!.myAppointment : "My appointment",
             textAlign: TextAlign.center,
             style: GoogleFonts.plusJakartaSans(
               color: Colors.black,
@@ -109,11 +110,19 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
             ),
           );
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}'); // TODO: Show a proper message to the user
+          return Text(
+            Get.context != null
+                ? AppLocalizations.of(Get.context!)!.historyDoctorUserModelStreamError(snapshot.error.toString())
+                : 'Error: ${snapshot.error}',
+          ); // TODO: Show a proper message to the user
         } else if (snapshot.data == null) {
           return Expanded(
             child: Center(
-              child: Text('Sorry, we couldn\'t load the doctor\'s information.'),
+              child: Text(
+                Get.context != null
+                    ? AppLocalizations.of(Get.context!)!.sorryWeCouldntLoadDoctorsInformation
+                    : 'Sorry, we couldn\'t load the doctor\'s information.',
+              ),
             ),
           );
         } else {
@@ -162,7 +171,7 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Visit Time',
+            Get.context != null ? AppLocalizations.of(Get.context!)!.visitTime : 'Visit Time',
             style: GoogleFonts.openSans(
               color: Color(0xFF090F47),
               fontSize: 15.57,
@@ -201,13 +210,14 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
       Timestamp? birthTimestamp = patientUserModel.birthDate;
       if (birthTimestamp != null) birthDateTime = birthTimestamp.toDate();
     }
+    if (patientUserModel == null) return SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 31),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Patient Information',
+            Get.context != null ? AppLocalizations.of(Get.context!)!.patientInformation : 'Patient Information',
             style: GoogleFonts.openSans(
               color: Color(0xFF090F47),
               fontSize: 15.57,
@@ -216,7 +226,11 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            'Full Name: ${patientUserModel?.name ?? "Unknown"}',
+            patientUserModel.name != null
+                ? (Get.context != null
+                    ? AppLocalizations.of(Get.context!)!.fullNameWithColon(patientUserModel.name!)
+                    : 'Full Name: ${patientUserModel.name}')
+                : (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : 'Unknown'),
             textAlign: TextAlign.center,
             style: GoogleFonts.openSans(
               color: Color(0xFF090F47),
@@ -226,7 +240,11 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
           ),
           SizedBox(height: 4),
           Text(
-            'Age: ${birthDateTime != null ? calculateAge(birthDateTime) : "Unknown"}',
+            birthDateTime != null
+                ? (Get.context != null
+                    ? AppLocalizations.of(Get.context!)!.ageWithColon(calculateAge(birthDateTime).toString())
+                    : 'Age: ${calculateAge(birthDateTime)}')
+                : (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : 'Unknown'),
             textAlign: TextAlign.center,
             style: GoogleFonts.openSans(
               color: Color(0xFF090F47),
@@ -236,7 +254,11 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
           ),
           SizedBox(height: 4),
           Text(
-            'Phone Number: ${patientUserModel?.phoneNumber ?? "Unknown"}',
+            patientUserModel.phoneNumber != null
+                ? (Get.context != null
+                    ? AppLocalizations.of(Get.context!)!.phoneNumberWithColonAndValue(patientUserModel.phoneNumber!)
+                    : 'Phone Number: ${patientUserModel.phoneNumber}')
+                : (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : 'Unknown'),
             textAlign: TextAlign.center,
             style: GoogleFonts.openSans(
               color: Color(0xFF090F47),
@@ -265,7 +287,7 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Session time',
+            Get.context != null ? AppLocalizations.of(Get.context!)!.sessionTime : 'Session time',
             style: GoogleFonts.openSans(
               color: Color(0xFF090F47),
               fontSize: 15.57,
@@ -294,7 +316,7 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Option',
+            Get.context != null ? AppLocalizations.of(Get.context!)!.option : 'Option',
             style: GoogleFonts.openSans(
               color: Color(0xFF090F47),
               fontSize: 15.57,
@@ -325,7 +347,7 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Rate',
+            Get.context != null ? AppLocalizations.of(Get.context!)!.rate : 'Rate',
             style: GoogleFonts.openSans(
               color: Color(0xFF090F47),
               fontSize: 15.57,
@@ -354,7 +376,7 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Patient's symptoms",
+            Get.context != null ? AppLocalizations.of(Get.context!)!.patientsSymptoms : "Patient's symptoms",
             style: GoogleFonts.openSans(
               color: Color(0xFF090F47),
               fontSize: 15.57,
@@ -484,7 +506,7 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                doctorUserModel.name ?? "Unknown",
+                doctorUserModel.name ?? (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : 'Unknown'),
                 style: GoogleFonts.poppins(
                   color: Color(0xFF0D1B34),
                   fontSize: 16,
@@ -493,7 +515,8 @@ class HistoryAppointmentDetailsPage extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                doctorUserModel.medicalSpeciality ?? "Unknown",
+                doctorUserModel.medicalSpeciality ??
+                    (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : 'Unknown'),
                 style: GoogleFonts.poppins(
                   color: Color(0xFF8696BB),
                   fontSize: 14,

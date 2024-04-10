@@ -274,6 +274,7 @@
 "detail": "Detail",
   "search": "Search...",
   "myAppointments": "My appointments",
+  "myAppointment": "My appointment",
   "canceledAppointments": "Canceled appointments",
   "pendingAppointments": "Pending appointments",
   "pending": "Pending",
@@ -356,6 +357,20 @@
   },
   "pendingAppointmentsStreamError":"Error: {error}",
   "@pendingAppointmentsStreamError": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+"thereIsNoHistoryYet": "There is no history yet.",
+"sorryWeCouldntLoadDoctorsInformation": "Sorry, we couldn't load the doctor's information.",
+"historyAppointmentsStreamError":"Error: {error}",
+  "@historyAppointmentsStreamError": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "historyDoctorUserModelStreamError":"Error: {error}",
+  "@historyDoctorUserModelStreamError": {
     "placeholders": {
       "error": {"type": "String"}
     }

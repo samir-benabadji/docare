@@ -355,5 +355,20 @@
   "placeholders": {
     "error": {"type": "String"}
   }
+},
+"myAppointment": "Mijn afspraak",
+"thereIsNoHistoryYet": "Er is nog geen geschiedenis.",
+"sorryWeCouldntLoadDoctorsInformation": "Sorry, we konden de informatie van de dokter niet laden.",
+"historyAppointmentsStreamError": "Fout: {error}",
+"@historyAppointmentsStreamError": {
+  "placeholders": {
+    "error": {"type": "String"}
+  }
+},
+"historyDoctorUserModelStreamError": "Fout: {error}",
+"@historyDoctorUserModelStreamError": {
+  "placeholders": {
+    "error": {"type": "String"}
+  }
 }
 }

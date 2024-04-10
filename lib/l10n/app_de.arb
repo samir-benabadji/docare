@@ -355,5 +355,20 @@
   "placeholders": {
     "error": {"type": "String"}
   }
+},
+"myAppointment": "Mein Termin",
+"thereIsNoHistoryYet": "Es gibt noch keine Geschichte.",
+"sorryWeCouldntLoadDoctorsInformation": "Entschuldigung, wir konnten die Informationen des Arztes nicht laden.",
+"historyAppointmentsStreamError": "Fehler: {error}",
+"@historyAppointmentsStreamError": {
+  "placeholders": {
+    "error": {"type": "String"}
+  }
+},
+"historyDoctorUserModelStreamError": "Fehler: {error}",
+"@historyDoctorUserModelStreamError": {
+  "placeholders": {
+    "error": {"type": "String"}
+  }
 }
 }

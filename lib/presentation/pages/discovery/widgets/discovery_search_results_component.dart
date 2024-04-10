@@ -31,9 +31,11 @@ class DiscoverySearchResultsComponent extends StatelessWidget {
                     : 'Error: ${snapshot.error}',
               );
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Text(Get.context != null
-                  ? AppLocalizations.of(Get.context!)!.noDoctorsFoundWithThatName
-                  : 'No doctors found with that name');
+              return Text(
+                Get.context != null
+                    ? AppLocalizations.of(Get.context!)!.noDoctorsFoundWithThatName
+                    : 'No doctors found with that name',
+              );
             } else {
               final doctors = discoveryController.currentSelectedSpeciality.isNotEmpty
                   ? snapshot.data!
