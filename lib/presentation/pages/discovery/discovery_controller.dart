@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -18,18 +21,30 @@ class DiscoveryController extends GetxController {
 
   bool get showXButton => textEditingSearchController.text.isNotEmpty;
 
+  late StreamSubscription<List<UserModel>>? _topDoctorsSubscription;
+
   @override
-  void onInit() {
-    super.onInit();
+  void onReady() {
     loadDoctors();
+    super.onReady();
+  }
+
+  void cancelTopDoctorsSubscription() {
+    _topDoctorsSubscription?.cancel();
   }
 
   void loadDoctors() {
-    _firebaseFirestoreService.getDoctorsStream().listen(
+    _topDoctorsSubscription = _firebaseFirestoreService.getDoctorsStream().listen(
       (data) {
         topDoctorsStream.add(data);
       },
       onError: (error) {
+        if (error is FirebaseException) {
+          if (error.code == "permission-denied") {
+            print('Permission Denied Error: ${error.message}');
+            return;
+          }
+        }
         print("Error loading doctors: $error");
         showToast(
           Get.context != null
@@ -82,6 +97,7 @@ class DiscoveryController extends GetxController {
 
   @override
   void onClose() {
+    cancelTopDoctorsSubscription();
     topDoctorsStream.close();
     specialistDoctorsStream.close();
     searchedDoctorsStream.close();

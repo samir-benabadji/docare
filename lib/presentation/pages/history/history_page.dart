@@ -297,9 +297,9 @@ class HistoryPage extends StatelessWidget {
                 : 'Error: ${snapshot.error}',
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return _noHistoryAppointmentsComponent(Get.context != null
-              ? AppLocalizations.of(Get.context!)!.thereIsNoHistoryYet
-              : "There is no history yet.");
+          return _noHistoryAppointmentsComponent(
+            Get.context != null ? AppLocalizations.of(Get.context!)!.thereIsNoHistoryYet : "There is no history yet.",
+          );
         } else {
           final appointments = snapshot.data!;
           final currentTimestamp = DateTime.now().millisecondsSinceEpoch;

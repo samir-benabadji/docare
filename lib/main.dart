@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       supportedLocales: L10n.all,
-      locale: const Locale('de'),
+      locale: const Locale('en'),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

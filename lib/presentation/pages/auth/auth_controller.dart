@@ -248,4 +248,13 @@ class AuthController extends GetxController {
       return false;
     }
   }
+
+  void clearControllers() {
+    loginEmailController.text = "";
+    loginPasswordController.text = "";
+    signUpEmailController.text = "";
+    signUpPasswordController.text = "";
+    signUpConfirmPasswordController.text = "";
+    loginFormKey.currentState?.reset();
+  }
 }

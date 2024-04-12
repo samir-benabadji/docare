@@ -32,17 +32,21 @@ class HistoryController extends GetxController {
     } catch (e) {
       // TODO: Handle errors
       print('Error fetching doctor user model: $e');
-      showToast(Get.context != null
-          ? AppLocalizations.of(Get.context!)!.failedToFetchDoctorInformation
-          : "Failed to fetch doctor information. Please try again later or contact support.");
+      showToast(
+        Get.context != null
+            ? AppLocalizations.of(Get.context!)!.failedToFetchDoctorInformation
+            : "Failed to fetch doctor information. Please try again later or contact support.",
+      );
     }
   }
 
   Future<void> getPatientAppointments() async {
     if (_firebaseFirestoreService.getUserModel == null) {
-      showToast(Get.context != null
-          ? AppLocalizations.of(Get.context!)!.userInformationIsNotAvailable
-          : "User's information is not available.");
+      showToast(
+        Get.context != null
+            ? AppLocalizations.of(Get.context!)!.userInformationIsNotAvailable
+            : "User's information is not available.",
+      );
       return;
     }
     if (_firebaseFirestoreService.getUserModel!.userType != 2) return;
@@ -55,9 +59,11 @@ class HistoryController extends GetxController {
     } catch (e) {
       // TODO: Handle errors
       print('Error fetching appointments: $e');
-      showToast(Get.context != null
-          ? AppLocalizations.of(Get.context!)!.failedToFetchAppointments
-          : "Failed to fetch appointments. Please try again later or contact support.");
+      showToast(
+        Get.context != null
+            ? AppLocalizations.of(Get.context!)!.failedToFetchAppointments
+            : "Failed to fetch appointments. Please try again later or contact support.",
+      );
     }
   }
 }
