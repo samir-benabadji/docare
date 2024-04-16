@@ -374,5 +374,8 @@
     "placeholders": {
       "error": {"type": "String"}
     }
-  }
+  },
+  "editSpeciality":"Edit speciality",
+  "editOptions":"Edit options",
+  "editSymptoms":"Edit symptoms"
 }

@@ -370,5 +370,8 @@
   "placeholders": {
     "error": {"type": "String"}
   }
-}
+},
+"editSpeciality": "Spezialität bearbeiten",
+"editOptions": "Optionen bearbeiten",
+"editSymptoms": "Symptome bearbeiten"
 }

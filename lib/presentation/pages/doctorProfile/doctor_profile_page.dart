@@ -1,12 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:docare/business_logic/models/user_model.dart';
 import 'package:docare/presentation/pages/doctorProfile/widgets/doctor_date_time_schedule_component.dart';
+import 'package:docare/presentation/pages/home/home_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../business_logic/models/pain_model.dart';
 import '../../../business_logic/models/speciality_model.dart';
+import '../../../business_logic/services/firebase_firestore_service.dart';
+import '../../../core/assets.gen.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/constants/theme.dart';
 import '../../widgets/utils.dart';
@@ -23,6 +28,8 @@ class DoctorProfilePage extends StatelessWidget {
     this.showBookAppointmentButton = true,
   });
 
+  final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<DoctorProfileController>(
@@ -30,7 +37,7 @@ class DoctorProfilePage extends StatelessWidget {
       builder: (doctorProfileController) {
         return Scaffold(
           backgroundColor: Colors.white,
-          appBar: _appBarComponent(context),
+          appBar: _appBarComponent(context, doctorProfileController),
           body: SingleChildScrollView(
             physics: doctorProfileController.isMapTouched ? NeverScrollableScrollPhysics() : null,
             child: Column(
@@ -464,7 +471,7 @@ class DoctorProfilePage extends StatelessWidget {
     );
   }
 
-  AppBar _appBarComponent(BuildContext context) {
+  AppBar _appBarComponent(BuildContext context, DoctorProfileController doctorProfileController) {
     return AppBar(
       leading: showBackButton
           ? IconButton(
@@ -484,10 +491,70 @@ class DoctorProfilePage extends StatelessWidget {
             )
           : SizedBox(),
       actions: [
-        IconButton(
-          icon: Icon(Icons.more_vert, color: Colors.black),
-          onPressed: () {},
-        ),
+        if (userModel.uid == _firebaseFirestoreService.getUserModel?.uid)
+          PopupMenuButton<String>(
+            padding: EdgeInsets.all(16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(
+                value: 'Edit speciality',
+                child: Text(
+                  Get.context != null ? AppLocalizations.of(Get.context!)!.editSpeciality : 'Edit speciality',
+                  style: GoogleFonts.poppins(
+                    color: Color(0xFF202528),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              PopupMenuItem<String>(
+                value: 'Edit options',
+                child: Text(
+                  Get.context != null ? AppLocalizations.of(Get.context!)!.editOptions : 'Edit options',
+                  style: GoogleFonts.poppins(
+                    color: Color(0xFF202528),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              PopupMenuItem<String>(
+                value: 'Edit symptoms',
+                child: Text(
+                  Get.context != null ? AppLocalizations.of(Get.context!)!.editSymptoms : 'Edit symptoms',
+                  style: GoogleFonts.poppins(
+                    color: Color(0xFF202528),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ],
+            onSelected: (String value) async {
+              if (value == 'Edit speciality') {
+                // TODO: Implement action
+              } else if (value == 'Edit options') {
+                // TODO: Implement action
+              } else if (value == 'Edit symptoms') {
+                // TODO: Implement action
+              }
+            },
+            icon: Icon(Icons.more_vert, color: Colors.black),
+          ),
+        if (Get.find<HomeController>().currentIndex == 3)
+          Container(
+            margin: EdgeInsets.only(right: 8),
+            child: IconButton(
+              icon: SvgPicture.asset(
+                Assets.icons.profile.logout.path,
+              ),
+              onPressed: () {
+                showLogoutConfirmation(context, doctorProfileController);
+              },
+            ),
+          ),
       ],
       centerTitle: true,
       title: Text(
@@ -501,6 +568,101 @@ class DoctorProfilePage extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       elevation: 0,
+    );
+  }
+
+  void showLogoutConfirmation(BuildContext context, DoctorProfileController doctorProfileController) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(27),
+          topRight: Radius.circular(27),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.only(
+            left: 32,
+            right: 32,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              SizedBox(height: 32),
+              Icon(
+                Icons.logout,
+                size: 43,
+                color: DocareTheme.apple,
+              ),
+              SizedBox(height: 29),
+              Text(
+                'Are you sure you want to logout?',
+                style: GoogleFonts.poppins(
+                  color: Color(0xFF090F47),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              SizedBox(height: 48),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                      clipBehavior: Clip.antiAlias,
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(width: 1, color: Color(0xFF3BC090)),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      child: Text(
+                        'Cancel',
+                        style: GoogleFonts.poppins(
+                          color: Color(0xFF3BC090),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      doctorProfileController.logout();
+
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                      clipBehavior: Clip.antiAlias,
+                      decoration: ShapeDecoration(
+                        color: Color(0xFF3BC090),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      child: Text(
+                        'Yes, logout',
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 24),
+            ],
+          ),
+        );
+      },
     );
   }
 }

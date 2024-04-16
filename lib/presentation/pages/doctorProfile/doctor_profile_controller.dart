@@ -5,8 +5,10 @@ import 'package:uuid/uuid.dart';
 
 import '../../../business_logic/models/appointment_model.dart';
 import '../../../business_logic/models/user_model.dart';
+import '../../../business_logic/services/firebase_auth_service.dart';
 import '../../../business_logic/services/firebase_firestore_service.dart';
 import '../../widgets/utils.dart';
+import '../auth/auth_controller.dart';
 
 class DoctorProfileController extends GetxController {
   final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
@@ -102,5 +104,13 @@ class DoctorProfileController extends GetxController {
   void selectDate(DateTime newDate) {
     currentSelectedDay = newDate;
     update();
+  }
+
+  Future<void> logout() async {
+    final _firebaseAuthService = Get.find<FirebaseAuthService>();
+    final _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
+    _firebaseFirestoreService.collectionPathFromUserType = null;
+    Get.find<AuthController>().clearControllers();
+    await _firebaseAuthService.signOut();
   }
 }
