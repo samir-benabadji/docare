@@ -6,6 +6,7 @@ import '../../../business_logic/services/firebase_firestore_service.dart';
 import '../../../core/assets.gen.dart';
 import '../appointments/appointments_page.dart';
 import '../discovery/discovery_page.dart';
+import '../doctorProfile/doctor_profile_page.dart';
 import '../doctorSchedule/doctor_schedule_page.dart';
 import '../history/history_page.dart';
 import '../patientProfile/patient_profile_page.dart';
@@ -47,7 +48,13 @@ class HomeController extends GetxController {
                 : Assets.icons.bottomNavBar.history.path,
       ),
       CustomNavigator(
-        page: PatientProfilePage(),
+        page: (_firebaseFirestoreService.getUserModel != null && _firebaseFirestoreService.getUserModel!.userType == 1)
+            ? DoctorProfilePage(
+                userModel: _firebaseFirestoreService.getUserModel!,
+                showBackButton: false,
+                showBookAppointmentButton: false,
+              )
+            : PatientProfilePage(),
         bottomNavIconPath: Assets.icons.bottomNavBar.profile.path,
       ),
     ]);

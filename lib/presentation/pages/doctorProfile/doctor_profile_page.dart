@@ -15,7 +15,13 @@ import 'doctor_profile_controller.dart';
 
 class DoctorProfilePage extends StatelessWidget {
   final UserModel userModel;
-  DoctorProfilePage({required this.userModel});
+  final bool showBackButton;
+  final bool showBookAppointmentButton;
+  DoctorProfilePage({
+    required this.userModel,
+    this.showBackButton = true,
+    this.showBookAppointmentButton = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +69,10 @@ class DoctorProfilePage extends StatelessWidget {
                 _doctorExtraInformationsComponent(doctorProfileController),
                 SizedBox(height: 16),
                 if (doctorProfileController.currentSelectedDoctorExtraInformation == "Appoitement")
-                  DoctorDateTimeScheduleComponent(userModel: userModel),
+                  DoctorDateTimeScheduleComponent(
+                    userModel: userModel,
+                    showBookAppointmentButton: showBookAppointmentButton,
+                  ),
                 if (doctorProfileController.currentSelectedDoctorExtraInformation == "Clinic")
                   _doctorClinicComponent(doctorProfileController),
                 SizedBox(height: 27),
@@ -457,21 +466,23 @@ class DoctorProfilePage extends StatelessWidget {
 
   AppBar _appBarComponent(BuildContext context) {
     return AppBar(
-      leading: IconButton(
-        icon: Container(
-          width: 40,
-          height: 40,
-          decoration: ShapeDecoration(
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              side: BorderSide(width: 1, color: Color(0xFFF1F4F7)),
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-          child: Icon(Icons.arrow_back, color: Colors.black),
-        ),
-        onPressed: () => Get.back(),
-      ),
+      leading: showBackButton
+          ? IconButton(
+              icon: Container(
+                width: 40,
+                height: 40,
+                decoration: ShapeDecoration(
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 1, color: Color(0xFFF1F4F7)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: Icon(Icons.arrow_back, color: Colors.black),
+              ),
+              onPressed: () => Get.back(),
+            )
+          : SizedBox(),
       actions: [
         IconButton(
           icon: Icon(Icons.more_vert, color: Colors.black),

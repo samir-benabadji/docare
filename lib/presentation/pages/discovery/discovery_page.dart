@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../business_logic/models/user_model.dart';
+import '../../../business_logic/services/firebase_firestore_service.dart';
 import '../../../core/assets.gen.dart';
 import '../../../core/constants/constants.dart';
 import '../../widgets/utils.dart';
@@ -18,6 +19,7 @@ import 'discovery_controller.dart';
 import 'discovery_specialist_doctors_page.dart';
 
 class DiscoveryPage extends StatelessWidget {
+  final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
   @override
   Widget build(BuildContext context) {
     return GetBuilder<DiscoveryController>(
@@ -343,6 +345,7 @@ class DiscoveryPage extends StatelessWidget {
                     Get.to(
                       () => DoctorProfilePage(
                         userModel: doctor,
+                        showBookAppointmentButton: _firebaseFirestoreService.getUserModel?.userType != 1,
                       ),
                     );
                   },

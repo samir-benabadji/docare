@@ -282,38 +282,44 @@ class PatientProfilePage extends StatelessWidget {
       width: 88,
       height: 88,
       child: ClipOval(
-        child: CachedNetworkImage(
-          imageUrl: _firebaseFirestoreService.getUserModel?.profileImageUrl ?? "",
-          fit: BoxFit.cover,
-          width: double.infinity,
-          height: double.infinity,
-          placeholder: (context, url) {
-            return SizedBox(
-              height: 130,
-              child: Center(
-                child: shimmerComponent(
-                  double.infinity,
-                  double.infinity,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(13),
-                    topRight: Radius.circular(13),
-                  ),
-                ),
+        child: (_firebaseFirestoreService.getUserModel != null &&
+                _firebaseFirestoreService.getUserModel?.profileImageUrl != null &&
+                _firebaseFirestoreService.getUserModel!.profileImageUrl!.isNotEmpty)
+            ? CachedNetworkImage(
+                imageUrl: _firebaseFirestoreService.getUserModel?.profileImageUrl ?? "",
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+                placeholder: (context, url) {
+                  return SizedBox(
+                    height: 130,
+                    child: Center(
+                      child: shimmerComponent(
+                        double.infinity,
+                        double.infinity,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(13),
+                          topRight: Radius.circular(13),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                errorWidget: (context, url, error) {
+                  return Center(
+                    child: CircleAvatar(
+                      backgroundColor: DocareTheme.apple,
+                      child: Icon(
+                        Icons.broken_image,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                },
+              )
+            : SvgPicture.asset(
+                Assets.icons.home.profileAvatar.path,
               ),
-            );
-          },
-          errorWidget: (context, url, error) {
-            return Center(
-              child: CircleAvatar(
-                backgroundColor: DocareTheme.apple,
-                child: Icon(
-                  Icons.broken_image,
-                  color: Colors.white,
-                ),
-              ),
-            );
-          },
-        ),
       ),
     );
   }

@@ -14,8 +14,11 @@ import '../doctor_profile_controller.dart';
 
 class DoctorDateTimeScheduleComponent extends StatelessWidget {
   final UserModel userModel;
-
-  DoctorDateTimeScheduleComponent({required this.userModel});
+  final bool showBookAppointmentButton;
+  DoctorDateTimeScheduleComponent({
+    required this.userModel,
+    this.showBookAppointmentButton = true,
+  });
 
   final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
 
@@ -32,8 +35,8 @@ class DoctorDateTimeScheduleComponent extends StatelessWidget {
               _currentSelectedDayComponent(context),
               SizedBox(height: 22),
               _currentSelectedSessionComponent(context),
-              SizedBox(height: 22),
-              _bookAppointmentButtonComponent(context, doctorProfileController),
+              if (showBookAppointmentButton) SizedBox(height: 22),
+              if (showBookAppointmentButton) _bookAppointmentButtonComponent(context, doctorProfileController),
             ],
           ),
         );

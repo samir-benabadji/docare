@@ -26,18 +26,20 @@ class _DoctorSchedulePageState extends State<DoctorSchedulePage> {
       builder: (doctorScheduleController) {
         return Scaffold(
           body: SafeArea(
-            child: Column(
-              children: [
-                _topBarComponent(doctorScheduleController),
-                SizedBox(height: 32),
-                _titleComponent(),
-                SizedBox(height: 64),
-                _calendarComponent(doctorScheduleController),
-                SizedBox(height: 24),
-                _sessionContentComponent(doctorScheduleController),
-                SizedBox(height: 16),
-                SizedBox(height: 32)
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _topBarComponent(doctorScheduleController),
+                  SizedBox(height: 32),
+                  _titleComponent(),
+                  SizedBox(height: 64),
+                  _calendarComponent(doctorScheduleController),
+                  SizedBox(height: 24),
+                  _sessionContentComponent(doctorScheduleController),
+                  SizedBox(height: 16),
+                  SizedBox(height: 32)
+                ],
+              ),
             ),
           ),
         );
@@ -88,75 +90,78 @@ class _DoctorSchedulePageState extends State<DoctorSchedulePage> {
   }
 
   Widget _sessionContentComponent(DoctorScheduleController doctorScheduleController) {
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            ...doctorScheduleController.allSessions
-                .where((element) {
-                  // Extracting year, month, and day from the session timestamp
-                  DateTime sessionDate = DateTime.fromMillisecondsSinceEpoch(element.timestamp);
-                  int sessionYear = sessionDate.year;
-                  int sessionMonth = sessionDate.month;
-                  int sessionDay = sessionDate.day;
+    return Container(
+      constraints: BoxConstraints(minHeight: 200),
+      child: Expanded(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ...doctorScheduleController.allSessions
+                  .where((element) {
+                    // Extracting year, month, and day from the session timestamp
+                    DateTime sessionDate = DateTime.fromMillisecondsSinceEpoch(element.timestamp);
+                    int sessionYear = sessionDate.year;
+                    int sessionMonth = sessionDate.month;
+                    int sessionDay = sessionDate.day;
 
-                  // Extracting year, month, and day from the selected timestamp
-                  DateTime selectedDate =
-                      DateTime.fromMillisecondsSinceEpoch(doctorScheduleController.currentSelectedTimeStamp);
-                  int selectedYear = selectedDate.year;
-                  int selectedMonth = selectedDate.month;
-                  int selectedDay = selectedDate.day;
+                    // Extracting year, month, and day from the selected timestamp
+                    DateTime selectedDate =
+                        DateTime.fromMillisecondsSinceEpoch(doctorScheduleController.currentSelectedTimeStamp);
+                    int selectedYear = selectedDate.year;
+                    int selectedMonth = selectedDate.month;
+                    int selectedDay = selectedDate.day;
 
-                  // Comparing if they are the same year, month, and day
-                  return sessionYear == selectedYear && sessionMonth == selectedMonth && sessionDay == selectedDay;
-                })
-                .toList()
-                .asMap()
-                .entries
-                .map((entry) {
-                  return Column(
-                    children: [
-                      DoctorScheduleSessionComponent(
-                        session: entry.value,
-                        sessionIndex: entry.key,
-                      ),
-                      SizedBox(height: 28),
-                    ],
-                  );
-                })
-                .toList(),
-            if (doctorScheduleController.currentSelectedTimeStamp != 0) SizedBox(height: 22),
-            if (doctorScheduleController.currentSelectedTimeStamp != 0)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      doctorScheduleController.allSessions.add(
-                        SessionModel(
-                          id: Uuid().v4(),
-                          timestamp: doctorScheduleController.currentSelectedTimeStamp,
+                    // Comparing if they are the same year, month, and day
+                    return sessionYear == selectedYear && sessionMonth == selectedMonth && sessionDay == selectedDay;
+                  })
+                  .toList()
+                  .asMap()
+                  .entries
+                  .map((entry) {
+                    return Column(
+                      children: [
+                        DoctorScheduleSessionComponent(
+                          session: entry.value,
+                          sessionIndex: entry.key,
                         ),
-                      );
-                      doctorScheduleController.isSavedSuccessfully = false;
-                      doctorScheduleController.update();
-                    },
-                    child: Container(
-                      width: 41,
-                      height: 41,
-                      decoration: ShapeDecoration(
-                        color: Color(0xFFFF0472),
-                        shape: OvalBorder(),
-                      ),
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.white,
+                        SizedBox(height: 28),
+                      ],
+                    );
+                  })
+                  .toList(),
+              if (doctorScheduleController.currentSelectedTimeStamp != 0) SizedBox(height: 22),
+              if (doctorScheduleController.currentSelectedTimeStamp != 0)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        doctorScheduleController.allSessions.add(
+                          SessionModel(
+                            id: Uuid().v4(),
+                            timestamp: doctorScheduleController.currentSelectedTimeStamp,
+                          ),
+                        );
+                        doctorScheduleController.isSavedSuccessfully = false;
+                        doctorScheduleController.update();
+                      },
+                      child: Container(
+                        width: 41,
+                        height: 41,
+                        decoration: ShapeDecoration(
+                          color: Color(0xFFFF0472),
+                          shape: OvalBorder(),
+                        ),
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-          ],
+                  ],
+                ),
+            ],
+          ),
         ),
       ),
     );
