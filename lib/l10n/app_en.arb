@@ -383,5 +383,12 @@
   "permissionDeniedTitle": "Permission Denied",
   "enableLocationPermissionMessage": "Please enable location permission in settings",
   "locationPermissionRequiredMessage": "Location permission is required to find nearby doctors",
-  "allow": "Allow"
+  "allow": "Allow",
+  "nearMe":"Near Me",
+  "nearMeDoctorsErrorMessage":"Error: {error}",
+"@nearMeDoctorsErrorMessage": {
+  "placeholders": {
+    "error": {"type": "String"}
+  }
+}
 }

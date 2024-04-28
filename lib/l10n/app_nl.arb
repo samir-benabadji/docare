@@ -379,5 +379,12 @@
 "permissionDeniedTitle": "Toestemming geweigerd",
 "enableLocationPermissionMessage": "Schakel locatietoestemming in bij instellingen",
 "locationPermissionRequiredMessage": "Locatietoestemming is vereist om nabijgelegen artsen te vinden",
-"allow": "Toestaan"
+"allow": "Toestaan",
+"nearMe": "Dichtbij",
+"nearMeDoctorsErrorMessage": "Fout: {error}",
+"@nearMeDoctorsErrorMessage": {
+  "placeholders": {
+    "error": {"type": "String"}
+  }
+}
 }

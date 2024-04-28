@@ -6,11 +6,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../business_logic/models/user_model.dart';
 import '../../../business_logic/services/firebase_firestore_service.dart';
 import '../../../core/assets.gen.dart';
 import '../../../core/constants/constants.dart';
+import '../../widgets/location_alert_dialog.dart';
 import '../../widgets/utils.dart';
 import '../doctorProfile/doctor_profile_page.dart';
 import '../favoriteDoctor/favorite_doctor_page.dart';
@@ -18,8 +20,50 @@ import '../notifications/notifications_page.dart';
 import 'discovery_controller.dart';
 import 'discovery_specialist_doctors_page.dart';
 
-class DiscoveryPage extends StatelessWidget {
+class DiscoveryPage extends StatefulWidget {
+  @override
+  State<DiscoveryPage> createState() => _DiscoveryPageState();
+}
+
+class _DiscoveryPageState extends State<DiscoveryPage> {
   final FirebaseFirestoreService _firebaseFirestoreService = Get.find<FirebaseFirestoreService>();
+  bool _locationPermissionRequested = false;
+
+  Future<void> _checkLocationPermission() async {
+    var status = await Permission.location.status;
+    if (!mounted) return;
+    // If permission is granted
+    if (status.isGranted) {
+      try {
+        Get.find<DiscoveryController>().loadNearMeDoctors();
+      } catch (e) {
+        print(e);
+      }
+      return;
+    }
+
+    // If permission hasn't been granted yet
+    if (!status.isGranted && !_locationPermissionRequested) {
+      setState(() {
+        _locationPermissionRequested = true;
+      });
+      var result = await Get.dialog(LocationPermissionDialog(), barrierDismissible: false);
+      if (result == true) {
+        try {
+          Get.find<DiscoveryController>().loadNearMeDoctors();
+        } catch (e) {
+          print(e);
+        }
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    _checkLocationPermission();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<DiscoveryController>(
@@ -40,6 +84,8 @@ class DiscoveryPage extends StatelessWidget {
                             _mainSpecialistDoctorComponent(discoveryController),
                             SizedBox(height: 32),
                             _mainTopDoctorsComponent(discoveryController),
+                            SizedBox(height: 32),
+                            _mainNearMeDoctorsComponent(discoveryController),
                           ],
                         )
                       : DiscoverySearchResultsComponent(),
@@ -66,12 +112,51 @@ class DiscoveryPage extends StatelessWidget {
     );
   }
 
+  Widget _mainNearMeDoctorsComponent(DiscoveryController discoveryController) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 17),
+      child: Column(
+        children: [
+          _nearMeDoctorsTitleComponent(),
+          SizedBox(height: 13),
+          _nearMeDoctorsContentComponent(discoveryController),
+        ],
+      ),
+    );
+  }
+
   Widget _topDoctorsTitleComponent() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           Get.context != null ? AppLocalizations.of(Get.context!)!.topDoctors : 'Top Doctors',
+          style: GoogleFonts.inter(
+            color: Color(0xFF090F47),
+            fontSize: 15.45,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        Text(
+          Get.context != null ? AppLocalizations.of(Get.context!)!.seeAll : 'See all',
+          style: GoogleFonts.inter(
+            color: DocareTheme.apple,
+            fontSize: 13.52,
+            fontWeight: FontWeight.w400,
+            letterSpacing: -0.54,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _nearMeDoctorsTitleComponent() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          // Translate it
+          Get.context != null ? AppLocalizations.of(Get.context!)!.nearMe : 'Near Me',
           style: GoogleFonts.inter(
             color: Color(0xFF090F47),
             fontSize: 15.45,
@@ -327,6 +412,152 @@ class DiscoveryPage extends StatelessWidget {
           return Text(
             Get.context != null
                 ? AppLocalizations.of(Get.context!)!.topDoctorsErrorMessage(snapshot.error.toString())
+                : 'Error: ${snapshot.error}',
+          );
+        } else if (!snapshot.hasData) {
+          return Text(Get.context != null ? AppLocalizations.of(Get.context!)!.noDoctorsFound : 'No doctors found');
+        } else {
+          final doctors = snapshot.data!;
+          return Container(
+            height: 180,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: doctors.length,
+              itemBuilder: (context, index) {
+                final doctor = doctors[index];
+                return GestureDetector(
+                  onTap: () {
+                    Get.to(
+                      () => DoctorProfilePage(
+                        userModel: doctor,
+                        showBookAppointmentButton: _firebaseFirestoreService.getUserModel?.userType != 1,
+                      ),
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 20),
+                    child: Column(
+                      children: <Widget>[
+                        ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(13),
+                            topRight: Radius.circular(13),
+                          ),
+                          child: Container(
+                            width: 130,
+                            height: 130,
+                            decoration: ShapeDecoration(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(13),
+                                  topRight: Radius.circular(13),
+                                ),
+                              ),
+                              shadows: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.25),
+                                  blurRadius: 2.30,
+                                  offset: Offset(0, 0),
+                                  spreadRadius: 0,
+                                )
+                              ],
+                            ),
+                            child: CachedNetworkImage(
+                              imageUrl: doctor.profileImageUrl ?? "",
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: double.infinity,
+                              placeholder: (context, url) {
+                                return SizedBox(
+                                  height: 130,
+                                  child: Center(
+                                    child: shimmerComponent(
+                                      double.infinity,
+                                      double.infinity,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(13),
+                                        topRight: Radius.circular(13),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              errorWidget: (context, url, error) {
+                                return Center(
+                                  child: CircleAvatar(
+                                    backgroundColor: DocareTheme.apple,
+                                    child: Icon(
+                                      Icons.broken_image,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 130,
+                          height: 50,
+                          decoration: ShapeDecoration(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(13),
+                                bottomRight: Radius.circular(13),
+                              ),
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                doctor.name ??
+                                    (Get.context != null
+                                        ? AppLocalizations.of(Get.context!)!.noNameProvided
+                                        : 'No name provided'),
+                                style: GoogleFonts.inter(
+                                  color: Color(0xFF090F47),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: -0.40,
+                                ),
+                              ),
+                              Text(
+                                doctor.medicalSpeciality ??
+                                    (Get.context != null ? AppLocalizations.of(Get.context!)!.unknown : 'Unknown'),
+                                style: GoogleFonts.rubik(
+                                  color: Color(0xFF090F47),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w300,
+                                  letterSpacing: -0.14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _nearMeDoctorsContentComponent(DiscoveryController discoveryController) {
+    return StreamBuilder<List<UserModel>>(
+      stream: discoveryController.nearMeDoctorsStream.stream,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Text(
+            Get.context != null
+                ? AppLocalizations.of(Get.context!)!.nearMeDoctorsErrorMessage(snapshot.error.toString())
                 : 'Error: ${snapshot.error}',
           );
         } else if (!snapshot.hasData) {

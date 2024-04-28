@@ -379,5 +379,12 @@
   "permissionDeniedTitle": "Berechtigung verweigert",
   "enableLocationPermissionMessage": "Bitte aktivieren Sie die Standortberechtigung in den Einstellungen",
   "locationPermissionRequiredMessage": "Die Standortberechtigung ist erforderlich, um nahegelegene Ärzte zu finden",
-  "allow": "Erlauben"
+  "allow": "Erlauben",
+  "nearMe": "In der Nähe",
+  "nearMeDoctorsErrorMessage": "Fehler: {error}",
+"@nearMeDoctorsErrorMessage": {
+  "placeholders": {
+    "error": {"type": "String"}
+  }
+}
 }

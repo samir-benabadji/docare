@@ -13,6 +13,7 @@ import '../../widgets/utils.dart';
 class DiscoveryController extends GetxController {
   final FirebaseFirestoreService _firebaseFirestoreService = FirebaseFirestoreService();
   final BehaviorSubject<List<UserModel>> topDoctorsStream = BehaviorSubject();
+  final BehaviorSubject<List<UserModel>> nearMeDoctorsStream = BehaviorSubject();
   final BehaviorSubject<List<UserModel>> specialistDoctorsStream = BehaviorSubject();
   final BehaviorSubject<List<UserModel>> searchedDoctorsStream = BehaviorSubject();
 
@@ -37,6 +38,28 @@ class DiscoveryController extends GetxController {
     _topDoctorsSubscription = _firebaseFirestoreService.getDoctorsStream().listen(
       (data) {
         topDoctorsStream.add(data);
+      },
+      onError: (error) {
+        if (error is FirebaseException) {
+          if (error.code == "permission-denied") {
+            print('Permission Denied Error: ${error.message}');
+            return;
+          }
+        }
+        print("Error loading doctors: $error");
+        showToast(
+          Get.context != null
+              ? AppLocalizations.of(Get.context!)!.failedToLoadDoctorsPleaseTryAgainLater
+              : "Failed to load doctors. Please try again later.",
+        );
+      },
+    );
+  }
+
+  void loadNearMeDoctors() {
+    _topDoctorsSubscription = _firebaseFirestoreService.getNearMeDoctorsStream().listen(
+      (data) {
+        nearMeDoctorsStream.add(data);
       },
       onError: (error) {
         if (error is FirebaseException) {
@@ -101,6 +124,7 @@ class DiscoveryController extends GetxController {
     topDoctorsStream.close();
     specialistDoctorsStream.close();
     searchedDoctorsStream.close();
+    nearMeDoctorsStream.close();
     super.onClose();
   }
 }

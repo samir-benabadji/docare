@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../presentation/pages/doctorProfile/widgets/appointment_created_successfully_component.dart';
 import '../../presentation/widgets/utils.dart';
@@ -353,6 +355,47 @@ class FirebaseFirestoreService {
   Stream<List<UserModel>> getDoctorsStream() {
     return _firebaseFirestore.collection(_getCollectionPathFromUserType(1)).snapshots().map((snapshot) {
       return snapshot.docs.map((doc) => UserModel.fromFirestore(doc)).toList();
+    });
+  }
+
+  // getting all the near me doctors from firestore
+  Stream<List<UserModel>> getNearMeDoctorsStream() async* {
+    var status = await Permission.location.request();
+    if (!status.isGranted) {
+      print('User did not provide location permission');
+      yield [];
+      return;
+    }
+
+    // Get user's current location
+    Position? currentPosition = await getCurrentUserPosition();
+    if (currentPosition == null) {
+      print('Failed to get user location');
+      yield [];
+      return;
+    }
+
+    double userLatitude = currentPosition.latitude;
+    double userLongitude = currentPosition.longitude;
+
+    // Stream doctors sorted by distance
+    yield* _firebaseFirestore.collection(_getCollectionPathFromUserType(1)).snapshots().map((snapshot) {
+      List<UserModel> doctors = snapshot.docs.map((doc) => UserModel.fromFirestore(doc)).toList();
+
+      // Sorting doctors by distance
+      doctors.sort((a, b) {
+        double doctorALatitude = double.parse(a.locationLatLng!['latitude']!);
+        double doctorALongitude = double.parse(a.locationLatLng!['longitude']!);
+        double distanceA = calculateDistance(userLatitude, userLongitude, doctorALatitude, doctorALongitude);
+
+        double doctorBLatitude = double.parse(b.locationLatLng!['latitude']!);
+        double doctorBLongitude = double.parse(b.locationLatLng!['longitude']!);
+        double distanceB = calculateDistance(userLatitude, userLongitude, doctorBLatitude, doctorBLongitude);
+
+        return distanceA.compareTo(distanceB);
+      });
+
+      return doctors.reversed.toList();
     });
   }
 

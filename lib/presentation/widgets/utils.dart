@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:docare/business_logic/services/firebase_firestore_service.dart';
 import 'package:docare/presentation/widgets/progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:shimmer/shimmer.dart';
@@ -23,6 +26,51 @@ void showToast(String message) {
     textColor: Colors.white,
     fontSize: 16.0,
   );
+}
+
+Future getCurrentUserPosition() async {
+  try {
+    // Requesting permission to access the user's location
+    LocationPermission permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      // permission denied
+      showToast("Location permission denied. Please enable location access in your device settings.");
+      return null;
+    }
+
+    // Getting the user's current position
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    return position;
+  } catch (e) {
+    print('Error getting user location: $e');
+    showToast("Failed to get user location. Please try again later.");
+    return null;
+  }
+}
+
+double calculateDistance(double userLatitude, double userLongitude, double doctorLatitude, double doctorLongitude) {
+  // Calculation of distance between two points using Haversine formula
+  const double earthRadius = 6371.0; // in kilometers
+
+  double latDistance = degreesToRadians(doctorLatitude - userLatitude);
+  double lonDistance = degreesToRadians(doctorLongitude - userLongitude);
+
+  double a = sin(latDistance / 2) * sin(latDistance / 2) +
+      cos(degreesToRadians(userLatitude)) *
+          cos(degreesToRadians(doctorLatitude)) *
+          sin(lonDistance / 2) *
+          sin(lonDistance / 2);
+
+  double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+  return earthRadius * c;
+}
+
+double degreesToRadians(double degrees) {
+  return degrees * pi / 180;
 }
 
 int calculateAge(DateTime birthDate) {

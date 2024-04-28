@@ -10,7 +10,8 @@ class LocationPermissionDialog extends StatelessWidget {
       onWillPop: () async => false, // Preventing dismissing the dialog with the back button
       child: AlertDialog(
         title: Text(
-            Get.context != null ? AppLocalizations.of(Get.context!)!.locationPermissionTitle : 'Location Permission'),
+          Get.context != null ? AppLocalizations.of(Get.context!)!.locationPermissionTitle : 'Location Permission',
+        ),
         content: Text(
           Get.context != null
               ? AppLocalizations.of(Get.context!)!.locationPermissionMessage
@@ -22,10 +23,9 @@ class LocationPermissionDialog extends StatelessWidget {
               // Request location permission
               var status = await Permission.location.request();
 
-              // Checking the permission status
               if (status.isGranted) {
-                // Permission granted, close the dialog
-                Get.back();
+                // Permission granted
+                Get.back(result: true);
               } else if (status.isPermanentlyDenied) {
                 // Permission permanently denied
                 Get.snackbar(

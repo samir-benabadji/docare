@@ -379,5 +379,12 @@
 "permissionDeniedTitle": "Autorisation refusée",
 "enableLocationPermissionMessage": "Veuillez activer l'autorisation de localisation dans les paramètres",
 "locationPermissionRequiredMessage": "L'autorisation de localisation est nécessaire pour trouver des médecins à proximité",
-"allow": "Autoriser"
+"allow": "Autoriser",
+"nearMe": "À proximité",
+"nearMeDoctorsErrorMessage": "Erreur : {error}",
+"@nearMeDoctorsErrorMessage": {
+  "placeholders": {
+    "error": {"type": "String"}
+  }
+}
 }
