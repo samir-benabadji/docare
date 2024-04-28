@@ -373,5 +373,11 @@
 },
 "editSpeciality": "Specialiteit bewerken",
 "editOptions": "Opties bewerken",
-"editSymptoms": "Symptomen bewerken"
+"editSymptoms": "Symptomen bewerken",
+"locationPermissionTitle": "Locatietoestemming",
+"locationPermissionMessage": "Deze app vereist toegang tot uw locatie om nabijgelegen artsen te vinden.",
+"permissionDeniedTitle": "Toestemming geweigerd",
+"enableLocationPermissionMessage": "Schakel locatietoestemming in bij instellingen",
+"locationPermissionRequiredMessage": "Locatietoestemming is vereist om nabijgelegen artsen te vinden",
+"allow": "Toestaan"
 }

@@ -377,5 +377,11 @@
   },
   "editSpeciality":"Edit speciality",
   "editOptions":"Edit options",
-  "editSymptoms":"Edit symptoms"
+  "editSymptoms":"Edit symptoms",
+  "locationPermissionTitle": "Location Permission",
+  "locationPermissionMessage": "This app requires access to your location to find nearby doctors.",
+  "permissionDeniedTitle": "Permission Denied",
+  "enableLocationPermissionMessage": "Please enable location permission in settings",
+  "locationPermissionRequiredMessage": "Location permission is required to find nearby doctors",
+  "allow": "Allow"
 }

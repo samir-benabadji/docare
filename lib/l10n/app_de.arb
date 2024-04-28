@@ -373,5 +373,11 @@
 },
 "editSpeciality": "Spezialität bearbeiten",
 "editOptions": "Optionen bearbeiten",
-"editSymptoms": "Symptome bearbeiten"
+"editSymptoms": "Symptome bearbeiten",
+"locationPermissionTitle": "Standortberechtigung",
+  "locationPermissionMessage": "Diese App erfordert Zugriff auf Ihren Standort, um nahegelegene Ärzte zu finden.",
+  "permissionDeniedTitle": "Berechtigung verweigert",
+  "enableLocationPermissionMessage": "Bitte aktivieren Sie die Standortberechtigung in den Einstellungen",
+  "locationPermissionRequiredMessage": "Die Standortberechtigung ist erforderlich, um nahegelegene Ärzte zu finden",
+  "allow": "Erlauben"
 }

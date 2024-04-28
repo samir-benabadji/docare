@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../business_logic/models/user_model.dart';
 import 'package:badges/badges.dart' as badges;
+import '../../widgets/location_alert_dialog.dart';
 import 'home_controller.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,9 +18,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+  bool _locationPermissionRequested = false;
+
   @override
   void initState() {
     super.initState();
+    _checkLocationPermission();
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       FirebaseAuth.instance.currentUser!.reload();
@@ -176,5 +181,17 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         },
       ),
     );
+  }
+
+  Future<void> _checkLocationPermission() async {
+    var status = await Permission.location.status;
+    if (!mounted) return;
+    // If permission hasn't been granted yet
+    if (!status.isGranted && !_locationPermissionRequested) {
+      setState(() {
+        _locationPermissionRequested = true;
+      });
+      Get.dialog(LocationPermissionDialog(), barrierDismissible: false);
+    }
   }
 }
