@@ -171,7 +171,7 @@
   "enterVerificationCode": "Geben Sie Ihren Bestätigungscode ein",
   "locationQuestion": "Wo befinden Sie sich?",
   "locationRecommendation": "Wir benötigen Ihren Standort, um nahegelegene Dienste empfehlen zu können",
-  "enterLocationManually": "Standort manuell eingeben",
+  "enterLocationManually": "Standort auswählen",
   "allowLocationAccess": "Standortzugriff zulassen",
   "locationError": "Standortfehler",
   "failedToGetCurrentLocation": "Aktueller Standort konnte nicht abgerufen werden: {e}",

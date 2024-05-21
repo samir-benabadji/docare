@@ -40,8 +40,8 @@ class _OnboardingAddressLocationPageState extends State<OnboardingAddressLocatio
                         SizedBox(height: 25),
                         _descriptionComponent(),
                         SizedBox(height: 55),
-                        allowLocationAccessButtonComponent(onboardingController),
-                        SizedBox(height: 18),
+                        // allowLocationAccessButtonComponent(onboardingController),
+                        //  SizedBox(height: 18),
                         _manualLocationButtonComponent(onboardingController),
                         SizedBox(height: 32)
                       ],

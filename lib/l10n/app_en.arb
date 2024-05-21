@@ -171,7 +171,7 @@
   "enterVerificationCode": "Enter your verification code",
   "locationQuestion": "What's your location ?",
   "locationRecommendation": "We require your location to recommend nearby services",
-  "enterLocationManually": "Enter location Manually",
+  "enterLocationManually": "Pick a location",
   "allowLocationAccess": "Allow location access",
   "locationError": "Location Error",
   "failedToGetCurrentLocation": "Failed to get current location: {e}",

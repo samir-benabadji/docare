@@ -1,3 +1,4 @@
+import 'package:docare/core/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -140,51 +141,67 @@ class _OnboardingManualLocationPageState extends State<OnboardingManualLocationP
   }
 
   Widget _chooseOnMapButtonComponent(BuildContext context, OnboardingController onboardingController) {
-    return Row(
-      children: [
-        ElevatedButton(
-          onPressed: () async {
-            Map<String, String>? defaultLocation;
-            if (onboardingController.locationLatLng != null) {
-              defaultLocation = {
-                'latitude': onboardingController.locationLatLng!['latitude']!,
-                'longitude': onboardingController.locationLatLng!['longitude']!,
-              };
-            }
+    return GestureDetector(
+      onTap: () async {
+        Map<String, String>? defaultLocation;
+        if (onboardingController.locationLatLng != null) {
+          defaultLocation = {
+            'latitude': onboardingController.locationLatLng!['latitude']!,
+            'longitude': onboardingController.locationLatLng!['longitude']!,
+          };
+        }
 
-            final Map<String, String>? pickedLocation = await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => SetLocationMapPage(
-                  defaultLatitude: defaultLocation != null ? double.parse(defaultLocation['latitude']!) : null,
-                  defaultLongitude: defaultLocation != null ? double.parse(defaultLocation['longitude']!) : null,
-                ),
-              ),
-            );
-
-            if (pickedLocation != null) {
-              onboardingController.locationLatLng = pickedLocation;
-              double latitude = double.parse(pickedLocation['latitude']!);
-              double longitude = double.parse(pickedLocation['longitude']!);
-              try {
-                showProgress();
-                String address = await onboardingController.getAddressFromLatLng(latitude, longitude);
-                onboardingController.locationTextEditingController.text = address;
-                onboardingController.update();
-                print("Picked Location - Latitude: $latitude, Longitude: $longitude, Address: $address");
-                dismissProgress();
-              } catch (e) {
-                dismissProgress();
-                print(
-                  AppLocalizations.of(context)!.errorGettingAddress(e.toString()),
-                );
-              }
-            }
-          },
-          child: Text(
-            AppLocalizations.of(context)!.chooseOnTheMap,
+        final Map<String, String>? pickedLocation = await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => SetLocationMapPage(
+              defaultLatitude: defaultLocation != null ? double.parse(defaultLocation['latitude']!) : null,
+              defaultLongitude: defaultLocation != null ? double.parse(defaultLocation['longitude']!) : null,
+            ),
           ),
+        );
+
+        if (pickedLocation != null) {
+          onboardingController.locationLatLng = pickedLocation;
+          double latitude = double.parse(pickedLocation['latitude']!);
+          double longitude = double.parse(pickedLocation['longitude']!);
+          try {
+            showProgress();
+            String address = await onboardingController.getAddressFromLatLng(latitude, longitude);
+            onboardingController.locationTextEditingController.text = address;
+            onboardingController.update();
+            print("Picked Location - Latitude: $latitude, Longitude: $longitude, Address: $address");
+            dismissProgress();
+          } catch (e) {
+            dismissProgress();
+            print(
+              AppLocalizations.of(context)!.errorGettingAddress(e.toString()),
+            );
+          }
+        }
+      },
+      child: Container(
+        color: Colors.transparent,
+        padding: EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          children: [
+            Icon(
+              Icons.map_outlined,
+              color: DocareTheme.apple,
+            ),
+            SizedBox(width: 5),
+            Text(
+              AppLocalizations.of(context)!.chooseOnTheMap,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.inter(
+                color: Color(0xFF090F47),
+                fontSize: 16.23,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.30,
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -227,7 +244,10 @@ class _OnboardingManualLocationPageState extends State<OnboardingManualLocationP
           title: Text(suggestion),
         );
       },
-      onSuggestionSelected: (suggestion) {},
+      onSuggestionSelected: (suggestion) {
+        onboardingController.locationTextEditingController.text = suggestion;
+        onboardingController.update();
+      },
     );
   }
 

@@ -171,7 +171,7 @@
   "enterVerificationCode": "Voer uw verificatiecode in",
   "locationQuestion": "Wat is uw locatie ?",
   "locationRecommendation": "We hebben uw locatie nodig om nabijgelegen diensten aan te bevelen",
-  "enterLocationManually": "Voer locatie handmatig in",
+  "enterLocationManually": "Kies een locatie",
   "allowLocationAccess": "Locatietoegang toestaan",
   "locationError": "Locatiefout",
   "failedToGetCurrentLocation": "Kan huidige locatie niet ophalen: {e}",

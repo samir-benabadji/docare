@@ -171,7 +171,7 @@
   "enterVerificationCode": "Entrez votre code de vérification",
   "locationQuestion": "Quel est votre emplacement ?",
   "locationRecommendation": "Nous avons besoin de votre emplacement pour recommander des services à proximité",
-  "enterLocationManually": "Saisir l'emplacement manuellement",
+  "enterLocationManually": "Choisir un emplacement",
   "allowLocationAccess": "Autoriser l'accès à l'emplacement",
   "locationError": "Erreur de localisation",
   "failedToGetCurrentLocation": "Impossible d'obtenir l'emplacement actuel : {e}",
