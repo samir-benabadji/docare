@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../business_logic/services/firebase_firestore_service.dart';
 import '../../../core/assets.gen.dart';
 import '../../../core/constants/theme.dart';
+import '../../../l10n/l10n.dart';
 import '../../widgets/utils.dart';
 
 class PatientProfilePage extends StatelessWidget {
@@ -42,7 +43,7 @@ class PatientProfilePage extends StatelessWidget {
       padding: const EdgeInsets.only(left: 27, right: 24),
       child: Column(
         children: <Widget>[
-          ListTile(
+          /*  ListTile(
             leading: SvgPicture.asset(
               Assets.icons.profile.notifications.path,
             ),
@@ -81,7 +82,7 @@ class PatientProfilePage extends StatelessWidget {
             title: Text('Invite Friends'),
             onTap: () {},
           ),
-          Divider(),
+          Divider(),*/
           ListTile(
             leading: SvgPicture.asset(
               Assets.icons.profile.logout.path,
@@ -229,10 +230,33 @@ class PatientProfilePage extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-          SvgPicture.asset(
-            Assets.icons.edit.path,
-            height: 20,
-            width: 20,
+          Row(
+            children: [
+              DropdownButtonHideUnderline(
+                child: DropdownButton<Locale>(
+                  icon: Icon(Icons.language, color: Colors.black),
+                  elevation: 0,
+                  onChanged: (Locale? locale) {
+                    if (locale != null) {
+                      Get.updateLocale(locale);
+                    }
+                  },
+                  items: L10n.all.map<DropdownMenuItem<Locale>>((Locale locale) {
+                    final String languageCode = locale.languageCode;
+                    return DropdownMenuItem<Locale>(
+                      value: locale,
+                      child: Text(languageCode.toUpperCase()),
+                    );
+                  }).toList(),
+                ),
+              ),
+              SizedBox(width: 24),
+              /*SvgPicture.asset(
+                Assets.icons.edit.path,
+                height: 20,
+                width: 20,
+              ),*/
+            ],
           ),
         ],
       ),

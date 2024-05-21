@@ -14,6 +14,7 @@ import '../../../business_logic/services/firebase_firestore_service.dart';
 import '../../../core/assets.gen.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/constants/theme.dart';
+import '../../../l10n/l10n.dart';
 import '../../widgets/utils.dart';
 import '../location/get_location_map_page.dart';
 import 'doctor_profile_controller.dart';
@@ -55,8 +56,8 @@ class DoctorProfilePage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 25),
-                _doctorConsultationDurationComponent(),
-                SizedBox(height: 26),
+                // _doctorConsultationDurationComponent(),
+                // SizedBox(height: 26),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
@@ -543,6 +544,25 @@ class DoctorProfilePage extends StatelessWidget {
             },
             icon: Icon(Icons.more_vert, color: Colors.black),
           ),
+        DropdownButtonHideUnderline(
+          child: DropdownButton<Locale>(
+            icon: Icon(Icons.language, color: Colors.black),
+            elevation: 0,
+            onChanged: (Locale? locale) {
+              if (locale != null) {
+                Get.updateLocale(locale);
+              }
+            },
+            items: L10n.all.map<DropdownMenuItem<Locale>>((Locale locale) {
+              final String languageCode = locale.languageCode;
+              return DropdownMenuItem<Locale>(
+                value: locale,
+                child: Text(languageCode.toUpperCase()),
+              );
+            }).toList(),
+          ),
+        ),
+        SizedBox(width: 16),
         if (Get.find<HomeController>().currentIndex == 3)
           Container(
             margin: EdgeInsets.only(right: 8),

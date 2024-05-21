@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../../../core/assets.gen.dart';
+import '../../../l10n/l10n.dart';
 import '../auth/signin_page.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -13,6 +13,28 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        leading: DropdownButtonHideUnderline(
+          child: DropdownButton<Locale>(
+            icon: Icon(Icons.language, color: Colors.black),
+            elevation: 0,
+            onChanged: (Locale? locale) {
+              if (locale != null) {
+                Get.updateLocale(locale);
+              }
+            },
+            items: L10n.all.map<DropdownMenuItem<Locale>>((Locale locale) {
+              final String languageCode = locale.languageCode;
+              return DropdownMenuItem<Locale>(
+                value: locale,
+                child: Text(languageCode.toUpperCase()),
+              );
+            }).toList(),
+          ),
+        ),
+      ),
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 24),
         width: Get.width,
