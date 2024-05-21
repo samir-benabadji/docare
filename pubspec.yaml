@@ -43,6 +43,7 @@ dependencies:
   google_fonts: ^4.0.4
   firebase_auth: ^4.16.0
   rxdart: ^0.27.7
+  connectivity_plus:
   fluttertoast: ^8.2.4
   rename: ^3.0.1
   flutter_verification_code: ^1.1.6
