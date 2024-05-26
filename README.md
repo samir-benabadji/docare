@@ -1,5 +1,14 @@
 # DoCare
 
+[![Flutter](https://img.shields.io/badge/Made%20with-Flutter-blue.svg)](https://flutter.dev/)
+[![Firebase](https://img.shields.io/badge/Backend-Firebase-brightgreen)](https://firebase.google.com/)
+[![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub stars](https://img.shields.io/github/stars/samir-benabadji/docare?style=social)](https://github.com/samir-benabadji/docare)
+[![GitHub forks](https://img.shields.io/github/forks/samir-benabadji/docare?style=social)](https://github.com/samir-benabadji/docare/fork)
+[![GitHub issues](https://img.shields.io/github/issues/samir-benabadji/docare)](https://github.com/samir-benabadji/docare/issues)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](https://www.linkedin.com/in/samir-benabadji-6717b8230/)
+[![Email](https://img.shields.io/badge/Email-samirbena6000%40gmail.com-red)](mailto:samirbena6000@gmail.com)
+
 🚀 Excited to Announce: DoCare - My End-of-Year Project! 🚀
 
 I am thrilled to share that I have successfully completed my end-of-year project, "DoCare," a mobile application dedicated to simplifying the process of booking medical appointments with nearby doctors. Built using Flutter and Firebase, DoCare leverages the latest technology to provide a seamless and efficient user experience.
