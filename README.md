@@ -24,12 +24,10 @@ Here are some screenshots of the actual application:
   <tr>
     <td><img src="assets/readMePresentation/login_de-removebg-preview.png" alt="Screenshot 1" width="200"/></td>
     <td><img src="assets/readMePresentation/login_nl-removebg-preview.png" alt="Screenshot 2" width="200"/></td>
-  </tr>
-  <tr>
     <td><img src="assets/readMePresentation/appointment_created_successfully_doctor_profile-removebg-preview.png" alt="Screenshot 3" width="200"/></td>
-    <td><img src="assets/readMePresentation/appointment_created_successfully-removebg-preview.png" alt="Screenshot 4" width="200"/></td>
   </tr>
   <tr>
+    <td><img src="assets/readMePresentation/appointment_created_successfully-removebg-preview.png" alt="Screenshot 4" width="200"/></td>
     <td><img src="assets/readMePresentation/Speciality_selected_page-removebg-preview.png" alt="Screenshot 5" width="200"/></td>
     <td><img src="assets/readMePresentation/Symptom_selected_page-removebg-preview.png" alt="Screenshot 6" width="200"/></td>
   </tr>
