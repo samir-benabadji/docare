@@ -22,7 +22,7 @@ void showToast(String message) {
     toastLength: Toast.LENGTH_LONG,
     gravity: ToastGravity.BOTTOM,
     timeInSecForIosWeb: 1,
-    backgroundColor: Colors.red,
+    backgroundColor: Colors.green,
     textColor: Colors.white,
     fontSize: 16.0,
   );
@@ -59,10 +59,7 @@ double calculateDistance(double userLatitude, double userLongitude, double docto
   double lonDistance = degreesToRadians(doctorLongitude - userLongitude);
 
   double a = sin(latDistance / 2) * sin(latDistance / 2) +
-      cos(degreesToRadians(userLatitude)) *
-          cos(degreesToRadians(doctorLatitude)) *
-          sin(lonDistance / 2) *
-          sin(lonDistance / 2);
+      cos(degreesToRadians(userLatitude)) * cos(degreesToRadians(doctorLatitude)) * sin(lonDistance / 2) * sin(lonDistance / 2);
 
   double c = 2 * atan2(sqrt(a), sqrt(1 - a));
 
